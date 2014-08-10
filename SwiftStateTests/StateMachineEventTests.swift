@@ -11,6 +11,21 @@ import XCTest
 
 class StateMachineEventTests: _TestCase
 {
+    func testCanTryEvent()
+    {
+        let machine = StateMachine<MyState, MyEvent>(state: .State0)
+        
+        // add 0 => 1 & 1 => 2
+        // (NOTE: this is not chaining e.g. 0 => 1 => 2)
+        machine.addRouteEvent(.Event0, transitions: [
+            .State0 => .State1,
+            .State1 => .State2,
+        ])
+        
+        XCTAssertTrue(machine.canTryEvent(.Event0) != nil)
+        XCTAssertTrue(machine.canTryEvent(.AnyEvent) != nil)
+    }
+    
     func testTryState()
     {
         let machine = StateMachine<MyState, MyEvent>(state: .State0)

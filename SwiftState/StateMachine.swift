@@ -284,12 +284,22 @@ public class StateMachine<S: StateType, E: StateEventType>
     
     public func canTryEvent(event: Event) -> State?
     {
-        if let transitionDict = self._routes[event] {
-            for (transition, routeKeyDict) in transitionDict {
-                if transition.fromState == self.state {
-                    for (_, condition) in routeKeyDict {
-                        if self._canPassCondition(condition, transition: transition, event: event) {
-                            return transition.toState
+        var validEvents: [Event] = []
+        if event == Event.anyStateEvent() {
+            validEvents += self._routes.keys.array
+        }
+        else {
+            validEvents += [event]
+        }
+        
+        for validEvent in validEvents {
+            if let transitionDict = self._routes[validEvent] {
+                for (transition, routeKeyDict) in transitionDict {
+                    if transition.fromState == self.state {
+                        for (_, condition) in routeKeyDict {
+                            if self._canPassCondition(condition, transition: transition, event: validEvent) {
+                                return transition.toState
+                            }
                         }
                     }
                 }

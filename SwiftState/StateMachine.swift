@@ -115,9 +115,18 @@ public class StateMachine<S: StateType, E: StateEventType>
     // MARK: - Init
     //--------------------------------------------------
     
-    public init(state: State)
+    public init(state: State, initClosure: (StateMachine -> Void)? = nil)
     {
         self._state = state
+        
+        if let initClosure_ = initClosure {
+            initClosure_(self)
+        }
+    }
+    
+    public func configure(closure: StateMachine -> Void)
+    {
+        closure(self)
     }
     
     public var state: State

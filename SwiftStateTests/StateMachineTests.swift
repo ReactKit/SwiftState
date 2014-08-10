@@ -118,7 +118,7 @@ class StateMachineTests: _TestCase
         let machine = StateMachine<MyState, String>(state: .State0)
         
         // add 0 => Any, except 0 => 2
-        machine.addRoute(.State0 => nil, condition: { (transition, event) in
+        machine.addRoute(.State0 => nil, condition: { transition in
             return transition.toState != .State2
         })
         

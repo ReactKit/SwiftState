@@ -173,9 +173,9 @@ public class StateMachine<S: StateType, E: StateEventType>
         return false
     }
     
-    private func _canPassCondition(condition: Condition?, transition: Transition, event: Event = Event.anyStateEvent()) -> Bool
+    private func _canPassCondition(condition: Condition?, transition: Transition) -> Bool
     {
-        return condition == nil || condition!(transition: transition, event: event)
+        return condition == nil || condition!(transition: transition)
     }
     
     public func canTryState(state: State, forEvent event: Event = Event.anyStateEvent()) -> Bool
@@ -297,7 +297,7 @@ public class StateMachine<S: StateType, E: StateEventType>
                 for (transition, routeKeyDict) in transitionDict {
                     if transition.fromState == self.state {
                         for (_, condition) in routeKeyDict {
-                            if self._canPassCondition(condition, transition: transition, event: validEvent) {
+                            if self._canPassCondition(condition, transition: transition) {
                                 return transition.toState
                             }
                         }

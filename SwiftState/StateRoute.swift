@@ -8,7 +8,7 @@
 
 public struct StateRoute<S: StateType, E: StateEventType>
 {
-    internal typealias Condition = ((transition: Transition, event: Event) -> Bool)
+    internal typealias Condition = ((transition: Transition) -> Bool)
     
     private typealias State = S
     private typealias Event = E

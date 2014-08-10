@@ -17,20 +17,21 @@ enum MyState: StateType {
 ```
 
 ```
-let machine = StateMachine<MyState, MyEvent>(state: .State0)
+let machine = StateMachine<MyState, MyEvent>(state: .State0) { machine in
 
-machine.addRoute(.State0 => .State1)
-machine.addRoute(nil => .State2) { context in println("Any => 2, msg=\(context.userInfo!)") }
-machine.addRoute(.State2 => nil) { context in println("2 => Any, msg=\(context.userInfo!)") }
+    machine.addRoute(.State0 => .State1)
+    machine.addRoute(nil => .State2) { context in println("Any => 2, msg=\(context.userInfo!)") }
+    machine.addRoute(.State2 => nil) { context in println("2 => Any, msg=\(context.userInfo!)") }
 
-// add handler (handlerContext = (event, transition, order, userInfo))
-machine.addHandler(.State0 => .State1) { context in
-    println("0 => 1")
-}
+    // add handler (handlerContext = (event, transition, order, userInfo))
+    machine.addHandler(.State0 => .State1) { context in
+        println("0 => 1")
+    }
 
-// add errorHandler
-machine.addErrorHandler { (event, transition, order, userInfo) in
-    println("[ERROR] \(transition.fromState) => \(transition.toState)")
+    // add errorHandler
+    machine.addErrorHandler { (event, transition, order, userInfo) in
+        println("[ERROR] \(transition.fromState) => \(transition.toState)")
+    }
 }
 
 // tryState 0 => 1 => 2 => 1 => 0

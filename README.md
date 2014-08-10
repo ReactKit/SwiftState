@@ -81,7 +81,7 @@ Event     | `StateEventType` (protocol)   | Name for route-group. Transition can
 Machine   | `StateMachine`                | State transition manager which can register `Route` and `Handler` separately for variety of transitions.
 Transition   | `StateTransition`          | `From-` and `to-` states represented as `.State1 => .State2`. If `nil` is used for either state, it will be represented as `.AnyState`.
 Route     | `StateRoute`                  | `Transition` + `Condition`.
-Condition | `(Transition, Event) -> Bool` | Closure for validating transition. If condition returns `false`, transition will fail and associated handlers will not be invoked.
+Condition | `Transition -> Bool`          | Closure for validating transition. If condition returns `false`, transition will fail and associated handlers will not be invoked.
 Handler   | `HandlerContext -> Void`      | Transition callback invoked after state has been changed.
 Chain     | `StateTransitionChain`        | Group of continuous routes represented as `.State1 => .State2 => .State3`
 

@@ -212,7 +212,7 @@ public class StateMachine<S: StateType, E: StateEventType>
             //
             // NOTE:
             // Instead of using before/after handlers as seen in many other StateMachine libraries,
-            // SwiftStateMachine uses `order` value to perform handlers in 'fine-grained' order, 
+            // SwiftState uses `order` value to perform handlers in 'fine-grained' order,
             // only after state has been updated. (Any problem?)
             //
             for handlerInfo in validHandlerInfos {
@@ -238,23 +238,23 @@ public class StateMachine<S: StateType, E: StateEventType>
     
     private func _validHandlerInfosForTransition(transition: Transition) -> [HandlerInfo]
     {
-        var validHandlers: [HandlerInfo] = []
+        var validHandlerInfos: [HandlerInfo] = []
         
         let validTransitions = self._validTransitionsForTransition(transition)
         
         for validTransition in validTransitions {
             if let handlerInfos = self._handlers[validTransition] {
                 for handlerInfo in handlerInfos {
-                    validHandlers += [handlerInfo]
+                    validHandlerInfos += [handlerInfo]
                 }
             }
         }
         
-        validHandlers.sort { info1, info2 in
+        validHandlerInfos.sort { info1, info2 in
             return info1.order < info2.order
         }
         
-        return validHandlers
+        return validHandlerInfos
     }
     
     private func _validTransitionsForTransition(transition: Transition) -> [Transition]

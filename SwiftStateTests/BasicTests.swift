@@ -90,12 +90,12 @@ class BasicTests: _TestCase
         XCTAssertFalse(machine.hasRoute(.State3 => .State1))
         XCTAssertFalse(machine.hasRoute(.State3 => .State3))
         
-        // error
-        machine.addErrorHandler { context in
-            println("[ERROR 1] \(context.transition.fromState.toRaw()) => \(context.transition.toState.toRaw())")
-        }
-        
         machine.configure {
+            
+            // error
+            $0.addErrorHandler { context in
+                println("[ERROR 1] \(context.transition.fromState.toRaw()) => \(context.transition.toState.toRaw())")
+            }
             
             // entry
             $0.addEntryHandler(.State0) { context in

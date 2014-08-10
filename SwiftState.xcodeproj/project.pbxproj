@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1F198C5C19972320001C3700 /* QiitaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F198C5B19972320001C3700 /* QiitaTests.swift */; };
 		1FA620061996601000460108 /* SwiftState.h in Headers */ = {isa = PBXBuildFile; fileRef = 1FA620051996601000460108 /* SwiftState.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1FA620201996606300460108 /* StateEventType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA620191996606200460108 /* StateEventType.swift */; };
 		1FA620211996606300460108 /* StateMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA6201A1996606300460108 /* StateMachine.swift */; };
@@ -38,6 +39,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1F198C5B19972320001C3700 /* QiitaTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QiitaTests.swift; sourceTree = "<group>"; };
 		1FA620001996601000460108 /* SwiftState.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftState.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1FA620041996601000460108 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1FA620051996601000460108 /* SwiftState.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwiftState.h; sourceTree = "<group>"; };
@@ -128,6 +130,7 @@
 				1FA62027199660CA00460108 /* _TestCase.swift */,
 				1FA62029199660CA00460108 /* MyState.swift */,
 				1FA62028199660CA00460108 /* BasicTests.swift */,
+				1F198C5B19972320001C3700 /* QiitaTests.swift */,
 				1FA6202C199660CA00460108 /* StateMachineTests.swift */,
 				1FA6202A199660CA00460108 /* StateMachineChainTests.swift */,
 				1FA6202B199660CA00460108 /* StateMachineEventTests.swift */,
@@ -268,6 +271,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1F198C5C19972320001C3700 /* QiitaTests.swift in Sources */,
 				1FA62038199660CA00460108 /* StateTransitionTests.swift in Sources */,
 				1FA62033199660CA00460108 /* StateMachineChainTests.swift in Sources */,
 				1FA62030199660CA00460108 /* _TestCase.swift in Sources */,

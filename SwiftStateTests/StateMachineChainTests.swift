@@ -194,7 +194,7 @@ class StateMachineChainTests: _TestCase
         XCTAssertEqual(invokeCount, 0, "ChainHandler should NOT be performed.")
     }
     
-    func testErrorChainHandler()
+    func testAddChainErrorHandler()
     {
         let machine = StateMachine<MyState, String>(state: .State0)
         
@@ -222,8 +222,37 @@ class StateMachineChainTests: _TestCase
         machine <- .State0
         XCTAssertEqual(errorCount, 1, "chainErrorHandler should be performed.")
         
-        // tryState 0 (starting state) => 2 again
+        // tryState 0 (starting state) => 2
         machine <- .State2
         XCTAssertEqual(errorCount, 2, "chainErrorHandler should be performed again.")
+    }
+    
+    func testRemoveChainErrorHandler()
+    {
+        let machine = StateMachine<MyState, String>(state: .State0)
+        
+        var errorCount = 0
+        
+        let transitionChain = MyState.State0 => .State1 => .State2
+        
+        machine.addRoute(nil => nil)    // connect all states
+        
+        // add 0 => 1 => 2 chainErrorHandler
+        let handlerID = machine.addChainErrorHandler(transitionChain) { context in
+            errorCount++
+            return
+        }
+        
+        // remove chainErrorHandler
+        machine.removeHandler(handlerID)
+        
+        // tryState 0 (starting state) => 1 => 0
+        machine <- .State1
+        machine <- .State0
+        XCTAssertEqual(errorCount, 0, "Chain error, but chainErrorHandler should NOT be performed.")
+        
+        // tryState 0 (starting state) => 2
+        machine <- .State2
+        XCTAssertEqual(errorCount, 0, "Chain error, but chainErrorHandler should NOT be performed.")
     }
 }

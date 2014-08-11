@@ -421,7 +421,7 @@ class StateMachineTests: _TestCase
             returnedTransition2 = context.transition
         }
         
-        machine.removeErrorHandler(handlerID)
+        machine.removeHandler(handlerID)
         
         // tryState 0 => 1
         machine <- .State1
@@ -442,9 +442,9 @@ class StateMachineTests: _TestCase
         }
         
         // remove handler
-        XCTAssertTrue(machine.removeErrorHandler(handlerID))
+        XCTAssertTrue(machine.removeHandler(handlerID))
         
         // remove already unregistered handler
-        XCTAssertFalse(machine.removeErrorHandler(handlerID), "removeHandler should fail because handler is already removed.")
+        XCTAssertFalse(machine.removeHandler(handlerID), "removeHandler should fail because handler is already removed.")
     }
 }

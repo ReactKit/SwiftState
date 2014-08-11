@@ -538,6 +538,13 @@ public class StateMachine<S: StateType, E: StateEventType>
                     }
                 }
             }
+            // `transition = nil` means errorHandler
+            else {
+                if self._removeHandlerFromArray(&self._errorHandlers, removingHandlerID: handlerID) {
+                    return true
+                }
+                return false
+            }
         }
         else {
             var success = false
@@ -596,17 +603,6 @@ public class StateMachine<S: StateType, E: StateEventType>
         let handlerID = HandlerID(transition: nil, handlerKey: handlerKey)
         
         return handlerID
-    }
-    
-    // MARK: removeErrorHandler
-    
-    public func removeErrorHandler(handlerID: HandlerID) -> Bool
-    {
-        if self._removeHandlerFromArray(&self._errorHandlers, removingHandlerID: handlerID) {
-            return true
-        }
-        
-        return false
     }
     
 //    public func removeAllErrorHandlers() -> Bool

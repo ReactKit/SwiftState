@@ -73,10 +73,10 @@ public class StateMachine<S: StateType, E: StateEventType>
     private typealias Transition = StateTransition<State>
     private typealias TransitionChain = StateTransitionChain<State>
     
-    private typealias Route = StateRoute<State, Event>
+    private typealias Route = StateRoute<State>
     private typealias RouteKey = String
     private typealias RouteID = StateMachineRouteID<State, Event>
-    private typealias RouteChain = StateRouteChain<State, Event>
+    private typealias RouteChain = StateRouteChain<State>
     
     private typealias Condition = Route.Condition
     

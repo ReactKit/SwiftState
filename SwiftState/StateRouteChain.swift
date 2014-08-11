@@ -6,13 +6,12 @@
 //  Copyright (c) 2014年 Yasuhiro Inami. All rights reserved.
 //
 
-public struct StateRouteChain<S: StateType, E: StateEventType>
+public struct StateRouteChain<S: StateType>
 {
     private typealias State = S
-    private typealias Event = E
     private typealias Transition = StateTransition<State>
     private typealias TransitionChain = StateTransitionChain<State>
-    private typealias Route = StateRoute<State, Event>
+    private typealias Route = StateRoute<State>
     private typealias Condition = Route.Condition
     
     internal var routes: [Route]
@@ -39,7 +38,7 @@ public struct StateRouteChain<S: StateType, E: StateEventType>
     mutating public func prepend(state: State, condition: Condition?)
     {
         let firstFromState = self.routes.first!.transition.fromState
-        let newRoute = StateRoute<State, Event>(transition: state => firstFromState, condition: condition)
+        let newRoute = StateRoute<State>(transition: state => firstFromState, condition: condition)
         
         self.routes.insert(newRoute, atIndex: 0)
     }
@@ -47,7 +46,7 @@ public struct StateRouteChain<S: StateType, E: StateEventType>
     mutating internal func append(state: State, condition: Condition?)
     {
         let lastToState = self.routes.last!.transition.toState
-        let newRoute = StateRoute<State, Event>(transition: lastToState => state, condition: condition)
+        let newRoute = StateRoute<State>(transition: lastToState => state, condition: condition)
         
         self.routes.append(newRoute)
     }

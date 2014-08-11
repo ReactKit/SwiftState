@@ -6,12 +6,11 @@
 //  Copyright (c) 2014年 Yasuhiro Inami. All rights reserved.
 //
 
-public struct StateRoute<S: StateType, E: StateEventType>
+public struct StateRoute<S: StateType>
 {
     internal typealias Condition = ((transition: Transition) -> Bool)
     
     private typealias State = S
-    private typealias Event = E
     private typealias Transition = StateTransition<State>
     
     public let transition: Transition

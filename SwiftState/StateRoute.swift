@@ -30,4 +30,16 @@ public struct StateRoute<S: StateType>
         self.transition = transition
         self.condition = { t in condition() }
     }
+    
+    public func __conversion() -> Transition
+    {
+        return self.transition
+    }
+    
+    public func __conversion() -> StateRouteChain<State>
+    {
+        var routes: [StateRoute<State>] = Array()
+        routes.append(self)
+        return StateRouteChain(routes: routes)
+    }
 }

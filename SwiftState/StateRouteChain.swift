@@ -38,7 +38,7 @@ public struct StateRouteChain<S: StateType>
     mutating public func prepend(state: State, condition: Condition?)
     {
         let firstFromState = self.routes.first!.transition.fromState
-        let newRoute = StateRoute<State>(transition: state => firstFromState, condition: condition)
+        let newRoute = Route(transition: state => firstFromState, condition: condition)
         
         self.routes.insert(newRoute, atIndex: 0)
     }
@@ -46,8 +46,19 @@ public struct StateRouteChain<S: StateType>
     mutating internal func append(state: State, condition: Condition?)
     {
         let lastToState = self.routes.last!.transition.toState
-        let newRoute = StateRoute<State>(transition: lastToState => state, condition: condition)
+        let newRoute = Route(transition: lastToState => state, condition: condition)
         
         self.routes.append(newRoute)
+    }
+    
+    public func __conversion() -> TransitionChain
+    {
+        let transitions = self.routes.map { route in route.transition }
+        return StateTransitionChain(transitions: transitions)
+    }
+    
+    public func __conversion() -> [Route]
+    {
+        return self.routes
     }
 }

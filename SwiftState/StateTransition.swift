@@ -29,6 +29,11 @@ public struct StateTransition<S: StateType>: Hashable
     {
         return StateTransitionChain(transition: self)
     }
+    
+    public func __conversion() -> StateRoute<State>
+    {
+        return StateRoute(transition: self, condition: nil)
+    }
 }
 
 // for StateTransition Equatable

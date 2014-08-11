@@ -68,6 +68,16 @@ public struct StateTransitionChain<S: StateType>
     {
         self.states.append(state)
     }
+    
+    public func __conversion() -> StateRouteChain<State>
+    {
+        return StateRouteChain(transitionChain: self, condition: nil)
+    }
+    
+    public func __conversion() -> [Transition]
+    {
+        return self.transitions
+    }
 }
 
 //--------------------------------------------------

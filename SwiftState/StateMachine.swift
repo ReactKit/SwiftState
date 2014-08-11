@@ -500,7 +500,7 @@ public class StateMachine<S: StateType, E: StateEventType>
         handlerInfos.insert(newHandlerInfo, atIndex: index)
     }
     
-    // MARK: entryHandler
+    // MARK: addEntryHandler
     
     public func addEntryHandler(state: State, handler: Handler) -> HandlerID
     {
@@ -512,7 +512,7 @@ public class StateMachine<S: StateType, E: StateEventType>
         return self.addHandler(nil => state, handler: handler)
     }
     
-    // MARK: exitHandler
+    // MARK: addExitHandler
     
     public func addExitHandler(state: State, handler: Handler) -> HandlerID
     {
@@ -579,7 +579,7 @@ public class StateMachine<S: StateType, E: StateEventType>
 //        return false
 //    }
     
-    // MARK: errorHandler
+    // MARK: addErrorHandler
     
     public func addErrorHandler(handler: Handler) -> HandlerID
     {
@@ -597,6 +597,8 @@ public class StateMachine<S: StateType, E: StateEventType>
         
         return handlerID
     }
+    
+    // MARK: removeErrorHandler
     
     public func removeErrorHandler(handlerID: HandlerID) -> Bool
     {
@@ -677,8 +679,26 @@ public class StateMachine<S: StateType, E: StateEventType>
     
     public func addChainHandler(chain: RouteChain, order: OrderType, handler: Handler) -> HandlerID
     {
+        return self._addChainHandler(chain, order: order, handler: handler, isError: false)
+    }
+    
+    // MARK: addChainErrorHandler
+    
+    public func addChainErrorHandler(chain: RouteChain, handler: Handler) -> HandlerID
+    {
+        return self.addChainErrorHandler(chain, order: self.dynamicType._defaultOrder, handler: handler)
+    }
+    
+    public func addChainErrorHandler(chain: RouteChain, order: OrderType, handler: Handler) -> HandlerID
+    {
+        return self._addChainHandler(chain, order: order, handler: handler, isError: true)
+    }
+    
+    private func _addChainHandler(chain: RouteChain, order: OrderType, handler: Handler, isError: Bool) -> HandlerID
+    {
         var handlerIDs: [HandlerID] = Array()
         
+        var shouldStop = false
         var chainingCount = 0
         var allCount = 0
         
@@ -686,6 +706,7 @@ public class StateMachine<S: StateType, E: StateEventType>
         let firstRoute = chain.routes.first!
         var handlerID = self.addHandler(firstRoute.transition) { context in
             if self._canPassCondition(firstRoute.condition, transition: context.transition) {
+                shouldStop = false
                 chainingCount = 0
                 allCount = 0
 //                println("[RouteChain] start")
@@ -697,7 +718,7 @@ public class StateMachine<S: StateType, E: StateEventType>
         for route in chain.routes {
             handlerID = self.addHandler(route.transition) { context in
                 if self._canPassCondition(route.condition, transition: context.transition) {
-                    chainingCount++
+                    if !shouldStop { chainingCount++ }
 //                    println("[RouteChain] chainingCount++ \(route.transition)")
                     return
                 }
@@ -707,7 +728,15 @@ public class StateMachine<S: StateType, E: StateEventType>
         
         // any routes
         handlerID = self.addHandler(nil => nil, order: 150) { context in
-            allCount++
+            if !shouldStop { allCount++ }
+            
+            if isError {
+                if chainingCount < allCount {
+                    shouldStop = true
+                    handler(context: context)
+                }
+            }
+            
 //            println("[RouteChain] allCount++")
             return
         }
@@ -720,7 +749,11 @@ public class StateMachine<S: StateType, E: StateEventType>
             
             if self._canPassCondition(lastRoute.condition, transition: context.transition) {
                 if chainingCount == allCount && chainingCount == chain.routes.count && chainingCount == chain.routes.count {
-                    handler(context: context)
+                    shouldStop = true
+                    
+                    if !isError {
+                        handler(context: context)
+                    }
                 }
             }
         }

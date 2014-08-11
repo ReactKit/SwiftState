@@ -128,6 +128,27 @@ class StateMachineChainTests: _TestCase
         XCTAssertEqual(invokeCount, 1, "Handler should be performed because 1 => 3 is not registered, thus performing 0 => 1 => 2.")
     }
     
+    func testAddRouteChain_goBackHomeAWhile()
+    {
+        let machine = StateMachine<MyState, String>(state: .State0)
+        
+        var invokeCount = 0
+        
+        // add 0 => 1 => 2 => 0 (back home) => 2
+        machine.addRouteChain(.State0 => .State1 => .State2 => .State0 => .State2) { context in
+            invokeCount++
+            return
+        }
+        
+        // tryState 0 => 1 => 2 => 0 => 2
+        machine <- .State1
+        machine <- .State2
+        machine <- .State0
+        machine <- .State2
+        
+        XCTAssertEqual(invokeCount, 1)
+    }
+    
     func testRemoveRouteChain()
     {
         let machine = StateMachine<MyState, String>(state: .State0)

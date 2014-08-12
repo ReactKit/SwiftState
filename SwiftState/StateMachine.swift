@@ -336,7 +336,12 @@ public class StateMachine<S: StateType, E: StateEventType>
         return self.addRoute(transition, condition: { t in condition() })
     }
     
-    public func addRoute(route: Route, event: Event = Event.anyStateEvent()) -> RouteID
+    public func addRoute(route: Route) -> RouteID
+    {
+        return self._addRoute(route)
+    }
+    
+    private func _addRoute(route: Route, forEvent event: Event = Event.anyStateEvent()) -> RouteID
     {
         let transition = route.transition
         let condition = route.condition
@@ -800,7 +805,7 @@ public class StateMachine<S: StateType, E: StateEventType>
     {
         var routeIDs: [RouteID] = Array()
         for route in routes {
-            let routeID = self.addRoute(route, event: event)
+            let routeID = self._addRoute(route, forEvent: event)
             routeIDs.append(routeID)
         }
         

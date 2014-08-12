@@ -149,6 +149,44 @@ class StateMachineChainTests: _TestCase
         XCTAssertEqual(invokeCount, 1)
     }
     
+    // https://github.com/inamiy/SwiftState/issues/2
+    func testAddRouteChain_goBackHomeAWhile2()
+    {
+        let machine = StateMachine<MyState, String>(state: .State0)
+        
+        var invokeCount = 0
+        
+        machine.addRoute(nil => nil)    // connect all states
+        
+        // add 0 => 1 => 2 => 0 (back home) => 1 => 2
+        machine.addRouteChain(.State0 => .State1 => .State2 => .State0 => .State1 => .State2) { context in
+            invokeCount++
+            return
+        }
+        
+        // tryState 0 => 1 => 2 => 0 => 1 => 0 => 2
+        machine <- .State1
+        machine <- .State2
+        machine <- .State0
+        machine <- .State1
+        machine <- .State0
+        machine <- .State2
+        
+        XCTAssertEqual(invokeCount, 0)
+        
+        // reset to 0
+        machine <- .State0
+        
+        // tryState 0 => 1 => 2 => 0 => 1 => 2
+        machine <- .State1
+        machine <- .State2
+        machine <- .State0
+        machine <- .State1
+        machine <- .State2
+        
+        XCTAssertEqual(invokeCount, 1)
+    }
+    
     func testRemoveRouteChain()
     {
         let machine = StateMachine<MyState, String>(state: .State0)

@@ -694,51 +694,67 @@ public class StateMachine<S: StateType, E: StateEventType>
     {
         var handlerIDs: [HandlerID] = Array()
         
-        var shouldStop = false
+        var shouldStop = true
+        var shouldIncrementChainingCount = true
         var chainingCount = 0
         var allCount = 0
         
-        // 1st route
+        // reset count on 1st route
         let firstRoute = chain.routes.first!
         var handlerID = self.addHandler(firstRoute.transition) { context in
             if self._canPassCondition(firstRoute.condition, transition: context.transition) {
-                shouldStop = false
-                chainingCount = 0
-                allCount = 0
-//                println("[RouteChain] start")
+                if shouldStop {
+                    shouldStop = false
+                    chainingCount = 0
+                    allCount = 0
+//                    println("[RouteChain] start")
+                }
+                else {
+//                    println("[RouteChain] back home a while")
+                }
             }
         }
         handlerIDs.append(handlerID)
         
-        // every route
+        // increment chainingCount on every route
         for route in chain.routes {
             handlerID = self.addHandler(route.transition) { context in
+                
+                // skip duplicated transition handlers e.g. chain = 0 => 1 => 0 => 1 & transiting 0 => 1
+                if !shouldIncrementChainingCount { return }
+                
                 if self._canPassCondition(route.condition, transition: context.transition) {
-                    if !shouldStop { chainingCount++ }
-//                    println("[RouteChain] chainingCount++ \(route.transition)")
-                    return
+                    if !shouldStop {
+                        chainingCount++
+//                        println("[RouteChain] chainingCount++ =\(chainingCount), transition=\(route.transition)")
+                        
+                        shouldIncrementChainingCount = false
+                    }
                 }
             }
             handlerIDs.append(handlerID)
         }
         
-        // any routes
+        // increment allCount (+ invoke chainErrorHandler) on any routes
         handlerID = self.addHandler(nil => nil, order: 150) { context in
-            if !shouldStop { allCount++ }
             
-            if isError {
-                if chainingCount < allCount {
-                    shouldStop = true
+            shouldIncrementChainingCount = true
+            
+            if !shouldStop {
+                allCount++
+//                println("[RouteChain] allCount++")
+            }
+            
+            if chainingCount < allCount {
+                shouldStop = true
+                if isError {
                     handler(context: context)
                 }
             }
-            
-//            println("[RouteChain] allCount++")
-            return
         }
         handlerIDs.append(handlerID)
         
-        // last route
+        // invoke chainHandler on last route
         let lastRoute = chain.routes.last!
         handlerID = self.addHandler(lastRoute.transition, order: 200) { context in
 //            println("[RouteChain] finish? \(chainingCount) \(allCount) \(chain.routes.count)")

@@ -889,12 +889,14 @@ public func <- <S: StateType, E: StateEventType>(machine: StateMachine<S, E>, tu
     return machine.tryState(tuple.0, userInfo: tuple.1)
 }
 
-public func <- <S: StateType, E: StateEventType>(machine: StateMachine<S, E>, event: E) -> Bool
+infix operator <-! { associativity right }
+
+public func <-! <S: StateType, E: StateEventType>(machine: StateMachine<S, E>, event: E) -> Bool
 {
     return machine.tryEvent(event)
 }
 
-public func <- <S: StateType, E: StateEventType>(machine: StateMachine<S, E>, tuple: (E, Any?)) -> Bool
+public func <-! <S: StateType, E: StateEventType>(machine: StateMachine<S, E>, tuple: (E, Any?)) -> Bool
 {
     return machine.tryEvent(tuple.0, userInfo: tuple.1)
 }

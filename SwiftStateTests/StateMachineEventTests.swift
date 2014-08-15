@@ -62,15 +62,15 @@ class StateMachineEventTests: _TestCase
         ])
         
         // tryEvent
-        machine <- .Event0
+        machine <-! .Event0
         XCTAssertEqual(machine.state, MyState.State1)
         
         // tryEvent
-        machine <- .Event0
+        machine <-! .Event0
         XCTAssertEqual(machine.state, MyState.State2)
         
         // tryEvent
-        let success = machine <- .Event0
+        let success = machine <-! .Event0
         XCTAssertEqual(machine.state, MyState.State2)
         XCTAssertFalse(success, "Event0 doesn't have 2 => Any")
     }
@@ -86,15 +86,15 @@ class StateMachineEventTests: _TestCase
         ])
         
         // tryEvent
-        machine <- "Run"
+        machine <-! "Run"
         XCTAssertEqual(machine.state, MyState.State1)
         
         // tryEvent
-        machine <- "Run"
+        machine <-! "Run"
         XCTAssertEqual(machine.state, MyState.State2)
         
         // tryEvent
-        let success = machine <- "Run"
+        let success = machine <-! "Run"
         XCTAssertEqual(machine.state, MyState.State2)
         XCTAssertFalse(success, "Event=Run doesn't have 2 => Any")
     }
@@ -118,32 +118,32 @@ class StateMachineEventTests: _TestCase
         var success: Bool
         
         // tryEvent
-        success = machine <- .Event1
+        success = machine <-! .Event1
         XCTAssertEqual(machine.state, MyState.State0)
         XCTAssertFalse(success, "Event1 doesn't have 0 => Any.")
         
         // tryEvent
-        success = machine <- .Event0
+        success = machine <-! .Event0
         XCTAssertEqual(machine.state, MyState.State1)
         XCTAssertTrue(success)
         
         // tryEvent
-        success = machine <- .Event0
+        success = machine <-! .Event0
         XCTAssertEqual(machine.state, MyState.State2)
         XCTAssertTrue(success)
         
         // tryEvent
-        success = machine <- .Event0
+        success = machine <-! .Event0
         XCTAssertEqual(machine.state, MyState.State2)
         XCTAssertFalse(success, "Event0 doesn't have 2 => Any.")
         
         // tryEvent
-        success = machine <- .Event1
+        success = machine <-! .Event1
         XCTAssertEqual(machine.state, MyState.State1)
         XCTAssertTrue(success)
         
         // tryEvent
-        success = machine <- .Event1
+        success = machine <-! .Event1
         XCTAssertEqual(machine.state, MyState.State0)
         XCTAssertTrue(success)
     }
@@ -164,11 +164,11 @@ class StateMachineEventTests: _TestCase
         })
         
         // tryEvent
-        machine <- .Event0
+        machine <-! .Event0
         XCTAssertEqual(machine.state, MyState.State1)
         
         // tryEvent
-        machine <- .Event0
+        machine <-! .Event0
         XCTAssertEqual(machine.state, MyState.State2)
         
         XCTAssertEqual(invokeCount, 2)
@@ -192,11 +192,11 @@ class StateMachineEventTests: _TestCase
         }
         
         // tryEvent
-        machine <- .Event0
+        machine <-! .Event0
         XCTAssertEqual(machine.state, MyState.State1)
         
         // tryEvent
-        machine <- .Event0
+        machine <-! .Event0
         XCTAssertEqual(machine.state, MyState.State2)
         
         XCTAssertEqual(invokeCount, 2)
@@ -225,11 +225,11 @@ class StateMachineEventTests: _TestCase
         }
         
         // tryEvent
-        var success = machine <- .Event0
+        var success = machine <-! .Event0
         XCTAssertFalse(success, "RouteEvent should be removed.")
         
         // tryEvent
-        success = machine <- .Event0
+        success = machine <-! .Event0
         XCTAssertFalse(success, "RouteEvent should be removed.")
         
         XCTAssertEqual(invokeCount, 0, "EventHandler should NOT be performed")
@@ -256,11 +256,11 @@ class StateMachineEventTests: _TestCase
         machine.removeHandler(handlerID)
         
         // tryEvent
-        machine <- .Event0
+        machine <-! .Event0
         XCTAssertEqual(machine.state, MyState.State1, "0 => 1 should be succesful")
         
         // tryEvent
-        machine <- .Event0
+        machine <-! .Event0
         XCTAssertEqual(machine.state, MyState.State2, "1 => 2 should be succesful")
         
         XCTAssertEqual(invokeCount, 0, "EventHandler should NOT be performed")

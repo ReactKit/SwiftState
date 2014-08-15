@@ -243,6 +243,25 @@ class StateMachineTests: _TestCase
         XCTAssertEqual(machine.state, MyState.State1)
     }
     
+    func testTryState_string()
+    {
+        let machine = StateMachine<String, String>(state: "0")
+        
+        // tryState 0 => 1, without registering any transitions
+        machine <- "1"
+        
+        XCTAssertEqual(machine.state, "0", "0 => 1 should fail because transition is not added yet.")
+        
+        // add 0 => 1
+        machine.addRoute("0" => "1")
+        
+        // tryState 0 => 1, returning flag
+        let success = machine <- "1"
+        
+        XCTAssertTrue(success)
+        XCTAssertEqual(machine.state, "1")
+    }
+    
     //--------------------------------------------------
     // MARK: - addHandler
     //--------------------------------------------------

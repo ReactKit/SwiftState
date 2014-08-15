@@ -62,6 +62,7 @@ For more examples, please see XCTest cases.
     - Transition: `.State0 => .State1`
     - Try transition: `machine <- .State1`
     - Try transition + messaging: `machine <- (.State1, "GoGoGo")`
+    - Try Event: `machine <-! .Event1`
 - Highly flexible transition routing
     - using Condition
     - using AnyState (`nil` state)
@@ -69,7 +70,7 @@ For more examples, please see XCTest cases.
 - Success/Error/Entry/Exit handlers with `order: UInt8` (no before/after handler stuff)
 - Removable routes and handlers
 - Chaining: `.State0 => .State1 => .State2`
-- Event: `machine.addRouteEvent("WakeUp", transitions); machine <- "WakeUp"`
+- Event: `machine.addRouteEvent("WakeUp", transitions); machine <-! "WakeUp"`
 
 
 ## Terms

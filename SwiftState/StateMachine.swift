@@ -393,8 +393,11 @@ public class StateMachine<S: StateType, E: StateEventType>
         
         let routeID = self.addRoute(transition, condition: condition)
         
-        let handlerID = self.addHandler(transition) { context in
-            if self._canPassCondition(condition, transition: context.transition) {
+        let handlerID = self.addHandler(transition) { [weak self] context in
+            if self == nil { return }
+            let self_ = self!
+            
+            if self_._canPassCondition(condition, transition: context.transition) {
                 handler(context: context)
             }
         }
@@ -706,8 +709,11 @@ public class StateMachine<S: StateType, E: StateEventType>
         
         // reset count on 1st route
         let firstRoute = chain.routes.first!
-        var handlerID = self.addHandler(firstRoute.transition) { context in
-            if self._canPassCondition(firstRoute.condition, transition: context.transition) {
+        var handlerID = self.addHandler(firstRoute.transition) { [weak self] context in
+            if self == nil { return }
+            let self_ = self!
+            
+            if self_._canPassCondition(firstRoute.condition, transition: context.transition) {
                 if shouldStop {
                     shouldStop = false
                     chainingCount = 0
@@ -723,12 +729,14 @@ public class StateMachine<S: StateType, E: StateEventType>
         
         // increment chainingCount on every route
         for route in chain.routes {
-            handlerID = self.addHandler(route.transition) { context in
+            handlerID = self.addHandler(route.transition) { [weak self] context in
+                if self == nil { return }
+                let self_ = self!
                 
                 // skip duplicated transition handlers e.g. chain = 0 => 1 => 0 => 1 & transiting 0 => 1
                 if !shouldIncrementChainingCount { return }
                 
-                if self._canPassCondition(route.condition, transition: context.transition) {
+                if self_._canPassCondition(route.condition, transition: context.transition) {
                     if !shouldStop {
                         chainingCount++
 //                        println("[RouteChain] chainingCount++ =\(chainingCount), transition=\(route.transition)")
@@ -741,7 +749,7 @@ public class StateMachine<S: StateType, E: StateEventType>
         }
         
         // increment allCount (+ invoke chainErrorHandler) on any routes
-        handlerID = self.addHandler(nil => nil, order: 150) { context in
+        handlerID = self.addHandler(nil => nil, order: 150) { [weak self] context in
             
             shouldIncrementChainingCount = true
             
@@ -761,10 +769,12 @@ public class StateMachine<S: StateType, E: StateEventType>
         
         // invoke chainHandler on last route
         let lastRoute = chain.routes.last!
-        handlerID = self.addHandler(lastRoute.transition, order: 200) { context in
+        handlerID = self.addHandler(lastRoute.transition, order: 200) { [weak self] context in
 //            println("[RouteChain] finish? \(chainingCount) \(allCount) \(chain.routes.count)")
+            if self == nil { return }
+            let self_ = self!
             
-            if self._canPassCondition(lastRoute.condition, transition: context.transition) {
+            if self_._canPassCondition(lastRoute.condition, transition: context.transition) {
                 if chainingCount == allCount && chainingCount == chain.routes.count && chainingCount == chain.routes.count {
                     shouldStop = true
                     
@@ -853,7 +863,7 @@ public class StateMachine<S: StateType, E: StateEventType>
     {
         let transitions = self._routes[event]?.keys
         
-        let handlerID = self.addHandler(nil => nil) { context in
+        let handlerID = self.addHandler(nil => nil) { [weak self] context in
             if context.event == event {
                 handler(context: context)
             }

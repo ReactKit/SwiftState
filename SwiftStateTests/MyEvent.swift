@@ -11,9 +11,9 @@ import SwiftState
 enum MyEvent: StateEventType
 {
     case Event0, Event1
-    case AnyEvent   // IMPORTANT: create case=Any & use it in anyStateEvent()
+    case AnyEvent   // IMPORTANT: create case=Any & use it in convertFromNilLiteral()
     
-    static func anyStateEvent() -> MyEvent
+    static func convertFromNilLiteral() -> MyEvent
     {
         return AnyEvent
     }

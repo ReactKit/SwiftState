@@ -139,7 +139,7 @@ public class StateMachine<S: StateType, E: StateEventType>
         return self._validTransitionsForTransition(transition).count > 0
     }
     
-    public func hasRoute(transition: Transition, forEvent event: Event = Event.anyStateEvent()) -> Bool
+    public func hasRoute(transition: Transition, forEvent event: Event = nil) -> Bool
     {
         let validTransitions = self._validTransitionsForTransition(transition)
         
@@ -147,12 +147,12 @@ public class StateMachine<S: StateType, E: StateEventType>
             
             var transitionDicts: [TransitionRouteDictionary] = []
             
-            if event == Event.anyStateEvent() {
+            if event == nil as Event {
                 transitionDicts += self._routes.values.array
             }
             else {
                 for (ev, transitionDict) in self._routes {
-                    if ev == event || ev == Event.anyStateEvent() {
+                    if ev == event || ev == nil as Event {
                         transitionDicts.append(transitionDict)
                         break
                     }
@@ -178,7 +178,7 @@ public class StateMachine<S: StateType, E: StateEventType>
         return condition == nil || condition!(transition: transition)
     }
     
-    public func canTryState(state: State, forEvent event: Event = Event.anyStateEvent()) -> Bool
+    public func canTryState(state: State, forEvent event: Event = nil) -> Bool
     {
         let oldValue = self._state
         let newValue = state
@@ -188,7 +188,7 @@ public class StateMachine<S: StateType, E: StateEventType>
     
     public func tryState(state: State, userInfo: Any? = nil) -> Bool
     {
-        return self._tryState(state, userInfo: userInfo, forEvent: Event.anyStateEvent())
+        return self._tryState(state, userInfo: userInfo, forEvent: nil)
     }
     
     private func _tryState(state: State, userInfo: Any? = nil, forEvent event: Event) -> Bool
@@ -262,20 +262,20 @@ public class StateMachine<S: StateType, E: StateEventType>
         var transitions: [Transition] = Array()
         
         // anywhere
-        transitions.append(State.anyState() => State.anyState())
+        transitions.append(nil => nil)
         
         // exit
-        if transition.fromState != State.anyState() as State {
-            transitions.append(transition.fromState => State.anyState())
+        if transition.fromState != nil as State {
+            transitions.append(transition.fromState => nil)
         }
         
         // entry
-        if transition.toState != State.anyState() as State {
-            transitions.append(State.anyState() => transition.toState)
+        if transition.toState != nil as State {
+            transitions.append(nil => transition.toState)
         }
         
         // specific
-        if (transition.fromState != State.anyState()) && (transition.toState != State.anyState()) {
+        if (transition.fromState != nil as State) && (transition.toState != nil as State) {
             transitions.append(transition)
         }
         
@@ -285,7 +285,7 @@ public class StateMachine<S: StateType, E: StateEventType>
     public func canTryEvent(event: Event) -> State?
     {
         var validEvents: [Event] = []
-        if event == Event.anyStateEvent() {
+        if event == nil as Event {
             validEvents += self._routes.keys.array
         }
         else {
@@ -341,7 +341,7 @@ public class StateMachine<S: StateType, E: StateEventType>
         return self._addRoute(route)
     }
     
-    private func _addRoute(route: Route, forEvent event: Event = Event.anyStateEvent()) -> RouteID
+    private func _addRoute(route: Route, forEvent event: Event = nil) -> RouteID
     {
         let transition = route.transition
         let condition = route.condition
@@ -512,24 +512,24 @@ public class StateMachine<S: StateType, E: StateEventType>
     
     public func addEntryHandler(state: State, handler: Handler) -> HandlerID
     {
-        return self.addHandler(State.anyState() => state, order: self.dynamicType._defaultOrder, handler: handler)
+        return self.addHandler(nil => state, order: self.dynamicType._defaultOrder, handler: handler)
     }
     
     public func addEntryHandler(state: State, order: OrderType, handler: Handler) -> HandlerID
     {
-        return self.addHandler(State.anyState() => state, handler: handler)
+        return self.addHandler(nil => state, handler: handler)
     }
     
     // MARK: addExitHandler
     
     public func addExitHandler(state: State, handler: Handler) -> HandlerID
     {
-        return self.addHandler(state => State.anyState(), order: self.dynamicType._defaultOrder, handler: handler)
+        return self.addHandler(state => nil, order: self.dynamicType._defaultOrder, handler: handler)
     }
     
     public func addExitHandler(state: State, order: OrderType, handler: Handler) -> HandlerID
     {
-        return self.addHandler(state => State.anyState(), handler: handler)
+        return self.addHandler(state => nil, handler: handler)
     }
     
     // MARK: removeHandler
@@ -749,7 +749,7 @@ public class StateMachine<S: StateType, E: StateEventType>
         }
         
         // increment allCount (+ invoke chainErrorHandler) on any routes
-        handlerID = self.addHandler(State.anyState() => State.anyState(), order: 150) { [weak self] context in
+        handlerID = self.addHandler(nil => nil, order: 150) { [weak self] context in
             
             shouldIncrementChainingCount = true
             
@@ -863,7 +863,7 @@ public class StateMachine<S: StateType, E: StateEventType>
     {
         let transitions = self._routes[event]?.keys
         
-        let handlerID = self.addHandler(State.anyState() => State.anyState()) { [weak self] context in
+        let handlerID = self.addHandler(nil => nil) { [weak self] context in
             if context.event == event {
                 handler(context: context)
             }

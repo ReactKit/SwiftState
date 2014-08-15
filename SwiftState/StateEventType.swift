@@ -6,7 +6,7 @@
 //  Copyright (c) 2014年 Yasuhiro Inami. All rights reserved.
 //
 
-public protocol StateEventType: Hashable
+public protocol StateEventType: Hashable, NilLiteralConvertible
 {
-    class func anyStateEvent() -> Self
+    
 }

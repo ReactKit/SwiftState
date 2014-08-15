@@ -25,8 +25,8 @@
 		1FA62036199660CA00460108 /* StateRouteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA6202D199660CA00460108 /* StateRouteTests.swift */; };
 		1FA62037199660CA00460108 /* StateTransitionChainTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA6202E199660CA00460108 /* StateTransitionChainTests.swift */; };
 		1FA62038199660CA00460108 /* StateTransitionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA6202F199660CA00460108 /* StateTransitionTests.swift */; };
-		1FB1EC87199E4A5300ABD937 /* SwiftState+StringType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FB1EC86199E4A5300ABD937 /* SwiftState+StringType.swift */; };
 		1FB1EC8A199E515B00ABD937 /* MyEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FB1EC89199E515B00ABD937 /* MyEvent.swift */; };
+		1FB1EC8F199E60F800ABD937 /* String+SwiftState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FB1EC8E199E60F800ABD937 /* String+SwiftState.swift */; };
 		1FF692041996625900E3CE40 /* SwiftState.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FA620001996601000460108 /* SwiftState.framework */; };
 /* End PBXBuildFile section */
 
@@ -63,8 +63,8 @@
 		1FA6202D199660CA00460108 /* StateRouteTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StateRouteTests.swift; sourceTree = "<group>"; };
 		1FA6202E199660CA00460108 /* StateTransitionChainTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StateTransitionChainTests.swift; sourceTree = "<group>"; };
 		1FA6202F199660CA00460108 /* StateTransitionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StateTransitionTests.swift; sourceTree = "<group>"; };
-		1FB1EC86199E4A5300ABD937 /* SwiftState+StringType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SwiftState+StringType.swift"; sourceTree = "<group>"; };
 		1FB1EC89199E515B00ABD937 /* MyEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyEvent.swift; sourceTree = "<group>"; };
+		1FB1EC8E199E60F800ABD937 /* String+SwiftState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+SwiftState.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -131,8 +131,7 @@
 			isa = PBXGroup;
 			children = (
 				1FA62027199660CA00460108 /* _TestCase.swift */,
-				1FA62029199660CA00460108 /* MyState.swift */,
-				1FB1EC89199E515B00ABD937 /* MyEvent.swift */,
+				1FB1EC8D199E609900ABD937 /* Type */,
 				1FA62028199660CA00460108 /* BasicTests.swift */,
 				1F198C5B19972320001C3700 /* QiitaTests.swift */,
 				1FA6202C199660CA00460108 /* StateMachineTests.swift */,
@@ -159,7 +158,16 @@
 			children = (
 				1FA6201F1996606300460108 /* StateType.swift */,
 				1FA620191996606200460108 /* StateEventType.swift */,
-				1FB1EC86199E4A5300ABD937 /* SwiftState+StringType.swift */,
+				1FB1EC8E199E60F800ABD937 /* String+SwiftState.swift */,
+			);
+			name = Type;
+			sourceTree = "<group>";
+		};
+		1FB1EC8D199E609900ABD937 /* Type */ = {
+			isa = PBXGroup;
+			children = (
+				1FA62029199660CA00460108 /* MyState.swift */,
+				1FB1EC89199E515B00ABD937 /* MyEvent.swift */,
 			);
 			name = Type;
 			sourceTree = "<group>";
@@ -271,9 +279,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1FB1EC87199E4A5300ABD937 /* SwiftState+StringType.swift in Sources */,
 				1FA620251996606300460108 /* StateTransitionChain.swift in Sources */,
 				1FA620241996606300460108 /* StateTransition.swift in Sources */,
+				1FB1EC8F199E60F800ABD937 /* String+SwiftState.swift in Sources */,
 				1FA620201996606300460108 /* StateEventType.swift in Sources */,
 				1FA620221996606300460108 /* StateRoute.swift in Sources */,
 				1FA620211996606300460108 /* StateMachine.swift in Sources */,

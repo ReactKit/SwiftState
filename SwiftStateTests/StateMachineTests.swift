@@ -9,6 +9,14 @@
 import SwiftState
 import XCTest
 
+extension String: StateType, NilLiteralConvertible
+{
+    public static func convertFromNilLiteral() -> String
+    {
+        return self.anyState()
+    }
+}
+
 class StateMachineTests: _TestCase
 {
     func testInit()

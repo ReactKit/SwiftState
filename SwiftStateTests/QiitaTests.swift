@@ -13,15 +13,20 @@ import XCTest
 // Swiftで有限オートマトン（ステートマシン）を作る - Qiita
 // http://qiita.com/inamiy/items/cd218144c90926f9a134
 
-enum InputKey: StateType
+enum InputKey: StateType, NilLiteralConvertible
 {
     case None
     case Key0, Key1, Key2, Key3, Key4, Key5, Key6, Key7, Key8, Key9
     case Any
     
-    static func convertFromNilLiteral() -> InputKey
+    static func anyState() -> InputKey
     {
         return Any
+    }
+    
+    static func convertFromNilLiteral() -> InputKey
+    {
+        return self.anyState()
     }
 }
 

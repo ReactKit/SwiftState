@@ -10,11 +10,3 @@ public protocol StateEventType: Hashable
 {
     class func anyStateEvent() -> Self
 }
-
-extension String: StateEventType
-{
-    public static func anyStateEvent() -> String
-    {
-        return ""
-    }
-}

@@ -8,7 +8,7 @@
 
 import SwiftState
 
-enum MyState: Int, StateType, Printable
+enum MyState: Int, StateType, Printable, NilLiteralConvertible
 {
     case State0, State1, State2, State3
     
@@ -20,9 +20,14 @@ enum MyState: Int, StateType, Printable
     //
     //case MyState(Int)
     
-    static func convertFromNilLiteral() -> MyState
+    static func anyState() -> MyState
     {
         return AnyState
+    }
+    
+    static func convertFromNilLiteral() -> MyState
+    {
+        return self.anyState()
     }
     
     var description: String

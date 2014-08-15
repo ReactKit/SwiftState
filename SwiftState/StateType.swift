@@ -6,7 +6,7 @@
 //  Copyright (c) 2014年 Yasuhiro Inami. All rights reserved.
 //
 
-public protocol StateType: Hashable, NilLiteralConvertible
+public protocol StateType: Hashable
 {
-    
+    class func anyState() -> Self
 }

@@ -262,20 +262,20 @@ public class StateMachine<S: StateType, E: StateEventType>
         var transitions: [Transition] = Array()
         
         // anywhere
-        transitions.append(nil => nil)
+        transitions.append(State.anyState() => State.anyState())
         
         // exit
-        if transition.fromState != nil as State {
-            transitions.append(transition.fromState => nil)
+        if transition.fromState != State.anyState() as State {
+            transitions.append(transition.fromState => State.anyState())
         }
         
         // entry
-        if transition.toState != nil as State {
-            transitions.append(nil => transition.toState)
+        if transition.toState != State.anyState() as State {
+            transitions.append(State.anyState() => transition.toState)
         }
         
         // specific
-        if (transition.fromState != nil as State) && (transition.toState != nil as State) {
+        if (transition.fromState != State.anyState()) && (transition.toState != State.anyState()) {
             transitions.append(transition)
         }
         
@@ -512,24 +512,24 @@ public class StateMachine<S: StateType, E: StateEventType>
     
     public func addEntryHandler(state: State, handler: Handler) -> HandlerID
     {
-        return self.addHandler(nil => state, order: self.dynamicType._defaultOrder, handler: handler)
+        return self.addHandler(State.anyState() => state, order: self.dynamicType._defaultOrder, handler: handler)
     }
     
     public func addEntryHandler(state: State, order: OrderType, handler: Handler) -> HandlerID
     {
-        return self.addHandler(nil => state, handler: handler)
+        return self.addHandler(State.anyState() => state, handler: handler)
     }
     
     // MARK: addExitHandler
     
     public func addExitHandler(state: State, handler: Handler) -> HandlerID
     {
-        return self.addHandler(state => nil, order: self.dynamicType._defaultOrder, handler: handler)
+        return self.addHandler(state => State.anyState(), order: self.dynamicType._defaultOrder, handler: handler)
     }
     
     public func addExitHandler(state: State, order: OrderType, handler: Handler) -> HandlerID
     {
-        return self.addHandler(state => nil, handler: handler)
+        return self.addHandler(state => State.anyState(), handler: handler)
     }
     
     // MARK: removeHandler
@@ -749,7 +749,7 @@ public class StateMachine<S: StateType, E: StateEventType>
         }
         
         // increment allCount (+ invoke chainErrorHandler) on any routes
-        handlerID = self.addHandler(nil => nil, order: 150) { [weak self] context in
+        handlerID = self.addHandler(State.anyState() => State.anyState(), order: 150) { [weak self] context in
             
             shouldIncrementChainingCount = true
             
@@ -863,7 +863,7 @@ public class StateMachine<S: StateType, E: StateEventType>
     {
         let transitions = self._routes[event]?.keys
         
-        let handlerID = self.addHandler(nil => nil) { [weak self] context in
+        let handlerID = self.addHandler(State.anyState() => State.anyState()) { [weak self] context in
             if context.event == event {
                 handler(context: context)
             }

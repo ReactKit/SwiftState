@@ -105,7 +105,7 @@ public class StateMachine<S: StateType, E: StateEventType>
     {
         var uniqueString: String = ""
         for i in 1...8 {
-            uniqueString += String(UnicodeScalar(arc4random_uniform(UInt32.max) % 0xD800)) // 0xD800 = 55296 = 15.755bit
+            uniqueString += String(UnicodeScalar(arc4random_uniform(0xD800))) // 0xD800 = 55296 = 15.755bit
         }
         //println("uniqueString = \(uniqueString)")
         return uniqueString

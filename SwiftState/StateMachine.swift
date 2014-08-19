@@ -666,14 +666,12 @@ public class StateMachine<S: StateType, E: StateEventType>
     
     public func addChainHandler(chain: TransitionChain, handler: Handler) -> HandlerID
     {
-        let routeChain = RouteChain(transitionChain: chain, condition: nil)
-        return self.addChainHandler(routeChain, handler: handler)
+        return self.addChainHandler(chain.toRouteChain(), handler: handler)
     }
     
     public func addChainHandler(chain: TransitionChain, order: OrderType, handler: Handler) -> HandlerID
     {
-        let routeChain = RouteChain(transitionChain: chain, condition: nil)
-        return self.addChainHandler(routeChain, order: order, handler: handler)
+        return self.addChainHandler(chain.toRouteChain(), order: order, handler: handler)
     }
     
     public func addChainHandler(chain: RouteChain, handler: Handler) -> HandlerID
@@ -687,6 +685,16 @@ public class StateMachine<S: StateType, E: StateEventType>
     }
     
     // MARK: addChainErrorHandler
+    
+    public func addChainErrorHandler(chain: TransitionChain, handler: Handler) -> HandlerID
+    {
+        return self.addChainErrorHandler(chain.toRouteChain(), handler: handler)
+    }
+    
+    public func addChainErrorHandler(chain: TransitionChain, order: OrderType, handler: Handler) -> HandlerID
+    {
+        return self.addChainErrorHandler(chain.toRouteChain(), order: order, handler: handler)
+    }
     
     public func addChainErrorHandler(chain: RouteChain, handler: Handler) -> HandlerID
     {

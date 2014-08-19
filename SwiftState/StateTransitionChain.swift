@@ -69,12 +69,12 @@ public struct StateTransitionChain<S: StateType>
         self.states.append(state)
     }
     
-    public func __conversion() -> StateRouteChain<State>
+    public func toRouteChain() -> StateRouteChain<State>
     {
         return StateRouteChain(transitionChain: self, condition: nil)
     }
     
-    public func __conversion() -> [Transition]
+    public func toTransitions() -> [Transition]
     {
         return self.transitions
     }
@@ -87,7 +87,7 @@ public struct StateTransitionChain<S: StateType>
 // e.g. (.State0 => .State1) => .State2
 public func => <S: StateType>(left: StateTransition<S>, right: S) -> StateTransitionChain<S>
 {
-    return left as StateTransitionChain => right
+    return left.toTransitionChain() => right
 }
 public func => <S: StateType>(var left: StateTransitionChain<S>, right: S) -> StateTransitionChain<S>
 {
@@ -98,7 +98,7 @@ public func => <S: StateType>(var left: StateTransitionChain<S>, right: S) -> St
 // e.g. .State0 => (.State1 => .State2)
 public func => <S: StateType>(left:  S, right:StateTransition<S>) -> StateTransitionChain<S>
 {
-    return left => right as StateTransitionChain
+    return left => right.toTransitionChain()
 }
 public func => <S: StateType>(left: S, var right: StateTransitionChain<S>) -> StateTransitionChain<S>
 {

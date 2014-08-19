@@ -39,7 +39,7 @@ class StateTransitionChainTests: _TestCase
     {
         // 0 => 1
         let transition = MyState.State0 => .State1
-        var chain = transition as StateTransitionChain
+        var chain = transition.toTransitionChain()
         
         XCTAssertEqual(chain.numberOfTransitions, 1)
         XCTAssertEqual(chain.firstState, MyState.State0)
@@ -62,7 +62,7 @@ class StateTransitionChainTests: _TestCase
     {
         // 0 => 1
         var transition = MyState.State0 => .State1
-        var chain = transition as StateTransitionChain
+        var chain = transition.toTransitionChain()
         
         XCTAssertEqual(chain.numberOfTransitions, 1)
         XCTAssertEqual(chain.firstState, MyState.State0)

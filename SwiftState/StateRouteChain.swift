@@ -51,13 +51,13 @@ public struct StateRouteChain<S: StateType>
         self.routes.append(newRoute)
     }
     
-    public func __conversion() -> TransitionChain
+    public func toTransitionChain() -> TransitionChain
     {
         let transitions = self.routes.map { route in route.transition }
         return StateTransitionChain(transitions: transitions)
     }
     
-    public func __conversion() -> [Route]
+    public func toRoutes() -> [Route]
     {
         return self.routes
     }

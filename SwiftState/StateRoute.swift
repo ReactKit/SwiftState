@@ -31,12 +31,12 @@ public struct StateRoute<S: StateType>
         self.condition = { t in condition() }
     }
     
-    public func __conversion() -> Transition
+    public func toTransition() -> Transition
     {
         return self.transition
     }
     
-    public func __conversion() -> StateRouteChain<State>
+    public func toRouteChain() -> StateRouteChain<State>
     {
         var routes: [StateRoute<State>] = Array()
         routes.append(self)

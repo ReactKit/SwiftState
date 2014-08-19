@@ -25,12 +25,12 @@ public struct StateTransition<S: StateType>: Hashable
         return self.fromState.hashValue &+ self.toState.hashValue.byteSwapped
     }
     
-    public func __conversion() -> StateTransitionChain<State>
+    public func toTransitionChain() -> StateTransitionChain<State>
     {
         return StateTransitionChain(transition: self)
     }
     
-    public func __conversion() -> StateRoute<State>
+    public func toRoute() -> StateRoute<State>
     {
         return StateRoute(transition: self, condition: nil)
     }

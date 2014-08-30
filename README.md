@@ -5,6 +5,9 @@ Elegant state machine for Swift.
 
 ![SwiftState](Screenshots/logo.png)
 
+Also check out for sister project: [SwiftTask](https://github.com/inamiy/SwiftTask)
+
+
 ## Example
 
 ```
@@ -62,7 +65,7 @@ For more examples, please see XCTest cases.
     - Transition: `.State0 => .State1`
     - Try transition: `machine <- .State1`
     - Try transition + messaging: `machine <- (.State1, "GoGoGo")`
-    - Try Event: `machine <-! .Event1`
+    - Try event: `machine <-! .Event1`
 - Highly flexible transition routing
     - using Condition
     - using AnyState (`nil` state)
@@ -87,6 +90,10 @@ Handler   | `HandlerContext -> Void`      | Transition callback invoked after st
 Chain     | `StateTransitionChain`        | Group of continuous routes represented as `.State1 => .State2 => .State3`
 
 
+## Related Articles
+
+1. [Swiftで有限オートマトン(ステートマシン)を作る - Qiita](http://qiita.com/inamiy/items/cd218144c90926f9a134) (Japanese)
+2. [Swift+有限オートマトンでPromiseを拡張する - Qiita](http://qiita.com/inamiy/items/d3579b55a3ecc28dde63) (Japanese)
 
 
 ## Licence

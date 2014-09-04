@@ -13,15 +13,19 @@ import Darwin
 // TODO: change .append() to +=
 
 // TODO: nest inside StateMachine class
-public struct StateMachineRouteID<S: StateType, E: StateEventType>
+// NOTE: 'public struct' didn't work since Xcode6-beta6
+public class StateMachineRouteID<S: StateType, E: StateEventType>
 {
-    private let transition: StateTransition<S>?
-    private let routeKey: StateMachine<S, E>.RouteKey?
+    private typealias Transition = StateTransition<S>
+    private typealias RouteKey = StateMachine<S, E>.RouteKey
+    
+    private let transition: Transition?
+    private let routeKey: RouteKey?
     private let event: E?
     
     private let bundledRouteIDs: [StateMachineRouteID<S, E>]?
     
-    private init(transition: StateTransition<S>?, routeKey: StateMachine<S, E>.RouteKey?, event: E?)
+    private init(transition: Transition?, routeKey: RouteKey?, event: E?)
     {
         self.transition = transition
         self.routeKey = routeKey
@@ -35,14 +39,17 @@ public struct StateMachineRouteID<S: StateType, E: StateEventType>
 }
 
 // TODO: nest inside StateMachine class
-public struct StateMachineHandlerID<S: StateType, E: StateEventType>
+public class StateMachineHandlerID<S: StateType, E: StateEventType>
 {
-    private let transition: StateTransition<S>? // NOTE: nil is used for error-handlerID
-    private let handlerKey: StateMachine<S, E>.HandlerKey?
+    private typealias Transition = StateTransition<S>
+    private typealias HandlerKey = StateMachine<S, E>.HandlerKey
+    
+    private let transition: Transition? // NOTE: nil is used for error-handlerID
+    private let handlerKey: HandlerKey?
     
     private let bundledHandlerIDs: [StateMachineHandlerID<S, E>]?
     
-    private init(transition: StateTransition<S>?, handlerKey: StateMachine<S, E>.HandlerKey?)
+    private init(transition: Transition?, handlerKey: HandlerKey?)
     {
         self.transition = transition
         self.handlerKey = handlerKey
@@ -55,11 +62,22 @@ public struct StateMachineHandlerID<S: StateType, E: StateEventType>
 }
 
 // TODO: nest inside StateMachine class
-private struct _StateMachineHandlerInfo<S: StateType, E: StateEventType>
+private class _StateMachineHandlerInfo<S: StateType, E: StateEventType>
 {
-    private let order: StateMachine<S, E>.OrderType
-    private let handlerKey: StateMachine<S, E>.HandlerKey
-    private let handler: StateMachine<S, E>.Handler
+    private typealias OrderType = StateMachine<S, E>.OrderType
+    private typealias HandlerKey = StateMachine<S, E>.HandlerKey
+    private typealias Handler = StateMachine<S, E>.Handler
+    
+    private let order: OrderType
+    private let handlerKey: HandlerKey
+    private let handler: Handler
+    
+    private init(order: OrderType, handlerKey: HandlerKey, handler: Handler)
+    {
+        self.order = order
+        self.handlerKey = handlerKey
+        self.handler = handler
+    }
 }
 
 public class StateMachine<S: StateType, E: StateEventType>

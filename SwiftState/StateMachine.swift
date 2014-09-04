@@ -64,15 +64,15 @@ public class StateMachineHandlerID<S: StateType, E: StateEventType>
 // TODO: nest inside StateMachine class
 private class _StateMachineHandlerInfo<S: StateType, E: StateEventType>
 {
-    private typealias OrderType = StateMachine<S, E>.OrderType
+    private typealias HandlerOrder = StateMachine<S, E>.HandlerOrder
     private typealias HandlerKey = StateMachine<S, E>.HandlerKey
     private typealias Handler = StateMachine<S, E>.Handler
     
-    private let order: OrderType
+    private let order: HandlerOrder
     private let handlerKey: HandlerKey
     private let handler: Handler
     
-    private init(order: OrderType, handlerKey: HandlerKey, handler: Handler)
+    private init(order: HandlerOrder, handlerKey: HandlerKey, handler: Handler)
     {
         self.order = order
         self.handlerKey = handlerKey
@@ -82,9 +82,9 @@ private class _StateMachineHandlerInfo<S: StateType, E: StateEventType>
 
 public class StateMachine<S: StateType, E: StateEventType>
 {
-    public typealias OrderType = UInt8
+    public typealias HandlerOrder = UInt8
     public typealias Handler = ((context: HandlerContext) -> Void)
-    public typealias HandlerContext = (event: Event, transition: Transition, order: OrderType, userInfo: Any?)
+    public typealias HandlerContext = (event: Event, transition: Transition, order: HandlerOrder, userInfo: Any?)
     
     private typealias State = S
     private typealias Event = E
@@ -102,7 +102,7 @@ public class StateMachine<S: StateType, E: StateEventType>
     private typealias HandlerID = StateMachineHandlerID<State, Event>
     private typealias HandlerInfo = _StateMachineHandlerInfo<State, Event>
     // NOTE: don't use tuple due to Array's copying behavior for closure
-//    private typealias HandlerInfo = (order: OrderType, handlerKey: HandlerKey, handler: Handler)
+//    private typealias HandlerInfo = (order: HandlerOrder, handlerKey: HandlerKey, handler: Handler)
     
     private typealias TransitionRouteDictionary = [Transition : [RouteKey : Condition?]]
     
@@ -112,7 +112,7 @@ public class StateMachine<S: StateType, E: StateEventType>
     
     private var _state: State
     
-    private class var _defaultOrder: OrderType { return 100 }
+    private class var _defaultOrder: HandlerOrder { return 100 }
     
     //--------------------------------------------------
     // MARK: - Utility
@@ -493,7 +493,7 @@ public class StateMachine<S: StateType, E: StateEventType>
         return self.addHandler(transition, order: self.dynamicType._defaultOrder, handler: handler)
     }
     
-    public func addHandler(transition: Transition, order: OrderType, handler: Handler) -> HandlerID
+    public func addHandler(transition: Transition, order: HandlerOrder, handler: Handler) -> HandlerID
     {
         if self._handlers[transition] == nil {
             self._handlers[transition] = []
@@ -533,7 +533,7 @@ public class StateMachine<S: StateType, E: StateEventType>
         return self.addHandler(nil => state, order: self.dynamicType._defaultOrder, handler: handler)
     }
     
-    public func addEntryHandler(state: State, order: OrderType, handler: Handler) -> HandlerID
+    public func addEntryHandler(state: State, order: HandlerOrder, handler: Handler) -> HandlerID
     {
         return self.addHandler(nil => state, handler: handler)
     }
@@ -545,7 +545,7 @@ public class StateMachine<S: StateType, E: StateEventType>
         return self.addHandler(state => nil, order: self.dynamicType._defaultOrder, handler: handler)
     }
     
-    public func addExitHandler(state: State, order: OrderType, handler: Handler) -> HandlerID
+    public func addExitHandler(state: State, order: HandlerOrder, handler: Handler) -> HandlerID
     {
         return self.addHandler(state => nil, handler: handler)
     }
@@ -619,7 +619,7 @@ public class StateMachine<S: StateType, E: StateEventType>
         return self.addErrorHandler(order: self.dynamicType._defaultOrder, handler: handler)
     }
     
-    public func addErrorHandler(#order: OrderType, handler: Handler) -> HandlerID
+    public func addErrorHandler(#order: HandlerOrder, handler: Handler) -> HandlerID
     {
         let handlerKey = self.dynamicType._createUniqueString()
         
@@ -687,7 +687,7 @@ public class StateMachine<S: StateType, E: StateEventType>
         return self.addChainHandler(chain.toRouteChain(), handler: handler)
     }
     
-    public func addChainHandler(chain: TransitionChain, order: OrderType, handler: Handler) -> HandlerID
+    public func addChainHandler(chain: TransitionChain, order: HandlerOrder, handler: Handler) -> HandlerID
     {
         return self.addChainHandler(chain.toRouteChain(), order: order, handler: handler)
     }
@@ -697,7 +697,7 @@ public class StateMachine<S: StateType, E: StateEventType>
         return self.addChainHandler(chain, order: self.dynamicType._defaultOrder, handler: handler)
     }
     
-    public func addChainHandler(chain: RouteChain, order: OrderType, handler: Handler) -> HandlerID
+    public func addChainHandler(chain: RouteChain, order: HandlerOrder, handler: Handler) -> HandlerID
     {
         return self._addChainHandler(chain, order: order, handler: handler, isError: false)
     }
@@ -709,7 +709,7 @@ public class StateMachine<S: StateType, E: StateEventType>
         return self.addChainErrorHandler(chain.toRouteChain(), handler: handler)
     }
     
-    public func addChainErrorHandler(chain: TransitionChain, order: OrderType, handler: Handler) -> HandlerID
+    public func addChainErrorHandler(chain: TransitionChain, order: HandlerOrder, handler: Handler) -> HandlerID
     {
         return self.addChainErrorHandler(chain.toRouteChain(), order: order, handler: handler)
     }
@@ -719,12 +719,12 @@ public class StateMachine<S: StateType, E: StateEventType>
         return self.addChainErrorHandler(chain, order: self.dynamicType._defaultOrder, handler: handler)
     }
     
-    public func addChainErrorHandler(chain: RouteChain, order: OrderType, handler: Handler) -> HandlerID
+    public func addChainErrorHandler(chain: RouteChain, order: HandlerOrder, handler: Handler) -> HandlerID
     {
         return self._addChainHandler(chain, order: order, handler: handler, isError: true)
     }
     
-    private func _addChainHandler(chain: RouteChain, order: OrderType, handler: Handler, isError: Bool) -> HandlerID
+    private func _addChainHandler(chain: RouteChain, order: HandlerOrder, handler: Handler, isError: Bool) -> HandlerID
     {
         var handlerIDs: [HandlerID] = Array()
         
@@ -885,7 +885,7 @@ public class StateMachine<S: StateType, E: StateEventType>
         return self.addEventHandler(event, order: self.dynamicType._defaultOrder, handler: handler)
     }
     
-    public func addEventHandler(event: Event, order: OrderType, handler: Handler) -> HandlerID
+    public func addEventHandler(event: Event, order: HandlerOrder, handler: Handler) -> HandlerID
     {
         let transitions = self._routes[event]?.keys
         

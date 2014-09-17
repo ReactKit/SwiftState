@@ -412,11 +412,10 @@ public class StateMachine<S: StateType, E: StateEventType>
         let routeID = self.addRoute(transition, condition: condition)
         
         let handlerID = self.addHandler(transition) { [weak self] context in
-            if self == nil { return }
-            let self_ = self!
-            
-            if self_._canPassCondition(condition, transition: context.transition) {
-                handler(context: context)
+            if let self_ = self {
+                if self_._canPassCondition(condition, transition: context.transition) {
+                    handler(context: context)
+                }
             }
         }
         
@@ -736,18 +735,17 @@ public class StateMachine<S: StateType, E: StateEventType>
         // reset count on 1st route
         let firstRoute = chain.routes.first!
         var handlerID = self.addHandler(firstRoute.transition) { [weak self] context in
-            if self == nil { return }
-            let self_ = self!
-            
-            if self_._canPassCondition(firstRoute.condition, transition: context.transition) {
-                if shouldStop {
-                    shouldStop = false
-                    chainingCount = 0
-                    allCount = 0
-//                    println("[RouteChain] start")
-                }
-                else {
-//                    println("[RouteChain] back home a while")
+            if let self_ = self {
+                if self_._canPassCondition(firstRoute.condition, transition: context.transition) {
+                    if shouldStop {
+                        shouldStop = false
+                        chainingCount = 0
+                        allCount = 0
+//                        println("[RouteChain] start")
+                    }
+                    else {
+//                        println("[RouteChain] back home a while")
+                    }
                 }
             }
         }
@@ -755,19 +753,21 @@ public class StateMachine<S: StateType, E: StateEventType>
         
         // increment chainingCount on every route
         for route in chain.routes {
+            
             handlerID = self.addHandler(route.transition) { [weak self] context in
-                if self == nil { return }
-                let self_ = self!
                 
-                // skip duplicated transition handlers e.g. chain = 0 => 1 => 0 => 1 & transiting 0 => 1
-                if !shouldIncrementChainingCount { return }
-                
-                if self_._canPassCondition(route.condition, transition: context.transition) {
-                    if !shouldStop {
-                        chainingCount++
-//                        println("[RouteChain] chainingCount++ =\(chainingCount), transition=\(route.transition)")
-                        
-                        shouldIncrementChainingCount = false
+                if let self_ = self {
+                    
+                    // skip duplicated transition handlers e.g. chain = 0 => 1 => 0 => 1 & transiting 0 => 1
+                    if !shouldIncrementChainingCount { return }
+                    
+                    if self_._canPassCondition(route.condition, transition: context.transition) {
+                        if !shouldStop {
+                            chainingCount++
+//                            println("[RouteChain] chainingCount++ =\(chainingCount), transition=\(route.transition)")
+                            
+                            shouldIncrementChainingCount = false
+                        }
                     }
                 }
             }
@@ -797,15 +797,15 @@ public class StateMachine<S: StateType, E: StateEventType>
         let lastRoute = chain.routes.last!
         handlerID = self.addHandler(lastRoute.transition, order: 200) { [weak self] context in
 //            println("[RouteChain] finish? \(chainingCount) \(allCount) \(chain.routes.count)")
-            if self == nil { return }
-            let self_ = self!
             
-            if self_._canPassCondition(lastRoute.condition, transition: context.transition) {
-                if chainingCount == allCount && chainingCount == chain.routes.count && chainingCount == chain.routes.count {
-                    shouldStop = true
-                    
-                    if !isError {
-                        handler(context: context)
+            if let self_ = self {
+                if self_._canPassCondition(lastRoute.condition, transition: context.transition) {
+                    if chainingCount == allCount && chainingCount == chain.routes.count && chainingCount == chain.routes.count {
+                        shouldStop = true
+                        
+                        if !isError {
+                            handler(context: context)
+                        }
                     }
                 }
             }

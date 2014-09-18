@@ -45,19 +45,19 @@ class BasicTests: _TestCase
         
             // add 0 => 1
             $0.addRoute(.State0 => .State1) { context in
-                println("[Transition 0=>1] \(context.transition.fromState.toRaw()) => \(context.transition.toState.toRaw())")
+                println("[Transition 0=>1] \(context.transition.fromState.rawValue) => \(context.transition.toState.rawValue)")
             }
             // add 0 => 1 once more
             $0.addRoute(.State0 => .State1) { context in
-                println("[Transition 0=>1b] \(context.transition.fromState.toRaw()) => \(context.transition.toState.toRaw())")
+                println("[Transition 0=>1b] \(context.transition.fromState.rawValue) => \(context.transition.toState.rawValue)")
             }
             // add 2 => Any
             $0.addRoute(.State2 => nil) { context in
-                println("[Transition exit 2] \(context.transition.fromState.toRaw()) => \(context.transition.toState.toRaw()) (Any)")
+                println("[Transition exit 2] \(context.transition.fromState.rawValue) => \(context.transition.toState.rawValue) (Any)")
             }
             // add Any => 2
             $0.addRoute(nil => .State2) { context in
-                println("[Transition Entry 2] \(context.transition.fromState.toRaw()) (Any) => \(context.transition.toState.toRaw())")
+                println("[Transition Entry 2] \(context.transition.fromState.rawValue) (Any) => \(context.transition.toState.rawValue)")
             }
             // add 1 => 0 (no handler)
             $0.addRoute(.State1 => .State0)
@@ -94,35 +94,35 @@ class BasicTests: _TestCase
             
             // error
             $0.addErrorHandler { context in
-                println("[ERROR 1] \(context.transition.fromState.toRaw()) => \(context.transition.toState.toRaw())")
+                println("[ERROR 1] \(context.transition.fromState.rawValue) => \(context.transition.toState.rawValue)")
             }
             
             // entry
             $0.addEntryHandler(.State0) { context in
-                println("[Entry 0] \(context.transition.fromState.toRaw()) => \(context.transition.toState.toRaw())")   // NOTE: this should not be called
+                println("[Entry 0] \(context.transition.fromState.rawValue) => \(context.transition.toState.rawValue)")   // NOTE: this should not be called
             }
             $0.addEntryHandler(.State1) { context in
-                println("[Entry 1] \(context.transition.fromState.toRaw()) => \(context.transition.toState.toRaw())")
+                println("[Entry 1] \(context.transition.fromState.rawValue) => \(context.transition.toState.rawValue)")
             }
             $0.addEntryHandler(.State2) { context in
-                println("[Entry 2] \(context.transition.fromState.toRaw()) => \(context.transition.toState.toRaw()), userInfo = \(context.userInfo)")
+                println("[Entry 2] \(context.transition.fromState.rawValue) => \(context.transition.toState.rawValue), userInfo = \(context.userInfo)")
             }
             $0.addEntryHandler(.State2) { context in
-                println("[Entry 2b] \(context.transition.fromState.toRaw()) => \(context.transition.toState.toRaw()), userInfo = \(context.userInfo)")
+                println("[Entry 2b] \(context.transition.fromState.rawValue) => \(context.transition.toState.rawValue), userInfo = \(context.userInfo)")
             }
             
             // exit
             $0.addExitHandler(.State0) { context in
-                println("[Exit 0] \(context.transition.fromState.toRaw()) => \(context.transition.toState.toRaw())")
+                println("[Exit 0] \(context.transition.fromState.rawValue) => \(context.transition.toState.rawValue)")
             }
             $0.addExitHandler(.State1) { context in
-                println("[Exit 1] \(context.transition.fromState.toRaw()) => \(context.transition.toState.toRaw())")
+                println("[Exit 1] \(context.transition.fromState.rawValue) => \(context.transition.toState.rawValue)")
             }
             $0.addExitHandler(.State2) { context in
-                println("[Exit 2] \(context.transition.fromState.toRaw()) => \(context.transition.toState.toRaw()), userInfo = \(context.userInfo)")
+                println("[Exit 2] \(context.transition.fromState.rawValue) => \(context.transition.toState.rawValue), userInfo = \(context.userInfo)")
             }
             $0.addExitHandler(.State2) { context in
-                println("[Exit 2b] \(context.transition.fromState.toRaw()) => \(context.transition.toState.toRaw()), userInfo = \(context.userInfo)")
+                println("[Exit 2b] \(context.transition.fromState.rawValue) => \(context.transition.toState.rawValue), userInfo = \(context.userInfo)")
             }
         }
         

@@ -26,6 +26,6 @@ enum MyState: Int, StateType, Printable
     
     var description: String
     {
-        return "\(self.toRaw())"
+        return "\(self.rawValue)"
     }
 }

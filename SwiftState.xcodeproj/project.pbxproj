@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1F198C5C19972320001C3700 /* QiitaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F198C5B19972320001C3700 /* QiitaTests.swift */; };
+		1F24C72C19D068B900C2FDC7 /* SwiftState.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4872D5AC19B4211900F326B5 /* SwiftState.framework */; };
 		1FA620061996601000460108 /* SwiftState.h in Headers */ = {isa = PBXBuildFile; fileRef = 1FA620051996601000460108 /* SwiftState.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1FA620201996606300460108 /* StateEventType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA620191996606200460108 /* StateEventType.swift */; };
 		1FA620211996606300460108 /* StateMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA6201A1996606300460108 /* StateMachine.swift */; };
@@ -28,6 +29,17 @@
 		1FB1EC8A199E515B00ABD937 /* MyEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FB1EC89199E515B00ABD937 /* MyEvent.swift */; };
 		1FB1EC8F199E60F800ABD937 /* String+SwiftState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FB1EC8E199E60F800ABD937 /* String+SwiftState.swift */; };
 		1FF692041996625900E3CE40 /* SwiftState.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FA620001996601000460108 /* SwiftState.framework */; };
+		4822F0A819D008E300F5F572 /* _TestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA62027199660CA00460108 /* _TestCase.swift */; };
+		4822F0A919D008E700F5F572 /* MyState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA62029199660CA00460108 /* MyState.swift */; };
+		4822F0AA19D008E700F5F572 /* MyEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FB1EC89199E515B00ABD937 /* MyEvent.swift */; };
+		4822F0AB19D008EB00F5F572 /* BasicTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA62028199660CA00460108 /* BasicTests.swift */; };
+		4822F0AC19D008EB00F5F572 /* QiitaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F198C5B19972320001C3700 /* QiitaTests.swift */; };
+		4822F0AD19D008EB00F5F572 /* StateMachineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA6202C199660CA00460108 /* StateMachineTests.swift */; };
+		4822F0AE19D008EB00F5F572 /* StateMachineChainTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA6202A199660CA00460108 /* StateMachineChainTests.swift */; };
+		4822F0AF19D008EB00F5F572 /* StateMachineEventTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA6202B199660CA00460108 /* StateMachineEventTests.swift */; };
+		4822F0B019D008EB00F5F572 /* StateTransitionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA6202F199660CA00460108 /* StateTransitionTests.swift */; };
+		4822F0B119D008EB00F5F572 /* StateTransitionChainTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA6202E199660CA00460108 /* StateTransitionChainTests.swift */; };
+		4822F0B219D008EB00F5F572 /* StateRouteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA6202D199660CA00460108 /* StateRouteTests.swift */; };
 		48797D5D19B42CBE0085D80F /* SwiftState.h in Headers */ = {isa = PBXBuildFile; fileRef = 1FA620051996601000460108 /* SwiftState.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		48797D5E19B42CCE0085D80F /* StateMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA6201A1996606300460108 /* StateMachine.swift */; };
 		48797D5F19B42CCE0085D80F /* StateTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA6201D1996606300460108 /* StateTransition.swift */; };
@@ -74,6 +86,8 @@
 		1FA6202F199660CA00460108 /* StateTransitionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StateTransitionTests.swift; sourceTree = "<group>"; };
 		1FB1EC89199E515B00ABD937 /* MyEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyEvent.swift; sourceTree = "<group>"; };
 		1FB1EC8E199E60F800ABD937 /* String+SwiftState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+SwiftState.swift"; sourceTree = "<group>"; };
+		4822F0A619D0085E00F5F572 /* SwiftStateTests-iOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SwiftStateTests-iOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		4822F0A719D0085E00F5F572 /* SwiftState-iOS2Tests copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "SwiftState-iOS2Tests copy-Info.plist"; path = "/Users/jp61161/github/ReactKit/Vendor/SwiftTask/Vendor/SwiftState/SwiftState-iOS2Tests copy-Info.plist"; sourceTree = "<absolute>"; };
 		4872D5AC19B4211900F326B5 /* SwiftState.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftState.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -93,6 +107,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		4822F0A119D0085E00F5F572 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1F24C72C19D068B900C2FDC7 /* SwiftState.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		4872D5A819B4211900F326B5 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -109,6 +131,7 @@
 				1FA620021996601000460108 /* SwiftState */,
 				1FA6200C1996601000460108 /* SwiftStateTests */,
 				1FA620011996601000460108 /* Products */,
+				4822F0A719D0085E00F5F572 /* SwiftState-iOS2Tests copy-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
@@ -118,6 +141,7 @@
 				1FA620001996601000460108 /* SwiftState.framework */,
 				1FA6200B1996601000460108 /* SwiftStateTests.xctest */,
 				4872D5AC19B4211900F326B5 /* SwiftState.framework */,
+				4822F0A619D0085E00F5F572 /* SwiftStateTests-iOS.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -248,6 +272,23 @@
 			productReference = 1FA6200B1996601000460108 /* SwiftStateTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		4822F09E19D0085E00F5F572 /* SwiftState-iOSTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4822F0A319D0085E00F5F572 /* Build configuration list for PBXNativeTarget "SwiftState-iOSTests" */;
+			buildPhases = (
+				4822F09F19D0085E00F5F572 /* Sources */,
+				4822F0A119D0085E00F5F572 /* Frameworks */,
+				4822F0A219D0085E00F5F572 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "SwiftState-iOSTests";
+			productName = "SwiftState-iOS2Tests";
+			productReference = 4822F0A619D0085E00F5F572 /* SwiftStateTests-iOS.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		4872D5AB19B4211900F326B5 /* SwiftState-iOS */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4872D5C019B4211900F326B5 /* Build configuration list for PBXNativeTarget "SwiftState-iOS" */;
@@ -301,6 +342,7 @@
 				1FA61FFF1996601000460108 /* SwiftState */,
 				1FA6200A1996601000460108 /* SwiftStateTests */,
 				4872D5AB19B4211900F326B5 /* SwiftState-iOS */,
+				4822F09E19D0085E00F5F572 /* SwiftState-iOSTests */,
 			);
 		};
 /* End PBXProject section */
@@ -314,6 +356,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		1FA620091996601000460108 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4822F0A219D0085E00F5F572 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -360,6 +409,24 @@
 				1FA62035199660CA00460108 /* StateMachineTests.swift in Sources */,
 				1FA62037199660CA00460108 /* StateTransitionChainTests.swift in Sources */,
 				1FA62032199660CA00460108 /* MyState.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4822F09F19D0085E00F5F572 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4822F0AC19D008EB00F5F572 /* QiitaTests.swift in Sources */,
+				4822F0AB19D008EB00F5F572 /* BasicTests.swift in Sources */,
+				4822F0AF19D008EB00F5F572 /* StateMachineEventTests.swift in Sources */,
+				4822F0A819D008E300F5F572 /* _TestCase.swift in Sources */,
+				4822F0AA19D008E700F5F572 /* MyEvent.swift in Sources */,
+				4822F0AE19D008EB00F5F572 /* StateMachineChainTests.swift in Sources */,
+				4822F0B019D008EB00F5F572 /* StateTransitionTests.swift in Sources */,
+				4822F0A919D008E700F5F572 /* MyState.swift in Sources */,
+				4822F0B219D008EB00F5F572 /* StateRouteTests.swift in Sources */,
+				4822F0B119D008EB00F5F572 /* StateTransitionChainTests.swift in Sources */,
+				4822F0AD19D008EB00F5F572 /* StateMachineTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -423,8 +490,6 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
@@ -463,8 +528,6 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = macosx;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -541,6 +604,41 @@
 			};
 			name = Release;
 		};
+		4822F0A419D0085E00F5F572 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = SwiftStateTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "SwiftStateTests-iOS";
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		4822F0A519D0085E00F5F572 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = SwiftStateTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "SwiftStateTests-iOS";
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 		4872D5BC19B4211900F326B5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -608,6 +706,15 @@
 			buildConfigurations = (
 				1FA620171996601000460108 /* Debug */,
 				1FA620181996601000460108 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		4822F0A319D0085E00F5F572 /* Build configuration list for PBXNativeTarget "SwiftState-iOSTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4822F0A419D0085E00F5F572 /* Debug */,
+				4822F0A519D0085E00F5F572 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

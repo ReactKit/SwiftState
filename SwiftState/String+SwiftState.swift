@@ -9,8 +9,8 @@
 // for usage of String as StateType and/or StateEventType
 extension String: StateType, StateEventType
 {
-    public static func convertFromNilLiteral() -> String
+    public init(nilLiteral: Void)
     {
-        return ""
+        self = ""
     }
 }

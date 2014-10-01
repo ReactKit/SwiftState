@@ -19,14 +19,9 @@ enum InputKey: StateType, NilLiteralConvertible
     case Key0, Key1, Key2, Key3, Key4, Key5, Key6, Key7, Key8, Key9
     case Any
     
-    static func anyState() -> InputKey
+    init(nilLiteral: Void)
     {
-        return Any
-    }
-    
-    static func convertFromNilLiteral() -> InputKey
-    {
-        return self.anyState()
+        self = Any
     }
 }
 

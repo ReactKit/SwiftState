@@ -87,7 +87,6 @@
 		1FB1EC89199E515B00ABD937 /* MyEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyEvent.swift; sourceTree = "<group>"; };
 		1FB1EC8E199E60F800ABD937 /* String+SwiftState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+SwiftState.swift"; sourceTree = "<group>"; };
 		4822F0A619D0085E00F5F572 /* SwiftStateTests-iOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SwiftStateTests-iOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		4822F0A719D0085E00F5F572 /* SwiftState-iOS2Tests copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "SwiftState-iOS2Tests copy-Info.plist"; path = "/Users/jp61161/github/ReactKit/Vendor/SwiftTask/Vendor/SwiftState/SwiftState-iOS2Tests copy-Info.plist"; sourceTree = "<absolute>"; };
 		4872D5AC19B4211900F326B5 /* SwiftState.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftState.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -131,7 +130,6 @@
 				1FA620021996601000460108 /* SwiftState */,
 				1FA6200C1996601000460108 /* SwiftStateTests */,
 				1FA620011996601000460108 /* Products */,
-				4822F0A719D0085E00F5F572 /* SwiftState-iOS2Tests copy-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};

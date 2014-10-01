@@ -19,13 +19,13 @@ enum MyState: Int, StateType, Printable
     //
     //case MyState(Int)
     
-    static func convertFromNilLiteral() -> MyState
+    init(nilLiteral: Void)
     {
-        return AnyState
+        self = AnyState
     }
     
     var description: String
     {
-        return "\(self.toRaw())"
+        return "\(self.rawValue)"
     }
 }

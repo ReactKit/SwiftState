@@ -13,8 +13,8 @@ enum MyEvent: StateEventType
     case Event0, Event1
     case AnyEvent   // IMPORTANT: create case=Any & use it in convertFromNilLiteral()
     
-    static func convertFromNilLiteral() -> MyEvent
+    init(nilLiteral: Void)
     {
-        return AnyEvent
+        self = AnyEvent
     }
 }

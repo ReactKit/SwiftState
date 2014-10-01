@@ -297,7 +297,8 @@ class StateMachineTests: _TestCase
         
         // order = 100 (default)
         machine.addHandler(.State0 => .State1) { context in
-            XCTAssertEqual(context.order, 100)
+//            XCTAssertEqual(context.order, 100)    // TODO: Xcode6.1-GM bug
+            XCTAssertTrue(context.order == 100)
             XCTAssertTrue(returnedTransition != nil, "returnedTransition should already be set.")
             
             returnedTransition = context.transition
@@ -305,7 +306,8 @@ class StateMachineTests: _TestCase
         
         // order = 99
         machine.addHandler(.State0 => .State1, order: 99) { context in
-            XCTAssertEqual(context.order, 99)
+//            XCTAssertEqual(context.order, 99)     // TODO: Xcode6.1-GM bug
+            XCTAssertTrue(context.order == 99)
             XCTAssertTrue(returnedTransition == nil, "returnedTransition should NOT be set at this point.")
             
             returnedTransition = context.transition // set returnedTransition for first time

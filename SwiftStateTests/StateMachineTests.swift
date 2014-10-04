@@ -187,6 +187,63 @@ class StateMachineTests: _TestCase
         XCTAssertEqual(returnedTransition!.toState, MyState.State1)
     }
     
+    // MARK: addRoute using array
+    
+    func testAddRoute_array_left()
+    {
+        let machine = StateMachine<MyState, String>(state: .State0)
+        
+        // add 0 => 2 or 1 => 2
+        machine.addRoute([.State0, .State1] => .State2)
+        
+        XCTAssertFalse(machine.hasRoute(.State0 => .State0))
+        XCTAssertFalse(machine.hasRoute(.State0 => .State1))
+        XCTAssertTrue(machine.hasRoute(.State0 => .State2))
+        XCTAssertFalse(machine.hasRoute(.State1 => .State0))
+        XCTAssertFalse(machine.hasRoute(.State1 => .State1))
+        XCTAssertTrue(machine.hasRoute(.State1 => .State2))
+    }
+    
+    func testAddRoute_array_right()
+    {
+        let machine = StateMachine<MyState, String>(state: .State0)
+        
+        // add 0 => 1 or 0 => 2
+        machine.addRoute(.State0 => [.State1, .State2])
+        
+        XCTAssertFalse(machine.hasRoute(.State0 => .State0))
+        XCTAssertTrue(machine.hasRoute(.State0 => .State1))
+        XCTAssertTrue(machine.hasRoute(.State0 => .State2))
+        XCTAssertFalse(machine.hasRoute(.State1 => .State0))
+        XCTAssertFalse(machine.hasRoute(.State1 => .State1))
+        XCTAssertFalse(machine.hasRoute(.State1 => .State2))
+    }
+    
+    func testAddRoute_array_both()
+    {
+        let machine = StateMachine<MyState, String>(state: .State0)
+        
+        // add 0 => 2 or 0 => 3 or 1 => 2 or 1 => 3
+        machine.addRoute([MyState.State0, MyState.State1] => [MyState.State2, MyState.State3])
+        
+        XCTAssertFalse(machine.hasRoute(.State0 => .State0))
+        XCTAssertFalse(machine.hasRoute(.State0 => .State1))
+        XCTAssertTrue(machine.hasRoute(.State0 => .State2))
+        XCTAssertTrue(machine.hasRoute(.State0 => .State3))
+        XCTAssertFalse(machine.hasRoute(.State1 => .State0))
+        XCTAssertFalse(machine.hasRoute(.State1 => .State1))
+        XCTAssertTrue(machine.hasRoute(.State1 => .State2))
+        XCTAssertTrue(machine.hasRoute(.State1 => .State3))
+        XCTAssertFalse(machine.hasRoute(.State2 => .State0))
+        XCTAssertFalse(machine.hasRoute(.State2 => .State1))
+        XCTAssertFalse(machine.hasRoute(.State2 => .State2))
+        XCTAssertFalse(machine.hasRoute(.State2 => .State3))
+        XCTAssertFalse(machine.hasRoute(.State3 => .State0))
+        XCTAssertFalse(machine.hasRoute(.State3 => .State1))
+        XCTAssertFalse(machine.hasRoute(.State3 => .State2))
+        XCTAssertFalse(machine.hasRoute(.State3 => .State3))
+    }
+    
     //--------------------------------------------------
     // MARK: - removeRoute
     //--------------------------------------------------

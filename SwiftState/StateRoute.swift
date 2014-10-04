@@ -43,3 +43,32 @@ public struct StateRoute<S: StateType>
         return StateRouteChain(routes: routes)
     }
 }
+
+//--------------------------------------------------
+// MARK: - Custom Operators
+//--------------------------------------------------
+
+/// e.g. [.State0, .State1] => .State2, allowing [0 => 2, 1 => 2]
+public func => <S: StateType>(leftStates: [S], right: S) -> StateRoute<S>
+{
+    // NOTE: don't reuse "nil => nil + condition" for efficiency
+    return StateRoute(transition: nil => right, condition: { transition -> Bool in
+        return contains(leftStates, transition.fromState)
+    })
+}
+
+/// e.g. .State0 => [.State1, .State2], allowing [0 => 1, 0 => 2]
+public func => <S: StateType>(left: S, rightStates: [S]) -> StateRoute<S>
+{
+    return StateRoute(transition: left => nil, condition: { transition -> Bool in
+        return contains(rightStates, transition.toState)
+    })
+}
+
+/// e.g. [.State0, .State1] => [.State2, .State3], allowing [0 => 2, 0 => 3, 1 => 2, 1 => 3]
+public func => <S: StateType>(leftStates: [S], rightStates: [S]) -> StateRoute<S>
+{
+    return StateRoute(transition: nil => nil, condition: { transition -> Bool in
+        return contains(leftStates, transition.fromState) && contains(rightStates, transition.toState)
+    })
+}

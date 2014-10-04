@@ -48,7 +48,7 @@ public func == <S: StateType>(left: StateTransition<S>, right: StateTransition<S
 
 infix operator => { associativity left }
 
-// e.g. .State0 => .State1
+/// e.g. .State0 => .State1
 // NOTE: argument types (S) don't need to be optional because it automatically converts nil to Any via NilLiteralConvertible
 public func => <S: StateType>(left: S, right: S) -> StateTransition<S>
 {

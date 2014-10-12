@@ -152,11 +152,6 @@ public class StateMachine<S: StateType, E: StateEventType>
         return self._state
     }
     
-    public func hasTransition(transition: Transition) -> Bool
-    {
-        return self._validTransitionsForTransition(transition).count > 0
-    }
-    
     public func hasRoute(transition: Transition, forEvent event: Event = nil) -> Bool
     {
         let validTransitions = self._validTransitionsForTransition(transition)

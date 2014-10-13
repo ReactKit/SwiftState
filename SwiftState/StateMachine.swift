@@ -62,7 +62,7 @@ public class StateMachineHandlerID<S: StateType, E: StateEventType>
 }
 
 // TODO: nest inside StateMachine class
-private class _StateMachineHandlerInfo<S: StateType, E: StateEventType>
+internal class _StateMachineHandlerInfo<S: StateType, E: StateEventType>
 {
     private typealias HandlerOrder = StateMachine<S, E>.HandlerOrder
     private typealias HandlerKey = StateMachine<S, E>.HandlerKey
@@ -86,21 +86,21 @@ public class StateMachine<S: StateType, E: StateEventType>
     public typealias Handler = ((context: HandlerContext) -> Void)
     public typealias HandlerContext = (event: Event, transition: Transition, order: HandlerOrder, userInfo: Any?)
     
-    private typealias State = S
-    private typealias Event = E
-    private typealias Transition = StateTransition<State>
-    private typealias TransitionChain = StateTransitionChain<State>
+    internal typealias State = S
+    internal typealias Event = E
+    internal typealias Transition = StateTransition<State>
+    internal typealias TransitionChain = StateTransitionChain<State>
     
-    private typealias Route = StateRoute<State>
-    private typealias RouteKey = String
-    private typealias RouteID = StateMachineRouteID<State, Event>
-    private typealias RouteChain = StateRouteChain<State>
+    internal typealias Route = StateRoute<State>
+    internal typealias RouteKey = String
+    internal typealias RouteID = StateMachineRouteID<State, Event>
+    internal typealias RouteChain = StateRouteChain<State>
     
-    private typealias Condition = Route.Condition
+    internal typealias Condition = Route.Condition
     
-    private typealias HandlerKey = String
-    private typealias HandlerID = StateMachineHandlerID<State, Event>
-    private typealias HandlerInfo = _StateMachineHandlerInfo<State, Event>
+    internal typealias HandlerKey = String
+    internal typealias HandlerID = StateMachineHandlerID<State, Event>
+    internal typealias HandlerInfo = _StateMachineHandlerInfo<State, Event>
     // NOTE: don't use tuple due to Array's copying behavior for closure
 //    private typealias HandlerInfo = (order: HandlerOrder, handlerKey: HandlerKey, handler: Handler)
     
@@ -110,7 +110,7 @@ public class StateMachine<S: StateType, E: StateEventType>
     private var _handlers: [Transition : [HandlerInfo]] = Dictionary()
     private var _errorHandlers: [HandlerInfo] = Array()
     
-    private var _state: State
+    internal var _state: State
     
     private class var _defaultOrder: HandlerOrder { return 100 }
     
@@ -137,15 +137,17 @@ public class StateMachine<S: StateType, E: StateEventType>
     {
         self._state = state
         
-        if let initClosure_ = initClosure {
-            initClosure_(self)
-        }
+        initClosure?(self)
     }
     
     public func configure(closure: StateMachine -> Void)
     {
         closure(self)
     }
+    
+    //--------------------------------------------------
+    // MARK: - State/Event/Transition
+    //--------------------------------------------------
     
     public var state: State
     {
@@ -193,10 +195,10 @@ public class StateMachine<S: StateType, E: StateEventType>
     
     public func canTryState(state: State, forEvent event: Event = nil) -> Bool
     {
-        let oldValue = self._state
-        let newValue = state
+        let fromState = self.state
+        let toState = state
         
-        return  self.hasRoute(oldValue => newValue, forEvent: event)
+        return self.hasRoute(fromState => toState, forEvent: event)
     }
     
     public func tryState(state: State, userInfo: Any? = nil) -> Bool
@@ -204,13 +206,13 @@ public class StateMachine<S: StateType, E: StateEventType>
         return self._tryState(state, userInfo: userInfo, forEvent: nil)
     }
     
-    private func _tryState(state: State, userInfo: Any? = nil, forEvent event: Event) -> Bool
+    internal func _tryState(state: State, userInfo: Any? = nil, forEvent event: Event) -> Bool
     {
         var didTransit = false
         
-        let oldValue = self._state
-        let newValue = state
-        let transition = oldValue => newValue
+        let fromState = self.state
+        let toState = state
+        let transition = fromState => toState
         
         if self.canTryState(state, forEvent: event) {
             
@@ -218,7 +220,7 @@ public class StateMachine<S: StateType, E: StateEventType>
             let validHandlerInfos = self._validHandlerInfosForTransition(transition)
             
             // update state
-            self._state = newValue
+            self._state = toState
             
             //
             // Perform validHandlers after updating state.
@@ -354,7 +356,7 @@ public class StateMachine<S: StateType, E: StateEventType>
         return self._addRoute(route)
     }
     
-    private func _addRoute(route: Route, forEvent event: Event = nil) -> RouteID
+    internal func _addRoute(route: Route, forEvent event: Event = nil) -> RouteID
     {
         let transition = route.transition
         let condition = route.condition

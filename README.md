@@ -62,7 +62,7 @@ For more examples, please see XCTest cases.
 ## Features
 
 - Easy Swift syntax
-    - Transition: `.State0 => .State1`
+    - Transition: `.State0 => .State1`, `[.State0, .State1] => .State2`
     - Try transition: `machine <- .State1`
     - Try transition + messaging: `machine <- (.State1, "GoGoGo")`
     - Try event: `machine <-! .Event1`
@@ -74,7 +74,7 @@ For more examples, please see XCTest cases.
 - Removable routes and handlers
 - Chaining: `.State0 => .State1 => .State2`
 - Event: `machine.addRouteEvent("WakeUp", transitions); machine <-! "WakeUp"`
-
+- Hierarchical State Machine: [#10](https://github.com/ReactKit/SwiftState/pull/10)
 
 ## Terms
 

@@ -28,6 +28,10 @@
 		1FA62038199660CA00460108 /* StateTransitionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA6202F199660CA00460108 /* StateTransitionTests.swift */; };
 		1FB1EC8A199E515B00ABD937 /* MyEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FB1EC89199E515B00ABD937 /* MyEvent.swift */; };
 		1FB1EC8F199E60F800ABD937 /* String+SwiftState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FB1EC8E199E60F800ABD937 /* String+SwiftState.swift */; };
+		1FD01B6019EC2B5C00DA1C91 /* HierarchicalStateMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FD01B5F19EC2B5C00DA1C91 /* HierarchicalStateMachine.swift */; };
+		1FD01B6119EC2B5C00DA1C91 /* HierarchicalStateMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FD01B5F19EC2B5C00DA1C91 /* HierarchicalStateMachine.swift */; };
+		1FD01B6319EC2B6700DA1C91 /* HierarchicalStateMachineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FD01B6219EC2B6700DA1C91 /* HierarchicalStateMachineTests.swift */; };
+		1FD01B6419EC2B6700DA1C91 /* HierarchicalStateMachineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FD01B6219EC2B6700DA1C91 /* HierarchicalStateMachineTests.swift */; };
 		1FF692041996625900E3CE40 /* SwiftState.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FA620001996601000460108 /* SwiftState.framework */; };
 		4822F0A819D008E300F5F572 /* _TestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA62027199660CA00460108 /* _TestCase.swift */; };
 		4822F0A919D008E700F5F572 /* MyState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA62029199660CA00460108 /* MyState.swift */; };
@@ -86,6 +90,8 @@
 		1FA6202F199660CA00460108 /* StateTransitionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StateTransitionTests.swift; sourceTree = "<group>"; };
 		1FB1EC89199E515B00ABD937 /* MyEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyEvent.swift; sourceTree = "<group>"; };
 		1FB1EC8E199E60F800ABD937 /* String+SwiftState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+SwiftState.swift"; sourceTree = "<group>"; };
+		1FD01B5F19EC2B5C00DA1C91 /* HierarchicalStateMachine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HierarchicalStateMachine.swift; sourceTree = "<group>"; };
+		1FD01B6219EC2B6700DA1C91 /* HierarchicalStateMachineTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HierarchicalStateMachineTests.swift; sourceTree = "<group>"; };
 		4822F0A619D0085E00F5F572 /* SwiftStateTests-iOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SwiftStateTests-iOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4872D5AC19B4211900F326B5 /* SwiftState.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftState.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -154,6 +160,7 @@
 				1FA6201E1996606300460108 /* StateTransitionChain.swift */,
 				1FA6201B1996606300460108 /* StateRoute.swift */,
 				1FA6201C1996606300460108 /* StateRouteChain.swift */,
+				1FD01B5F19EC2B5C00DA1C91 /* HierarchicalStateMachine.swift */,
 				1FA620031996601000460108 /* Supporting Files */,
 			);
 			path = SwiftState;
@@ -180,6 +187,7 @@
 				1FA6202F199660CA00460108 /* StateTransitionTests.swift */,
 				1FA6202E199660CA00460108 /* StateTransitionChainTests.swift */,
 				1FA6202D199660CA00460108 /* StateRouteTests.swift */,
+				1FD01B6219EC2B6700DA1C91 /* HierarchicalStateMachineTests.swift */,
 				1FA6200D1996601000460108 /* Supporting Files */,
 			);
 			path = SwiftStateTests;
@@ -387,6 +395,7 @@
 				1FA620201996606300460108 /* StateEventType.swift in Sources */,
 				1FA620221996606300460108 /* StateRoute.swift in Sources */,
 				1FA620211996606300460108 /* StateMachine.swift in Sources */,
+				1FD01B6019EC2B5C00DA1C91 /* HierarchicalStateMachine.swift in Sources */,
 				1FA620261996606300460108 /* StateType.swift in Sources */,
 				1FA620231996606300460108 /* StateRouteChain.swift in Sources */,
 			);
@@ -398,6 +407,7 @@
 			files = (
 				1FB1EC8A199E515B00ABD937 /* MyEvent.swift in Sources */,
 				1F198C5C19972320001C3700 /* QiitaTests.swift in Sources */,
+				1FD01B6319EC2B6700DA1C91 /* HierarchicalStateMachineTests.swift in Sources */,
 				1FA62038199660CA00460108 /* StateTransitionTests.swift in Sources */,
 				1FA62033199660CA00460108 /* StateMachineChainTests.swift in Sources */,
 				1FA62030199660CA00460108 /* _TestCase.swift in Sources */,
@@ -416,6 +426,7 @@
 			files = (
 				4822F0AC19D008EB00F5F572 /* QiitaTests.swift in Sources */,
 				4822F0AB19D008EB00F5F572 /* BasicTests.swift in Sources */,
+				1FD01B6419EC2B6700DA1C91 /* HierarchicalStateMachineTests.swift in Sources */,
 				4822F0AF19D008EB00F5F572 /* StateMachineEventTests.swift in Sources */,
 				4822F0A819D008E300F5F572 /* _TestCase.swift in Sources */,
 				4822F0AA19D008E700F5F572 /* MyEvent.swift in Sources */,
@@ -438,6 +449,7 @@
 				48797D5F19B42CCE0085D80F /* StateTransition.swift in Sources */,
 				48797D6319B42CD40085D80F /* StateType.swift in Sources */,
 				48797D5E19B42CCE0085D80F /* StateMachine.swift in Sources */,
+				1FD01B6119EC2B5C00DA1C91 /* HierarchicalStateMachine.swift in Sources */,
 				48797D6119B42CCE0085D80F /* StateRoute.swift in Sources */,
 				48797D6419B42CD40085D80F /* StateEventType.swift in Sources */,
 			);

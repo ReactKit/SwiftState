@@ -886,7 +886,7 @@ public class StateMachine<S: StateType, E: StateEventType>
     {
         let transitions = self._routes[event]?.keys
         
-        let handlerID = self.addHandler(nil => nil) { [weak self] context in
+        let handlerID = self.addHandler(nil => nil, order: order) { [weak self] context in
             if context.event == event {
                 handler(context: context)
             }

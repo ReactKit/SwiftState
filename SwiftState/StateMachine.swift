@@ -10,7 +10,7 @@ import Darwin
 
 // TODO: change .append() to +=
 
-// TODO: nest inside StateMachine class
+// NOTE: nested type inside generic StateMachine class is not allowed in Swift 1.1
 // NOTE: 'public struct' didn't work since Xcode6-beta6
 public class StateMachineRouteID<S: StateType, E: StateEventType>
 {
@@ -36,7 +36,6 @@ public class StateMachineRouteID<S: StateType, E: StateEventType>
     }
 }
 
-// TODO: nest inside StateMachine class
 public class StateMachineHandlerID<S: StateType, E: StateEventType>
 {
     private typealias Transition = StateTransition<S>
@@ -59,7 +58,6 @@ public class StateMachineHandlerID<S: StateType, E: StateEventType>
     }
 }
 
-// TODO: nest inside StateMachine class
 internal class _StateMachineHandlerInfo<S: StateType, E: StateEventType>
 {
     private typealias HandlerOrder = StateMachine<S, E>.HandlerOrder

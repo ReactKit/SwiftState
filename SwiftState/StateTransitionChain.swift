@@ -37,7 +37,7 @@ public struct StateTransitionChain<S: StateType>
         var transitions: [Transition] = []
         
         for i in 0..<states.count-1 {
-            transitions.append(states[i] => states[i+1])
+            transitions += [states[i] => states[i+1]]
         }
         
         return transitions
@@ -65,7 +65,7 @@ public struct StateTransitionChain<S: StateType>
     
     mutating public func append(state: State)
     {
-        self.states.append(state)
+        self.states += [state]
     }
     
     public func toRouteChain() -> StateRouteChain<State>

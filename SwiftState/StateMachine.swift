@@ -8,8 +8,6 @@
 
 import Darwin
 
-// TODO: change .append() to +=
-
 // NOTE: nested type inside generic StateMachine class is not allowed in Swift 1.1
 // NOTE: 'public struct' didn't work since Xcode6-beta6
 public class StateMachineRouteID<S: StateType, E: StateEventType>
@@ -164,7 +162,7 @@ public class StateMachine<S: StateType, E: StateEventType>
             else {
                 for (ev, transitionDict) in self._routes {
                     if ev == event || ev == nil as Event {
-                        transitionDicts.append(transitionDict)
+                        transitionDicts += [transitionDict]
                         break
                     }
                 }
@@ -273,21 +271,21 @@ public class StateMachine<S: StateType, E: StateEventType>
         var transitions: [Transition] = []
         
         // anywhere
-        transitions.append(nil => nil)
+        transitions += [nil => nil]
         
         // exit
         if transition.fromState != nil as State {
-            transitions.append(transition.fromState => nil)
+            transitions += [transition.fromState => nil]
         }
         
         // entry
         if transition.toState != nil as State {
-            transitions.append(nil => transition.toState)
+            transitions += [nil => transition.toState]
         }
         
         // specific
         if (transition.fromState != nil as State) && (transition.toState != nil as State) {
-            transitions.append(transition)
+            transitions += [transition]
         }
         
         return transitions
@@ -661,7 +659,7 @@ public class StateMachine<S: StateType, E: StateEventType>
         
         for route in chain.routes {
             let routeID = self.addRoute(route)
-            routeIDs.append(routeID)
+            routeIDs += [routeID]
         }
         
         let handlerID = self.addChainHandler(chain, handler: handler)
@@ -741,7 +739,7 @@ public class StateMachine<S: StateType, E: StateEventType>
                 }
             }
         }
-        handlerIDs.append(handlerID)
+        handlerIDs += [handlerID]
         
         // increment chainingCount on every route
         for route in chain.routes {
@@ -763,7 +761,7 @@ public class StateMachine<S: StateType, E: StateEventType>
                     }
                 }
             }
-            handlerIDs.append(handlerID)
+            handlerIDs += [handlerID]
         }
         
         // increment allCount (+ invoke chainErrorHandler) on any routes
@@ -783,7 +781,7 @@ public class StateMachine<S: StateType, E: StateEventType>
                 }
             }
         }
-        handlerIDs.append(handlerID)
+        handlerIDs += [handlerID]
         
         // invoke chainHandler on last route
         let lastRoute = chain.routes.last!
@@ -802,7 +800,7 @@ public class StateMachine<S: StateType, E: StateEventType>
                 }
             }
         }
-        handlerIDs.append(handlerID)
+        handlerIDs += [handlerID]
         
         let bundledHandlerID = HandlerID(bundledHandlerIDs: handlerIDs)
         
@@ -818,7 +816,7 @@ public class StateMachine<S: StateType, E: StateEventType>
         var routes: [Route] = []
         for transition in transitions {
             let route = Route(transition: transition, condition: condition)
-            routes.append(route)
+            routes += [route]
         }
         
         return self.addRouteEvent(event, routes: routes)
@@ -834,7 +832,7 @@ public class StateMachine<S: StateType, E: StateEventType>
         var routeIDs: [RouteID] = []
         for route in routes {
             let routeID = self._addRoute(route, forEvent: event)
-            routeIDs.append(routeID)
+            routeIDs += [routeID]
         }
         
         return routeIDs

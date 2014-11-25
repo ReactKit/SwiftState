@@ -25,7 +25,7 @@ public struct StateRouteChain<S: StateType>
     {
         var routes: [Route] = []
         for transition in transitionChain.transitions {
-            routes.append(Route(transition: transition, condition: condition))
+            routes += [Route(transition: transition, condition: condition)]
         }
         self.routes = routes
     }
@@ -48,7 +48,7 @@ public struct StateRouteChain<S: StateType>
         let lastToState = self.routes.last!.transition.toState
         let newRoute = Route(transition: lastToState => state, condition: condition)
         
-        self.routes.append(newRoute)
+        self.routes += [newRoute]
     }
     
     public func toTransitionChain() -> TransitionChain

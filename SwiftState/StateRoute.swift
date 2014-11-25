@@ -35,7 +35,7 @@ public struct StateRoute<S: StateType>
     public func toRouteChain() -> StateRouteChain<State>
     {
         var routes: [StateRoute<State>] = []
-        routes.append(self)
+        routes += [self]
         return StateRouteChain(routes: routes)
     }
 }

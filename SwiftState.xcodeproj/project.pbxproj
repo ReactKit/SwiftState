@@ -70,7 +70,7 @@
 		1FA620001996601000460108 /* SwiftState.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftState.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1FA620041996601000460108 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1FA620051996601000460108 /* SwiftState.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwiftState.h; sourceTree = "<group>"; };
-		1FA6200B1996601000460108 /* SwiftStateTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftStateTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		1FA6200B1996601000460108 /* SwiftState-OSXTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SwiftState-OSXTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1FA6200E1996601000460108 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1FA620191996606200460108 /* StateEventType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StateEventType.swift; sourceTree = "<group>"; };
 		1FA6201A1996606300460108 /* StateMachine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StateMachine.swift; sourceTree = "<group>"; };
@@ -143,7 +143,7 @@
 			isa = PBXGroup;
 			children = (
 				1FA620001996601000460108 /* SwiftState.framework */,
-				1FA6200B1996601000460108 /* SwiftStateTests.xctest */,
+				1FA6200B1996601000460108 /* SwiftState-OSXTests.xctest */,
 				4872D5AC19B4211900F326B5 /* SwiftState.framework */,
 				4822F0A619D0085E00F5F572 /* SwiftStateTests-iOS.xctest */,
 			);
@@ -242,9 +242,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		1FA61FFF1996601000460108 /* SwiftState */ = {
+		1FA61FFF1996601000460108 /* SwiftState-OSX */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 1FA620131996601000460108 /* Build configuration list for PBXNativeTarget "SwiftState" */;
+			buildConfigurationList = 1FA620131996601000460108 /* Build configuration list for PBXNativeTarget "SwiftState-OSX" */;
 			buildPhases = (
 				1FA61FFB1996601000460108 /* Sources */,
 				1FA61FFC1996601000460108 /* Frameworks */,
@@ -255,14 +255,14 @@
 			);
 			dependencies = (
 			);
-			name = SwiftState;
+			name = "SwiftState-OSX";
 			productName = SwiftState;
 			productReference = 1FA620001996601000460108 /* SwiftState.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		1FA6200A1996601000460108 /* SwiftStateTests */ = {
+		1FA6200A1996601000460108 /* SwiftState-OSXTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 1FA620161996601000460108 /* Build configuration list for PBXNativeTarget "SwiftStateTests" */;
+			buildConfigurationList = 1FA620161996601000460108 /* Build configuration list for PBXNativeTarget "SwiftState-OSXTests" */;
 			buildPhases = (
 				1FA620071996601000460108 /* Sources */,
 				1FA620081996601000460108 /* Frameworks */,
@@ -273,9 +273,9 @@
 			dependencies = (
 				1FF69206199662A000E3CE40 /* PBXTargetDependency */,
 			);
-			name = SwiftStateTests;
+			name = "SwiftState-OSXTests";
 			productName = SwiftStateTests;
-			productReference = 1FA6200B1996601000460108 /* SwiftStateTests.xctest */;
+			productReference = 1FA6200B1996601000460108 /* SwiftState-OSXTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		4822F09E19D0085E00F5F572 /* SwiftState-iOSTests */ = {
@@ -345,8 +345,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				1FA61FFF1996601000460108 /* SwiftState */,
-				1FA6200A1996601000460108 /* SwiftStateTests */,
+				1FA61FFF1996601000460108 /* SwiftState-OSX */,
+				1FA6200A1996601000460108 /* SwiftState-OSXTests */,
 				4872D5AB19B4211900F326B5 /* SwiftState-iOS */,
 				4822F09E19D0085E00F5F572 /* SwiftState-iOSTests */,
 			);
@@ -460,7 +460,7 @@
 /* Begin PBXTargetDependency section */
 		1FF69206199662A000E3CE40 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 1FA61FFF1996601000460108 /* SwiftState */;
+			target = 1FA61FFF1996601000460108 /* SwiftState-OSX */;
 			targetProxy = 1FF69205199662A000E3CE40 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -558,7 +558,8 @@
 				INFOPLIST_FILE = SwiftState/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				PRODUCT_NAME = "$(PROJECT_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -577,7 +578,8 @@
 				INFOPLIST_FILE = SwiftState/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				PRODUCT_NAME = "$(PROJECT_NAME)";
 				SKIP_INSTALL = YES;
 			};
 			name = Release;
@@ -664,7 +666,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/SwiftState/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = SwiftState;
+				PRODUCT_NAME = "$(PROJECT_NAME)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -682,7 +684,7 @@
 				INFOPLIST_FILE = "$(SRCROOT)/SwiftState/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = SwiftState;
+				PRODUCT_NAME = "$(PROJECT_NAME)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -702,7 +704,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		1FA620131996601000460108 /* Build configuration list for PBXNativeTarget "SwiftState" */ = {
+		1FA620131996601000460108 /* Build configuration list for PBXNativeTarget "SwiftState-OSX" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1FA620141996601000460108 /* Debug */,
@@ -711,7 +713,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		1FA620161996601000460108 /* Build configuration list for PBXNativeTarget "SwiftStateTests" */ = {
+		1FA620161996601000460108 /* Build configuration list for PBXNativeTarget "SwiftState-OSXTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1FA620171996601000460108 /* Debug */,

@@ -119,7 +119,6 @@ public class StateMachine<S: StateType, E: StateEventType>
         for i in 1...8 {
             uniqueString += String(UnicodeScalar(arc4random_uniform(0xD800))) // 0xD800 = 55296 = 15.755bit
         }
-        //println("uniqueString = \(uniqueString)")
         return uniqueString
     }
     
@@ -454,26 +453,6 @@ public class StateMachine<S: StateType, E: StateEventType>
         return false
     }
     
-//    public func removeTransition(transition: Transition, removeHandlers: Bool = true)
-//    {
-//        if self._routes[transition] {
-//            self._routes[transition] = nil
-//        }
-//        
-//        if removeHandlers {
-//            self.removeAllHandlers(inTransition: transition)
-//        }
-//    }
-//    
-//    public func removeAllTransitions(removeHandlers: Bool = true)
-//    {
-//        self._routes.removeAll(keepCapacity: false)
-//        
-//        if removeHandlers {
-//            self.removeAllHandlers()
-//        }
-//    }
-    
     //--------------------------------------------------
     // MARK: - Handler
     //--------------------------------------------------
@@ -586,22 +565,6 @@ public class StateMachine<S: StateType, E: StateEventType>
         return false
     }
     
-//    public func removeAllHandlers(inTransition transition: Transition? = nil) -> Bool
-//    {
-//        if let transition_ = transition {
-//            if self._handlers[transition_] != nil {
-//                self._handlers[transition_] = nil
-//                return true
-//            }
-//        }
-//        else {
-//            self._handlers.removeAll(keepCapacity: false)
-//            return true
-//        }
-//        
-//        return false
-//    }
-    
     // MARK: addErrorHandler
     
     public func addErrorHandler(handler: Handler) -> HandlerID
@@ -620,15 +583,6 @@ public class StateMachine<S: StateType, E: StateEventType>
         
         return handlerID
     }
-    
-//    public func removeAllErrorHandlers() -> Bool
-//    {
-//        if self._errorHandlers.count > 0 {
-//            self._errorHandlers = []
-//            return true
-//        }
-//        return false
-//    }
     
     //--------------------------------------------------
     // MARK: - RouteChain
@@ -731,10 +685,6 @@ public class StateMachine<S: StateType, E: StateEventType>
                         shouldStop = false
                         chainingCount = 0
                         allCount = 0
-//                        println("[RouteChain] start")
-                    }
-                    else {
-//                        println("[RouteChain] back home a while")
                     }
                 }
             }
@@ -754,7 +704,6 @@ public class StateMachine<S: StateType, E: StateEventType>
                     if self_._canPassCondition(route.condition, transition: context.transition) {
                         if !shouldStop {
                             chainingCount++
-//                            println("[RouteChain] chainingCount++ =\(chainingCount), transition=\(route.transition)")
                             
                             shouldIncrementChainingCount = false
                         }
@@ -771,7 +720,6 @@ public class StateMachine<S: StateType, E: StateEventType>
             
             if !shouldStop {
                 allCount++
-//                println("[RouteChain] allCount++")
             }
             
             if chainingCount < allCount {
@@ -786,8 +734,6 @@ public class StateMachine<S: StateType, E: StateEventType>
         // invoke chainHandler on last route
         let lastRoute = chain.routes.last!
         handlerID = self.addHandler(lastRoute.transition, order: 200) { [weak self] context in
-//            println("[RouteChain] finish? \(chainingCount) \(allCount) \(chain.routes.count)")
-            
             if let self_ = self {
                 if self_._canPassCondition(lastRoute.condition, transition: context.transition) {
                     if chainingCount == allCount && chainingCount == chain.routes.count && chainingCount == chain.routes.count {

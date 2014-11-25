@@ -35,7 +35,7 @@ public struct StateTransitionChain<S: StateType>
     
     public var transitions: [Transition]
     {
-        var transitions: [Transition] = Array()
+        var transitions: [Transition] = []
         
         for i in 0..<states.count-1 {
             transitions.append(states[i] => states[i+1])

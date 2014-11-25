@@ -8,8 +8,6 @@
 
 import Darwin
 
-// TODO: change Array() to []
-// TODO: change Dictionary to []
 // TODO: change .append() to +=
 
 // TODO: nest inside StateMachine class
@@ -106,9 +104,9 @@ public class StateMachine<S: StateType, E: StateEventType>
     
     private typealias TransitionRouteDictionary = [Transition : [RouteKey : Condition?]]
     
-    private var _routes: [Event : TransitionRouteDictionary] = Dictionary()
-    private var _handlers: [Transition : [HandlerInfo]] = Dictionary()
-    private var _errorHandlers: [HandlerInfo] = Array()
+    private var _routes: [Event : TransitionRouteDictionary] = [:]
+    private var _handlers: [Transition : [HandlerInfo]] = [:]
+    private var _errorHandlers: [HandlerInfo] = []
     
     internal var _state: State
     
@@ -274,7 +272,7 @@ public class StateMachine<S: StateType, E: StateEventType>
     
     private func _validTransitionsForTransition(transition: Transition) -> [Transition]
     {
-        var transitions: [Transition] = Array()
+        var transitions: [Transition] = []
         
         // anywhere
         transitions.append(nil => nil)
@@ -362,12 +360,12 @@ public class StateMachine<S: StateType, E: StateEventType>
         let condition = route.condition
         
         if self._routes[event] == nil {
-            self._routes[event] = Dictionary()
+            self._routes[event] = [:]
         }
         
         var transitionDict = self._routes[event]!
         if transitionDict[transition] == nil {
-            transitionDict[transition] = Dictionary()
+            transitionDict[transition] = [:]
         }
         
         let routeKey = self.dynamicType._createUniqueString()
@@ -662,7 +660,7 @@ public class StateMachine<S: StateType, E: StateEventType>
     
     public func addRouteChain(chain: RouteChain, handler: Handler) -> (RouteID, HandlerID)
     {
-        var routeIDs: [RouteID] = Array()
+        var routeIDs: [RouteID] = []
         
         for route in chain.routes {
             let routeID = self.addRoute(route)
@@ -722,7 +720,7 @@ public class StateMachine<S: StateType, E: StateEventType>
     
     private func _addChainHandler(chain: RouteChain, order: HandlerOrder, handler: Handler, isError: Bool) -> HandlerID
     {
-        var handlerIDs: [HandlerID] = Array()
+        var handlerIDs: [HandlerID] = []
         
         var shouldStop = true
         var shouldIncrementChainingCount = true
@@ -820,7 +818,7 @@ public class StateMachine<S: StateType, E: StateEventType>
     
     public func addRouteEvent(event: Event, transitions: [Transition], condition: Condition? = nil) -> [RouteID]
     {
-        var routes: [Route] = Array()
+        var routes: [Route] = []
         for transition in transitions {
             let route = Route(transition: transition, condition: condition)
             routes.append(route)
@@ -836,7 +834,7 @@ public class StateMachine<S: StateType, E: StateEventType>
     
     public func addRouteEvent(event: Event, routes: [Route]) -> [RouteID]
     {
-        var routeIDs: [RouteID] = Array()
+        var routeIDs: [RouteID] = []
         for route in routes {
             let routeID = self._addRoute(route, forEvent: event)
             routeIDs.append(routeID)

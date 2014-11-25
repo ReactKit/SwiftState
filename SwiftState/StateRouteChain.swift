@@ -23,7 +23,7 @@ public struct StateRouteChain<S: StateType>
     
     public init(transitionChain: TransitionChain, condition: Condition?)
     {
-        var routes: [Route] = Array()
+        var routes: [Route] = []
         for transition in transitionChain.transitions {
             routes.append(Route(transition: transition, condition: condition))
         }

@@ -634,7 +634,6 @@ public class StateMachine<S: StateType, E: StateEventType>
     
     //--------------------------------------------------
     // MARK: - RouteChain
-    // TODO: move to extension
     //--------------------------------------------------
     // NOTE: handler is required for addRouteChain
     

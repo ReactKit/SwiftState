@@ -15,8 +15,7 @@ public struct StateTransitionChain<S: StateType>
     
     public init(transition: Transition)
     {
-//        self.init(transitions: [transition])  // TODO: Xcode6-beta bug?
-        self.states = [transition.fromState, transition.toState]
+        self.init(transitions: [transition])
     }
     
     public init(transitions: [Transition])

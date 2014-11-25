@@ -24,11 +24,7 @@ public struct StateRoute<S: StateType>
     
     public init(transition: Transition, condition: @autoclosure () -> Bool)
     {
-        // TODO: Xcode6-beta bug? (EXC_BAD_ACCESS)
-//        self.init(transition: transition, condition: { t in condition() })
-        
-        self.transition = transition
-        self.condition = { t in condition() }
+        self.init(transition: transition, condition: { t in condition() })
     }
     
     public func toTransition() -> Transition

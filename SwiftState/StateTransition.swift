@@ -21,7 +21,6 @@ public struct StateTransition<S: StateType>: Hashable
     
     public var hashValue: Int
     {
-        // TODO: is this a good idea?
         return self.fromState.hashValue &+ self.toState.hashValue.byteSwapped
     }
     

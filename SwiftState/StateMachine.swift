@@ -453,6 +453,15 @@ public class StateMachine<S: StateType, E: StateEventType>
         return false
     }
     
+    public func removeAllRoutes() -> Bool
+    {
+        let removingCount = self._routes.count
+        
+        self._routes = [:]
+        
+        return removingCount > 0
+    }
+    
     //--------------------------------------------------
     // MARK: - Handler
     //--------------------------------------------------
@@ -563,6 +572,16 @@ public class StateMachine<S: StateType, E: StateEventType>
         }
         
         return false
+    }
+    
+    public func removeAllHandlers() -> Bool
+    {
+        let removingCount = self._handlers.count + self._errorHandlers.count
+        
+        self._handlers = [:]
+        self._errorHandlers = []
+        
+        return removingCount > 0
     }
     
     // MARK: addErrorHandler

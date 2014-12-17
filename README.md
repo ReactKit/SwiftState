@@ -10,7 +10,7 @@ Also check out for sister project: [SwiftTask](https://github.com/inamiy/SwiftTa
 
 ## Example
 
-```
+```swift
 enum MyState: StateType {
     case State0, State1, State2
     case AnyState   // create case=Any
@@ -19,7 +19,7 @@ enum MyState: StateType {
 }
 ```
 
-```
+```swift
 let machine = StateMachine<MyState, MyEvent>(state: .State0) { machine in
 
     machine.addRoute(.State0 => .State1)
@@ -48,7 +48,7 @@ println("machine.state = \(machine.state)")
 
 This will print:
 
-```
+```swift
 0 => 1
 Any => 2, msg=Hello
 2 => Any, msg=Bye

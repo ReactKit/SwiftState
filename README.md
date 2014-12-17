@@ -15,7 +15,9 @@ enum MyState: StateType {
     case State0, State1, State2
     case AnyState   // create case=Any
 
-    static func convertFromNilLiteral() -> MyState { return AnyState }
+    init(nilLiteral: Void) {
+        self = AnyState
+    }
 }
 ```
 

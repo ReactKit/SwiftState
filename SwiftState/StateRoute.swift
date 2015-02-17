@@ -22,11 +22,6 @@ public struct StateRoute<S: StateType>
         self.condition = condition
     }
     
-    public init(transition: Transition, condition: @autoclosure () -> Bool)
-    {
-        self.init(transition: transition, condition: { t in condition() })
-    }
-    
     public func toTransition() -> Transition
     {
         return self.transition

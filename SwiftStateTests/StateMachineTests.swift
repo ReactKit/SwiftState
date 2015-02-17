@@ -103,9 +103,7 @@ class StateMachineTests: _TestCase
         var flag = false
         
         // add 0 => 1
-        machine.addRoute(.State0 => .State1, condition: { _ -> Bool in
-            return flag
-        })
+        machine.addRoute(.State0 => .State1, condition: { _ in flag })
         
         XCTAssertFalse(machine.hasRoute(.State0 => .State1))
         
@@ -163,9 +161,7 @@ class StateMachineTests: _TestCase
         machine.addRoute(.State0 => .State1)
         
         // add 0 => 1 with condition + conditionalHandler
-        machine.addRoute(.State0 => .State1, condition: { _ -> Bool in
-            return flag
-        }) { context in
+        machine.addRoute(.State0 => .State1, condition: { _ in flag }) { context in
             returnedTransition = context.transition
         }
         

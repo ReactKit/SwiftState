@@ -61,7 +61,7 @@ public class HierarchicalStateMachine<S: StateType, E: StateEventType>: StateMac
     {
         assert(state is HSM.State, "HSM state must be String.")
         
-        let components = split(state as! HSM.State, { $0 == "." }, maxSplit: 1)
+        let components = split(state as HSM.State, { $0 == "." }, maxSplit: 1)
         
         switch components.count {
             case 2:
@@ -85,7 +85,7 @@ public class HierarchicalStateMachine<S: StateType, E: StateEventType>: StateMac
         let (submachine, substate) = self._submachineTupleForState(self._state)
         
         if let submachine = submachine {
-            self._state = "\(submachine.name).\(submachine.state)" as! State
+            self._state = "\(submachine.name).\(submachine.state)" as State
         }
         
         return self._state
@@ -147,7 +147,7 @@ public class HierarchicalStateMachine<S: StateType, E: StateEventType>: StateMac
         // try changing submachine-internal state
         if fromSubmachine != nil && toSubmachine != nil && fromSubmachine === toSubmachine {
             
-            if toSubmachine!.canTryState(toSubstate, forEvent: event as! HSM.Event) {
+            if toSubmachine!.canTryState(toSubstate, forEvent: event as HSM.Event) {
                 
                 //
                 // NOTE:

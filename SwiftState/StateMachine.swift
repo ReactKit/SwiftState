@@ -26,17 +26,11 @@ public class StateMachineRouteID<S: StateType, E: StateEventType>
         self.transition = transition
         self.routeKey = routeKey
         self.event = event
-
-        self.bundledRouteIDs = nil
     }
     
     private init(bundledRouteIDs: [StateMachineRouteID<S, E>]?)
     {
         self.bundledRouteIDs = bundledRouteIDs
-
-        self.transition = nil
-        self.routeKey = nil
-        self.event = nil
     }
 }
 
@@ -54,16 +48,11 @@ public class StateMachineHandlerID<S: StateType, E: StateEventType>
     {
         self.transition = transition
         self.handlerKey = handlerKey
-
-        self.bundledHandlerIDs = nil
     }
     
     private init(bundledHandlerIDs: [StateMachineHandlerID<S, E>]?)
     {
         self.bundledHandlerIDs = bundledHandlerIDs
-
-        self.transition = nil
-        self.handlerKey = nil
     }
 }
 
@@ -350,6 +339,11 @@ public class StateMachine<S: StateType, E: StateEventType>
         return self.addRoute(route)
     }
     
+    public func addRoute(transition: Transition, condition: @autoclosure () -> Bool) -> RouteID
+    {
+        return self.addRoute(transition, condition: { t in condition() })
+    }
+    
     public func addRoute(route: Route) -> RouteID
     {
         return self._addRoute(route)
@@ -393,6 +387,11 @@ public class StateMachine<S: StateType, E: StateEventType>
     {
         let route = Route(transition: transition, condition: condition)
         return self.addRoute(route, handler: handler)
+    }
+    
+    public func addRoute(transition: Transition, condition: @autoclosure () -> Bool, handler: Handler) -> (RouteID, HandlerID)
+    {
+        return self.addRoute(transition, condition: { t in condition() }, handler: handler)
     }
     
     public func addRoute(route: Route, handler: Handler) -> (RouteID, HandlerID)
@@ -622,6 +621,11 @@ public class StateMachine<S: StateType, E: StateEventType>
         return self.addRouteChain(routeChain, handler: handler)
     }
     
+    public func addRouteChain(chain: TransitionChain, condition: @autoclosure () -> Bool, handler: Handler) -> (RouteID, HandlerID)
+    {
+        return self.addRouteChain(chain, condition: { t in condition() }, handler: handler)
+    }
+    
     public func addRouteChain(chain: RouteChain, handler: Handler) -> (RouteID, HandlerID)
     {
         var routeIDs: [RouteID] = []
@@ -783,6 +787,11 @@ public class StateMachine<S: StateType, E: StateEventType>
         return self.addRouteEvent(event, routes: routes)
     }
     
+    public func addRouteEvent(event: Event, transitions: [Transition], condition: @autoclosure () -> Bool) -> [RouteID]
+    {
+        return self.addRouteEvent(event, transitions: transitions, condition: { t in condition() })
+    }
+    
     public func addRouteEvent(event: Event, routes: [Route]) -> [RouteID]
     {
         var routeIDs: [RouteID] = []
@@ -808,6 +817,11 @@ public class StateMachine<S: StateType, E: StateEventType>
         let handlerID = self.addEventHandler(event, order: self.dynamicType._defaultOrder, handler: handler)
         
         return (routeIDs, handlerID)
+    }
+
+    public func addRouteEvent(event: Event, transitions: [Transition], condition: @autoclosure () -> Bool, handler: Handler) -> ([RouteID], HandlerID)
+    {
+        return self.addRouteEvent(event, transitions: transitions, condition: { t in condition() }, handler: handler)
     }
     
     public func addRouteEvent(event: Event, routes: [Route], handler: Handler) -> ([RouteID], HandlerID)

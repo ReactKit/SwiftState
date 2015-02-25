@@ -18,9 +18,7 @@ class StateRouteTests: _TestCase
         XCTAssertEqual(route.transition.toState, MyState.State1)
         XCTAssertTrue(route.condition == nil)
         
-        let route2 = StateRoute<MyState>(transition: .State1 => .State2, condition: { _ -> Bool in
-            return false
-        })
+        let route2 = StateRoute<MyState>(transition: .State1 => .State2, condition: false)
         XCTAssertEqual(route2.transition.fromState, MyState.State1)
         XCTAssertEqual(route2.transition.toState, MyState.State2)
         XCTAssertTrue(route2.condition != nil)

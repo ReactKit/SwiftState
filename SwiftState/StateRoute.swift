@@ -22,7 +22,7 @@ public struct StateRoute<S: StateType>
         self.condition = condition
     }
     
-    public init(transition: Transition, condition: @autoclosure () -> Bool)
+    public init(transition: Transition, @autoclosure(escaping) condition: () -> Bool)
     {
         self.init(transition: transition, condition: { t in condition() })
     }

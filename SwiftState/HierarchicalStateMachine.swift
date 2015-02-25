@@ -61,7 +61,7 @@ public class HierarchicalStateMachine<S: StateType, E: StateEventType>: StateMac
     {
         assert(state is HSM.State, "HSM state must be String.")
         
-        let components = split(state as! HSM.State, { $0 == "." }, maxSplit: 1)
+        let components = split(state as! HSM.State, maxSplit: 1) { $0 == "." }
         
         switch components.count {
             case 2:

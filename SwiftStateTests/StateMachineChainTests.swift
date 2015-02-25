@@ -50,11 +50,11 @@ class StateMachineChainTests: _TestCase
         var invokeCount = 0
         
         // add 0 => 1 => 2
-        machine.addRouteChain(.State0 => .State1 => .State2, condition: { _ in flag }) { (context) -> Void in
+        machine.addRouteChain(.State0 => .State1 => .State2, condition: flag) { context in
             invokeCount++
             return
         }
-
+        
         // tryState 0 => 1 => 2
         machine <- .State1
         machine <- .State2

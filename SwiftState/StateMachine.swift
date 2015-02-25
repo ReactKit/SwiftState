@@ -26,14 +26,14 @@ public class StateMachineRouteID<S: StateType, E: StateEventType>
         self.transition = transition
         self.routeKey = routeKey
         self.event = event
-
+        
         self.bundledRouteIDs = nil
     }
     
     private init(bundledRouteIDs: [StateMachineRouteID<S, E>]?)
     {
         self.bundledRouteIDs = bundledRouteIDs
-
+        
         self.transition = nil
         self.routeKey = nil
         self.event = nil
@@ -54,14 +54,14 @@ public class StateMachineHandlerID<S: StateType, E: StateEventType>
     {
         self.transition = transition
         self.handlerKey = handlerKey
-
+        
         self.bundledHandlerIDs = nil
     }
     
     private init(bundledHandlerIDs: [StateMachineHandlerID<S, E>]?)
     {
         self.bundledHandlerIDs = bundledHandlerIDs
-
+        
         self.transition = nil
         self.handlerKey = nil
     }
@@ -88,7 +88,7 @@ internal class _StateMachineHandlerInfo<S: StateType, E: StateEventType>
 public class StateMachine<S: StateType, E: StateEventType>
 {
     public typealias HandlerOrder = UInt8
-    public typealias Handler = ((context: HandlerContext) -> Void)
+    public typealias Handler = (HandlerContext -> Void)
     public typealias HandlerContext = (event: Event, transition: Transition, order: HandlerOrder, userInfo: Any?)
     
     internal typealias State = S
@@ -238,7 +238,7 @@ public class StateMachine<S: StateType, E: StateEventType>
                 let order = handlerInfo.order
                 let handler = handlerInfo.handler
                 
-                handler(context: HandlerContext(event: event, transition: transition, order: order, userInfo: userInfo))
+                handler(HandlerContext(event: event, transition: transition, order: order, userInfo: userInfo))
             }
             
             didTransit = true
@@ -248,7 +248,7 @@ public class StateMachine<S: StateType, E: StateEventType>
                 let order = handlerInfo.order
                 let handler = handlerInfo.handler
                 
-                handler(context: HandlerContext(event: event, transition: transition, order: order, userInfo: userInfo))
+                handler(HandlerContext(event: event, transition: transition, order: order, userInfo: userInfo))
             }
         }
         
@@ -350,6 +350,11 @@ public class StateMachine<S: StateType, E: StateEventType>
         return self.addRoute(route)
     }
     
+    public func addRoute(transition: Transition, @autoclosure(escaping) condition: () -> Bool) -> RouteID
+    {
+        return self.addRoute(transition, condition: { t in condition() })
+    }
+    
     public func addRoute(route: Route) -> RouteID
     {
         return self._addRoute(route)
@@ -395,6 +400,11 @@ public class StateMachine<S: StateType, E: StateEventType>
         return self.addRoute(route, handler: handler)
     }
     
+    public func addRoute(transition: Transition, @autoclosure(escaping) condition: () -> Bool, handler: Handler) -> (RouteID, HandlerID)
+    {
+        return self.addRoute(transition, condition: { t in condition() }, handler: handler)
+    }
+    
     public func addRoute(route: Route, handler: Handler) -> (RouteID, HandlerID)
     {
         let transition = route.transition
@@ -405,7 +415,7 @@ public class StateMachine<S: StateType, E: StateEventType>
         let handlerID = self.addHandler(transition) { [weak self] context in
             if let self_ = self {
                 if self_._canPassCondition(condition, transition: context.transition) {
-                    handler(context: context)
+                    handler(context)
                 }
             }
         }
@@ -622,6 +632,11 @@ public class StateMachine<S: StateType, E: StateEventType>
         return self.addRouteChain(routeChain, handler: handler)
     }
     
+    public func addRouteChain(chain: TransitionChain, @autoclosure(escaping) condition: () -> Bool, handler: Handler) -> (RouteID, HandlerID)
+    {
+        return self.addRouteChain(chain, condition: { t in condition() }, handler: handler)
+    }
+    
     public func addRouteChain(chain: RouteChain, handler: Handler) -> (RouteID, HandlerID)
     {
         var routeIDs: [RouteID] = []
@@ -740,7 +755,7 @@ public class StateMachine<S: StateType, E: StateEventType>
             if chainingCount < allCount {
                 shouldStop = true
                 if isError {
-                    handler(context: context)
+                    handler(context)
                 }
             }
         }
@@ -755,7 +770,7 @@ public class StateMachine<S: StateType, E: StateEventType>
                         shouldStop = true
                         
                         if !isError {
-                            handler(context: context)
+                            handler(context)
                         }
                     }
                 }
@@ -781,6 +796,11 @@ public class StateMachine<S: StateType, E: StateEventType>
         }
         
         return self.addRouteEvent(event, routes: routes)
+    }
+    
+    public func addRouteEvent(event: Event, transitions: [Transition], @autoclosure(escaping) condition: () -> Bool) -> [RouteID]
+    {
+        return self.addRouteEvent(event, transitions: transitions, condition: { t in condition() })
     }
     
     public func addRouteEvent(event: Event, routes: [Route]) -> [RouteID]
@@ -809,6 +829,11 @@ public class StateMachine<S: StateType, E: StateEventType>
         
         return (routeIDs, handlerID)
     }
+
+    public func addRouteEvent(event: Event, transitions: [Transition], @autoclosure(escaping) condition: () -> Bool, handler: Handler) -> ([RouteID], HandlerID)
+    {
+        return self.addRouteEvent(event, transitions: transitions, condition: { t in condition() }, handler: handler)
+    }
     
     public func addRouteEvent(event: Event, routes: [Route], handler: Handler) -> ([RouteID], HandlerID)
     {
@@ -832,7 +857,7 @@ public class StateMachine<S: StateType, E: StateEventType>
         
         let handlerID = self.addHandler(nil => nil, order: order) { [weak self] context in
             if context.event == event {
-                handler(context: context)
+                handler(context)
             }
         }
         

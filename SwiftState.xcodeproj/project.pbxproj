@@ -28,6 +28,8 @@
 		1FA62038199660CA00460108 /* StateTransitionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA6202F199660CA00460108 /* StateTransitionTests.swift */; };
 		1FB1EC8A199E515B00ABD937 /* MyEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FB1EC89199E515B00ABD937 /* MyEvent.swift */; };
 		1FB1EC8F199E60F800ABD937 /* String+SwiftState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FB1EC8E199E60F800ABD937 /* String+SwiftState.swift */; };
+		1FB4B39C1AAB3B190072E65D /* BugFixTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FB4B39B1AAB3B190072E65D /* BugFixTests.swift */; };
+		1FB4B39D1AAB3B190072E65D /* BugFixTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FB4B39B1AAB3B190072E65D /* BugFixTests.swift */; };
 		1FD01B6019EC2B5C00DA1C91 /* HierarchicalStateMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FD01B5F19EC2B5C00DA1C91 /* HierarchicalStateMachine.swift */; };
 		1FD01B6119EC2B5C00DA1C91 /* HierarchicalStateMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FD01B5F19EC2B5C00DA1C91 /* HierarchicalStateMachine.swift */; };
 		1FD01B6319EC2B6700DA1C91 /* HierarchicalStateMachineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FD01B6219EC2B6700DA1C91 /* HierarchicalStateMachineTests.swift */; };
@@ -90,6 +92,7 @@
 		1FA6202F199660CA00460108 /* StateTransitionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StateTransitionTests.swift; sourceTree = "<group>"; };
 		1FB1EC89199E515B00ABD937 /* MyEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyEvent.swift; sourceTree = "<group>"; };
 		1FB1EC8E199E60F800ABD937 /* String+SwiftState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+SwiftState.swift"; sourceTree = "<group>"; };
+		1FB4B39B1AAB3B190072E65D /* BugFixTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BugFixTests.swift; sourceTree = "<group>"; };
 		1FD01B5F19EC2B5C00DA1C91 /* HierarchicalStateMachine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HierarchicalStateMachine.swift; sourceTree = "<group>"; };
 		1FD01B6219EC2B6700DA1C91 /* HierarchicalStateMachineTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HierarchicalStateMachineTests.swift; sourceTree = "<group>"; };
 		4822F0A619D0085E00F5F572 /* SwiftStateTests-iOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SwiftStateTests-iOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -188,6 +191,7 @@
 				1FA6202E199660CA00460108 /* StateTransitionChainTests.swift */,
 				1FA6202D199660CA00460108 /* StateRouteTests.swift */,
 				1FD01B6219EC2B6700DA1C91 /* HierarchicalStateMachineTests.swift */,
+				1FB4B39B1AAB3B190072E65D /* BugFixTests.swift */,
 				1FA6200D1996601000460108 /* Supporting Files */,
 			);
 			path = SwiftStateTests;
@@ -414,6 +418,7 @@
 				1FA62036199660CA00460108 /* StateRouteTests.swift in Sources */,
 				1FA62031199660CA00460108 /* BasicTests.swift in Sources */,
 				1FA62034199660CA00460108 /* StateMachineEventTests.swift in Sources */,
+				1FB4B39C1AAB3B190072E65D /* BugFixTests.swift in Sources */,
 				1FA62035199660CA00460108 /* StateMachineTests.swift in Sources */,
 				1FA62037199660CA00460108 /* StateTransitionChainTests.swift in Sources */,
 				1FA62032199660CA00460108 /* MyState.swift in Sources */,
@@ -433,6 +438,7 @@
 				4822F0AE19D008EB00F5F572 /* StateMachineChainTests.swift in Sources */,
 				4822F0B019D008EB00F5F572 /* StateTransitionTests.swift in Sources */,
 				4822F0A919D008E700F5F572 /* MyState.swift in Sources */,
+				1FB4B39D1AAB3B190072E65D /* BugFixTests.swift in Sources */,
 				4822F0B219D008EB00F5F572 /* StateRouteTests.swift in Sources */,
 				4822F0B119D008EB00F5F572 /* StateTransitionChainTests.swift in Sources */,
 				4822F0AD19D008EB00F5F572 /* StateMachineTests.swift in Sources */,

@@ -162,7 +162,6 @@ public class StateMachine<S: StateType, E: StateEventType>
                 for (ev, transitionDict) in self._routes {
                     if ev == event || ev == nil as Event {
                         transitionDicts += [transitionDict]
-                        break
                     }
                 }
             }

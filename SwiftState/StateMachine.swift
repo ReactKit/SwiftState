@@ -182,7 +182,7 @@ public class StateMachine<S: StateType, E: StateEventType>
     
     private func _canPassCondition(condition: Condition?, transition: Transition) -> Bool
     {
-        return condition == nil || condition!(transition: transition)
+        return condition?(transition: transition) ?? true
     }
     
     public func canTryState(state: State, forEvent event: Event = nil) -> Bool

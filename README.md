@@ -5,8 +5,6 @@ Elegant state machine for Swift.
 
 ![SwiftState](Screenshots/logo.png)
 
-Also check out for sister project: [SwiftTask](https://github.com/inamiy/SwiftTask)
-
 
 ## Example
 
@@ -100,4 +98,4 @@ Chain     | `StateTransitionChain`        | Group of continuous routes represent
 
 ## Licence
 
-[MIT](https://github.com/inamiy/SwiftState/blob/master/LICENSE)
+[MIT](https://github.com/ReactKit/SwiftState/blob/master/LICENSE)

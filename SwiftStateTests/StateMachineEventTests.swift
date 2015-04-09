@@ -75,6 +75,17 @@ class StateMachineEventTests: _TestCase
         XCTAssertFalse(success, "Event0 doesn't have 2 => Any")
     }
     
+    /// https://github.com/ReactKit/SwiftState/issues/20
+    func testTryEvent_issue20()
+    {
+        let machine = StateMachine<MyState, MyEvent>(state: MyState.State2) { machine in
+            machine.addRouteEvent(.Event0, transitions: [.AnyState => .State0])
+        }
+        
+        XCTAssertTrue(machine <-! .Event0)
+        XCTAssertEqual(machine.state, MyState.State0)
+    }
+    
     func testTryEvent_string()
     {
         let machine = StateMachine<MyState, String>(state: .State0)

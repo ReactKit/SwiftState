@@ -302,7 +302,7 @@ public class StateMachine<S: StateType, E: StateEventType>
         for validEvent in validEvents {
             if let transitionDict = self._routes[validEvent] {
                 for (transition, routeKeyDict) in transitionDict {
-                    if transition.fromState == self.state {
+                    if transition.fromState == self.state || transition.fromState == nil {
                         for (_, condition) in routeKeyDict {
                             if self._canPassCondition(condition, transition: transition) {
                                 return transition.toState

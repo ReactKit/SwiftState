@@ -82,7 +82,7 @@ public class HierarchicalStateMachine<S: StateType, E: StateEventType>: StateMac
     public override var state: State
     {
         // NOTE: returning `substate` is not reliable (as a spec), so replace it with actual `submachine.state` instead
-        let (submachine, substate) = self._submachineTupleForState(self._state)
+        let (submachine, _) = self._submachineTupleForState(self._state)
         
         if let submachine = submachine {
             self._state = "\(submachine.name).\(submachine.state)" as! State
@@ -110,7 +110,7 @@ public class HierarchicalStateMachine<S: StateType, E: StateEventType>: StateMac
         
         let condition: Condition = { transition -> Bool in
             
-            let (fromSubmachine, fromSubstate) = self._submachineTupleForState(route.transition.fromState)
+            let (fromSubmachine, _) = self._submachineTupleForState(route.transition.fromState)
             let (toSubmachine, toSubstate) = self._submachineTupleForState(route.transition.toState)
             
             //
@@ -139,9 +139,9 @@ public class HierarchicalStateMachine<S: StateType, E: StateEventType>: StateMac
         
         let fromState = self.state
         let toState = state
-        let transition = fromState => toState
+        _ = fromState => toState
         
-        let (fromSubmachine, fromSubstate) = self._submachineTupleForState(fromState)
+        let (fromSubmachine, _) = self._submachineTupleForState(fromState)
         let (toSubmachine, toSubstate) = self._submachineTupleForState(toState)
         
         // try changing submachine-internal state

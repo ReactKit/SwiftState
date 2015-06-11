@@ -127,7 +127,7 @@ public class StateMachine<S: StateType, E: StateEventType>
     private class func _createUniqueString() -> String
     {
         var uniqueString: String = ""
-        for i in 1...8 {
+        for _ in 1...8 {
             uniqueString += String(UnicodeScalar(arc4random_uniform(0xD800))) // 0xD800 = 55296 = 15.755bit
         }
         return uniqueString
@@ -743,7 +743,7 @@ public class StateMachine<S: StateType, E: StateEventType>
         }
         
         // increment allCount (+ invoke chainErrorHandler) on any routes
-        handlerID = self.addHandler(nil => nil, order: 150) { [weak self] context in
+        handlerID = self.addHandler(nil => nil, order: 150) { context in
             
             shouldIncrementChainingCount = true
             
@@ -852,9 +852,7 @@ public class StateMachine<S: StateType, E: StateEventType>
     
     public func addEventHandler(event: Event, order: HandlerOrder, handler: Handler) -> HandlerID
     {
-        let transitions = self._routes[event]?.keys
-        
-        let handlerID = self.addHandler(nil => nil, order: order) { [weak self] context in
+        let handlerID = self.addHandler(nil => nil, order: order) { context in
             if context.event == event {
                 handler(context)
             }

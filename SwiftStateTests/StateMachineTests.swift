@@ -389,14 +389,14 @@ class StateMachineTests: _TestCase
         // add 0 => 1
         machine.addRoute(.State0 => .State1)
         
-        let handlerID = machine.addHandler(.State0 => .State1) { context in
+        machine.addHandler(.State0 => .State1) { context in
             returnedTransition = context.transition
         }
         
         // add 0 => 1 once more
         machine.addRoute(.State0 => .State1)
         
-        let handlerID2 = machine.addHandler(.State0 => .State1) { context in
+        machine.addHandler(.State0 => .State1) { context in
             returnedTransition2 = context.transition
         }
         
@@ -422,6 +422,12 @@ class StateMachineTests: _TestCase
         machine.addHandler(.State0 => .State1) { context in
             returnedTransition = context.transition
         }
+
+        XCTAssertTrue(returnedTransition == nil)
+
+        machine <- .State1
+
+        XCTAssertTrue(returnedTransition != nil)
     }
     
     //--------------------------------------------------
@@ -446,7 +452,7 @@ class StateMachineTests: _TestCase
         // add 0 => 1 once more
         machine.addRoute(.State0 => .State1)
         
-        let handlerID2 = machine.addHandler(.State0 => .State1) { context in
+        machine.addHandler(.State0 => .State1) { context in
             returnedTransition2 = context.transition
         }
         
@@ -495,7 +501,7 @@ class StateMachineTests: _TestCase
         // add 2 => 1 once more
         machine.addRoute(.State2 => .State1)
         
-        let handlerID2 = machine.addErrorHandler { context in
+        machine.addErrorHandler { context in
             returnedTransition2 = context.transition
         }
         

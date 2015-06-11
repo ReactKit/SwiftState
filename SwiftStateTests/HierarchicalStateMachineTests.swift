@@ -160,7 +160,6 @@ class HierarchicalStateMachineTests: _TestCase
     func testAddHandler()
     {
         let mainMachine = self.mainMachine!
-        let sub1Machine = self.sub1Machine!
         
         var didPass = false
         

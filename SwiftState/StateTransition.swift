@@ -58,7 +58,7 @@ public func => <S: StateType>(left: S, right: S) -> StateTransition<S>
 // MARK: - Printable
 //--------------------------------------------------
 
-extension StateTransition: Printable
+extension StateTransition: CustomStringConvertible
 {
     public var description: String
     {

@@ -16,17 +16,17 @@ class BasicTests: _TestCase
         let machine = StateMachine<MyState, MyEvent>(state: .State0) { machine in
             
             machine.addRoute(.State0 => .State1)
-            machine.addRoute(nil => .State2) { context in println("Any => 2, msg=\(context.userInfo!)") }
-            machine.addRoute(.State2 => nil) { context in println("2 => Any, msg=\(context.userInfo!)") }
+            machine.addRoute(nil => .State2) { context in print("Any => 2, msg=\(context.userInfo!)") }
+            machine.addRoute(.State2 => nil) { context in print("2 => Any, msg=\(context.userInfo!)") }
             
             // add handler (handlerContext = (event, transition, order, userInfo))
             machine.addHandler(.State0 => .State1) { context in
-                println("0 => 1")
+                print("0 => 1")
             }
             
             // add errorHandler
             machine.addErrorHandler { (event, transition, order, userInfo) in
-                println("[ERROR] \(transition.fromState) => \(transition.toState)")
+                print("[ERROR] \(transition.fromState) => \(transition.toState)")
             }
         }
         
@@ -36,7 +36,7 @@ class BasicTests: _TestCase
         machine <- (.State1, "Bye")
         machine <- .State0  // fail: no 1 => 0
         
-        println("machine.state = \(machine.state)")
+        print("machine.state = \(machine.state)")
     }
     
     func testExample()
@@ -45,19 +45,19 @@ class BasicTests: _TestCase
         
             // add 0 => 1
             $0.addRoute(.State0 => .State1) { context in
-                println("[Transition 0=>1] \(context.transition.fromState.rawValue) => \(context.transition.toState.rawValue)")
+                print("[Transition 0=>1] \(context.transition.fromState.rawValue) => \(context.transition.toState.rawValue)")
             }
             // add 0 => 1 once more
             $0.addRoute(.State0 => .State1) { context in
-                println("[Transition 0=>1b] \(context.transition.fromState.rawValue) => \(context.transition.toState.rawValue)")
+                print("[Transition 0=>1b] \(context.transition.fromState.rawValue) => \(context.transition.toState.rawValue)")
             }
             // add 2 => Any
             $0.addRoute(.State2 => nil) { context in
-                println("[Transition exit 2] \(context.transition.fromState.rawValue) => \(context.transition.toState.rawValue) (Any)")
+                print("[Transition exit 2] \(context.transition.fromState.rawValue) => \(context.transition.toState.rawValue) (Any)")
             }
             // add Any => 2
             $0.addRoute(nil => .State2) { context in
-                println("[Transition Entry 2] \(context.transition.fromState.rawValue) (Any) => \(context.transition.toState.rawValue)")
+                print("[Transition Entry 2] \(context.transition.fromState.rawValue) (Any) => \(context.transition.toState.rawValue)")
             }
             // add 1 => 0 (no handler)
             $0.addRoute(.State1 => .State0)
@@ -94,35 +94,35 @@ class BasicTests: _TestCase
             
             // error
             $0.addErrorHandler { context in
-                println("[ERROR 1] \(context.transition.fromState.rawValue) => \(context.transition.toState.rawValue)")
+                print("[ERROR 1] \(context.transition.fromState.rawValue) => \(context.transition.toState.rawValue)")
             }
             
             // entry
             $0.addEntryHandler(.State0) { context in
-                println("[Entry 0] \(context.transition.fromState.rawValue) => \(context.transition.toState.rawValue)")   // NOTE: this should not be called
+                print("[Entry 0] \(context.transition.fromState.rawValue) => \(context.transition.toState.rawValue)")   // NOTE: this should not be called
             }
             $0.addEntryHandler(.State1) { context in
-                println("[Entry 1] \(context.transition.fromState.rawValue) => \(context.transition.toState.rawValue)")
+                print("[Entry 1] \(context.transition.fromState.rawValue) => \(context.transition.toState.rawValue)")
             }
             $0.addEntryHandler(.State2) { context in
-                println("[Entry 2] \(context.transition.fromState.rawValue) => \(context.transition.toState.rawValue), userInfo = \(context.userInfo)")
+                print("[Entry 2] \(context.transition.fromState.rawValue) => \(context.transition.toState.rawValue), userInfo = \(context.userInfo)")
             }
             $0.addEntryHandler(.State2) { context in
-                println("[Entry 2b] \(context.transition.fromState.rawValue) => \(context.transition.toState.rawValue), userInfo = \(context.userInfo)")
+                print("[Entry 2b] \(context.transition.fromState.rawValue) => \(context.transition.toState.rawValue), userInfo = \(context.userInfo)")
             }
             
             // exit
             $0.addExitHandler(.State0) { context in
-                println("[Exit 0] \(context.transition.fromState.rawValue) => \(context.transition.toState.rawValue)")
+                print("[Exit 0] \(context.transition.fromState.rawValue) => \(context.transition.toState.rawValue)")
             }
             $0.addExitHandler(.State1) { context in
-                println("[Exit 1] \(context.transition.fromState.rawValue) => \(context.transition.toState.rawValue)")
+                print("[Exit 1] \(context.transition.fromState.rawValue) => \(context.transition.toState.rawValue)")
             }
             $0.addExitHandler(.State2) { context in
-                println("[Exit 2] \(context.transition.fromState.rawValue) => \(context.transition.toState.rawValue), userInfo = \(context.userInfo)")
+                print("[Exit 2] \(context.transition.fromState.rawValue) => \(context.transition.toState.rawValue), userInfo = \(context.userInfo)")
             }
             $0.addExitHandler(.State2) { context in
-                println("[Exit 2b] \(context.transition.fromState.rawValue) => \(context.transition.toState.rawValue), userInfo = \(context.userInfo)")
+                print("[Exit 2b] \(context.transition.fromState.rawValue) => \(context.transition.toState.rawValue), userInfo = \(context.userInfo)")
             }
         }
         

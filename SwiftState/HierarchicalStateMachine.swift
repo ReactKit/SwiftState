@@ -24,7 +24,7 @@ public typealias HSM = HierarchicalStateMachine<String, String>
 //
 
 /// nestable StateMachine with StateType as String
-public class HierarchicalStateMachine<S: StateType, E: StateEventType>: StateMachine<S, E>, Printable
+public class HierarchicalStateMachine<S: StateType, E: StateEventType>: StateMachine<S, E>, CustomStringConvertible
 {
     private var _submachines = [String : HSM]()
     
@@ -61,7 +61,7 @@ public class HierarchicalStateMachine<S: StateType, E: StateEventType>: StateMac
     {
         assert(state is HSM.State, "HSM state must be String.")
         
-        let components = split(state as! HSM.State, maxSplit: 1) { $0 == "." }
+        let components = split((state as! HSM.State).characters, maxSplit: 1) { $0 == "." }.map { String($0) }
         
         switch components.count {
             case 2:

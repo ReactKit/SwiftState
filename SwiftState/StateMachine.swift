@@ -268,7 +268,7 @@ public class StateMachine<S: StateType, E: StateEventType>
             }
         }
         
-        validHandlerInfos.sort { info1, info2 in
+        validHandlerInfos.sortInPlace { info1, info2 in
             return info1.order < info2.order
         }
         
@@ -504,7 +504,7 @@ public class StateMachine<S: StateType, E: StateEventType>
     {
         var index = handlerInfos.count
         
-        for i in Array(0..<handlerInfos.count).reverse() {
+        for i in Array(Array(0..<handlerInfos.count).reverse()) {
             if handlerInfos[i].order <= newHandlerInfo.order {
                 break
             }
@@ -601,7 +601,7 @@ public class StateMachine<S: StateType, E: StateEventType>
         return self.addErrorHandler(order: self.dynamicType._defaultOrder, handler: handler)
     }
     
-    public func addErrorHandler(#order: HandlerOrder, handler: Handler) -> HandlerID
+    public func addErrorHandler(order order: HandlerOrder, handler: Handler) -> HandlerID
     {
         let handlerKey = self.dynamicType._createUniqueString()
         

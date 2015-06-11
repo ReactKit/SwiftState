@@ -8,7 +8,7 @@
 
 import SwiftState
 
-enum MyState: Int, StateType, Printable
+enum MyState: Int, StateType, CustomStringConvertible
 {
     case State0, State1, State2, State3
     case AnyState   // IMPORTANT: create case=Any & use it in convertFromNilLiteral()

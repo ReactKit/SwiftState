@@ -51,12 +51,12 @@ class HierarchicalStateMachineTests: _TestCase
         mainMachine.addRoute("MainState0" => "Sub1.State1")
         
         // add logging handlers
-        sub1Machine.addHandler(nil => nil) { println("[Sub1] \($0.transition)") }
-        sub1Machine.addErrorHandler { println("[ERROR][Sub1] \($0.transition)") }
-        sub2Machine.addHandler(nil => nil) { println("[Sub2] \($0.transition)") }
-        sub2Machine.addErrorHandler { println("[ERROR][Sub2] \($0.transition)") }
-        mainMachine.addHandler(nil => nil) { println("[Main] \($0.transition)") }
-        mainMachine.addErrorHandler { println("[ERROR][Main] \($0.transition)") }
+        sub1Machine.addHandler(nil => nil) { print("[Sub1] \($0.transition)") }
+        sub1Machine.addErrorHandler { print("[ERROR][Sub1] \($0.transition)") }
+        sub2Machine.addHandler(nil => nil) { print("[Sub2] \($0.transition)") }
+        sub2Machine.addErrorHandler { print("[ERROR][Sub2] \($0.transition)") }
+        mainMachine.addHandler(nil => nil) { print("[Main] \($0.transition)") }
+        mainMachine.addErrorHandler { print("[ERROR][Main] \($0.transition)") }
         
         self.mainMachine = mainMachine
         self.sub1Machine = sub1Machine
@@ -166,7 +166,7 @@ class HierarchicalStateMachineTests: _TestCase
         
         // NOTE: this handler is added to mainMachine and doesn't make submachines dirty
         mainMachine.addHandler("Sub1.State1" => "Sub1.State2") { context in
-            println("[Main] 1-1 => 1-2 (specific)")
+            print("[Main] 1-1 => 1-2 (specific)")
             didPass = true
         }
         

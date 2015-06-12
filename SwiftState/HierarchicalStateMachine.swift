@@ -139,7 +139,6 @@ public class HierarchicalStateMachine<S: StateType, E: StateEventType>: StateMac
         
         let fromState = self.state
         let toState = state
-        _ = fromState => toState
         
         let (fromSubmachine, _) = self._submachineTupleForState(fromState)
         let (toSubmachine, toSubstate) = self._submachineTupleForState(toState)

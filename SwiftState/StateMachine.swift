@@ -504,7 +504,7 @@ public class StateMachine<S: StateType, E: StateEventType>
     {
         var index = handlerInfos.count
         
-        for i in Array(Array(0..<handlerInfos.count).reverse()) {
+        for i in Array(0..<handlerInfos.count).reverse() {
             if handlerInfos[i].order <= newHandlerInfo.order {
                 break
             }

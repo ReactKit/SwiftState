@@ -61,7 +61,7 @@ class StateTransitionChainTests: _TestCase
     func testPrepend()
     {
         // 0 => 1
-        var transition = MyState.State0 => .State1
+        let transition = MyState.State0 => .State1
         var chain = transition.toTransitionChain()
         
         XCTAssertEqual(chain.numberOfTransitions, 1)

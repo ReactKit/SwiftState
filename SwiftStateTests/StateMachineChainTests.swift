@@ -80,8 +80,6 @@ class StateMachineChainTests: _TestCase
     {
         let machine = StateMachine<MyState, String>(state: .State0)
         
-        var invokeCount = 0
-        
         // add 0 => 1 => 2
         machine.addRouteChain(.State0 => .State1 => .State2) { context in
             XCTFail("Handler should NOT be performed because 0 => 2 is skipping 1.")
@@ -194,7 +192,7 @@ class StateMachineChainTests: _TestCase
         var invokeCount = 0
         
         // add 0 => 1 => 2
-        let (routeID, handlerID) = machine.addRouteChain(.State0 => .State1 => .State2) { context in
+        let (routeID, _) = machine.addRouteChain(.State0 => .State1 => .State2) { context in
             invokeCount++
             return
         }
@@ -216,7 +214,7 @@ class StateMachineChainTests: _TestCase
         var invokeCount = 0
         
         // add 0 => 1 => 2
-        let (routeID, handlerID) = machine.addRouteChain(.State0 => .State1 => .State2) { context in
+        let (_, handlerID) = machine.addRouteChain(.State0 => .State1 => .State2) { context in
             invokeCount++
             return
         }

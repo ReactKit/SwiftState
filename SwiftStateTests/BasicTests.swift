@@ -16,8 +16,8 @@ class BasicTests: _TestCase
         let machine = StateMachine<MyState, MyEvent>(state: .State0) { machine in
             
             machine.addRoute(.State0 => .State1)
-            machine.addRoute(nil => .State2) { context in print("Any => 2, msg=\(context.userInfo!)") }
-            machine.addRoute(.State2 => nil) { context in print("2 => Any, msg=\(context.userInfo!)") }
+            machine.addRoute(nil => .State2) { context in print("Any => 2, msg=\(context.userInfo)") }
+            machine.addRoute(.State2 => nil) { context in print("2 => Any, msg=\(context.userInfo)") }
             
             // add handler (handlerContext = (event, transition, order, userInfo))
             machine.addHandler(.State0 => .State1) { context in

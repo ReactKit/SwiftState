@@ -23,17 +23,17 @@ enum MyState: StateType {
 let machine = StateMachine<MyState, MyEvent>(state: .State0) { machine in
 
     machine.addRoute(.State0 => .State1)
-    machine.addRoute(nil => .State2) { context in println("Any => 2, msg=\(context.userInfo!)") }
-    machine.addRoute(.State2 => nil) { context in println("2 => Any, msg=\(context.userInfo!)") }
+    machine.addRoute(nil => .State2) { context in print("Any => 2, msg=\(context.userInfo)") }
+    machine.addRoute(.State2 => nil) { context in print("2 => Any, msg=\(context.userInfo)") }
 
     // add handler (handlerContext = (event, transition, order, userInfo))
     machine.addHandler(.State0 => .State1) { context in
-        println("0 => 1")
+        print("0 => 1")
     }
 
     // add errorHandler
     machine.addErrorHandler { (event, transition, order, userInfo) in
-        println("[ERROR] \(transition.fromState) => \(transition.toState)")
+        print("[ERROR] \(transition.fromState) => \(transition.toState)")
     }
 }
 
@@ -43,7 +43,7 @@ machine <- (.State2, "Hello")
 machine <- (.State1, "Bye")
 machine <- .State0  // fail: no 1 => 0
 
-println("machine.state = \(machine.state)")
+print("machine.state = \(machine.state)")
 ```
 
 This will print:

@@ -86,6 +86,31 @@ class StateMachineEventTests: _TestCase
         XCTAssertEqual(machine.state, MyState.State0)
     }
     
+    /// https://github.com/ReactKit/SwiftState/issues/28
+    func testTryEvent_issue28()
+    {
+        var eventCount = 0
+        let machine = StateMachine<MyState, MyEvent>(state: .State0) { machine in
+            machine.addRoute(.State0 => .State1)
+            machine.addRouteEvent(.Event0, transitions: [nil => nil]) { _ in
+                eventCount++
+            }
+        }
+        
+        XCTAssertEqual(eventCount, 0)
+        
+        machine <-! .Event0
+        XCTAssertEqual(eventCount, 1)
+        XCTAssertEqual(machine.state, MyState.State0, "State should NOT be changed")
+        
+        machine <- .State1
+        XCTAssertEqual(machine.state, MyState.State1, "State should be changed")
+        
+        machine <-! .Event0
+        XCTAssertEqual(eventCount, 2)
+        XCTAssertEqual(machine.state, MyState.State1, "State should NOT be changed")
+    }
+    
     func testTryEvent_string()
     {
         let machine = StateMachine<MyState, String>(state: .State0)

@@ -329,7 +329,13 @@ public class StateMachine<S: StateType, E: StateEventType>
     
     public func tryEvent(event: Event, userInfo: Any? = nil) -> Bool
     {
-        if let toState = self.canTryEvent(event) {
+        if var toState = self.canTryEvent(event) {
+            
+            // current state should not be changed if `toState == nil`
+            if toState == nil {
+                toState = self.state
+            }
+            
             self._tryState(toState, userInfo: userInfo, forEvent: event)
             return true
         }

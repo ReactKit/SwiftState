@@ -4,20 +4,19 @@ machine:
 
 test:
   override:
-    - xctool
-      -reporter pretty
-      -reporter junit:$CIRCLE_TEST_REPORTS/xcode/results-OSX.xml
-      -reporter plain:$CIRCLE_ARTIFACTS/xctool-OSX.log
-      -scheme "SwiftState-OSX"
-      clean build build-tests run-tests
-    - xctool
-      -reporter pretty
-      -reporter junit:$CIRCLE_TEST_REPORTS/xcode/results-iOS.xml
-      -reporter plain:$CIRCLE_ARTIFACTS/xctool-iOS.log
-      CODE_SIGNING_REQUIRED=NO
-      CODE_SIGN_IDENTITY=
-      PROVISIONING_PROFILE=
-      -destination 'platform=iOS Simulator,name=iPhone 6,OS=latest'
-      -sdk iphonesimulator
-      -scheme "SwiftState-iOS"
-      clean build build-tests run-tests
+    - set -o pipefail &&
+      xcodebuild
+        -scheme "SwiftState-OSX"
+        clean build test |
+      tee $CIRCLE_ARTIFACTS/xcode_raw-OSX.log |
+      xcpretty --color --report junit --output $CIRCLE_TEST_REPORTS/xcode/results-OSX.xml
+      
+    - set -o pipefail &&
+      xcodebuild
+        CODE_SIGNING_REQUIRED=NO
+        CODE_SIGN_IDENTITY=
+        PROVISIONING_PROFILE=
+        -scheme "SwiftState-iOS"
+        clean build test |
+      tee $CIRCLE_ARTIFACTS/xcode_raw-iOS.log |
+      xcpretty --color --report junit --output $CIRCLE_TEST_REPORTS/xcode/results-iOS.xml

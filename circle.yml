@@ -6,10 +6,18 @@ test:
   override:
     - xctool
       -reporter pretty
-      -reporter junit:$CIRCLE_TEST_REPORTS/xcode/results.xml
-      -reporter plain:$CIRCLE_ARTIFACTS/xctool.log
+      -reporter junit:$CIRCLE_TEST_REPORTS/xcode/results-OSX.xml
+      -reporter plain:$CIRCLE_ARTIFACTS/xctool-OSX.log
+      -scheme "SwiftState-OSX"
+      clean build build-tests run-tests
+    - xctool
+      -reporter pretty
+      -reporter junit:$CIRCLE_TEST_REPORTS/xcode/results-iOS.xml
+      -reporter plain:$CIRCLE_ARTIFACTS/xctool-iOS.log
       CODE_SIGNING_REQUIRED=NO
       CODE_SIGN_IDENTITY=
       PROVISIONING_PROFILE=
-      -scheme "SwiftState-OSX"
-      build build-tests run-tests
+      -destination 'platform=iOS Simulator,name=iPhone 6,OS=latest'
+      -sdk iphonesimulator
+      -scheme "SwiftState-iOS"
+      clean build build-tests run-tests

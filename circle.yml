@@ -2,6 +2,11 @@ machine:
   xcode:
     version: "6.3.1"
 
+general:
+  branches:
+    ignore:
+      - swift/2.0
+      
 test:
   override:
     - set -o pipefail &&

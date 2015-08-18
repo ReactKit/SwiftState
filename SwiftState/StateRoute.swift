@@ -8,10 +8,10 @@
 
 public struct StateRoute<S: StateType>
 {
-    internal typealias Condition = ((transition: Transition) -> Bool)
+    public typealias Condition = ((transition: Transition) -> Bool)
     
-    private typealias State = S
-    private typealias Transition = StateTransition<State>
+    public typealias State = S
+    public typealias Transition = StateTransition<State>
     
     public let transition: Transition
     public let condition: Condition?

@@ -87,27 +87,26 @@ internal class _StateMachineHandlerInfo<S: StateType, E: StateEventType>
 
 public class StateMachine<S: StateType, E: StateEventType>
 {
+    public typealias State = S
+    public typealias Event = E
+    
+    public typealias Transition = StateTransition<State>
+    public typealias TransitionChain = StateTransitionChain<State>
+    
+    public typealias Route = StateRoute<State>
+    public typealias RouteID = StateMachineRouteID<State, Event>
+    public typealias RouteChain = StateRouteChain<State>
+    
+    public typealias Condition = Route.Condition
+    
     public typealias HandlerOrder = UInt8
     public typealias Handler = (HandlerContext -> Void)
     public typealias HandlerContext = (event: Event, transition: Transition, order: HandlerOrder, userInfo: Any?)
+    public typealias HandlerID = StateMachineHandlerID<State, Event>
     
-    internal typealias State = S
-    internal typealias Event = E
-    internal typealias Transition = StateTransition<State>
-    internal typealias TransitionChain = StateTransitionChain<State>
-    
-    internal typealias Route = StateRoute<State>
-    internal typealias RouteKey = String
-    internal typealias RouteID = StateMachineRouteID<State, Event>
-    internal typealias RouteChain = StateRouteChain<State>
-    
-    internal typealias Condition = Route.Condition
-    
-    internal typealias HandlerKey = String
-    internal typealias HandlerID = StateMachineHandlerID<State, Event>
-    internal typealias HandlerInfo = _StateMachineHandlerInfo<State, Event>
-    // NOTE: don't use tuple due to Array's copying behavior for closure
-//    private typealias HandlerInfo = (order: HandlerOrder, handlerKey: HandlerKey, handler: Handler)
+    private typealias RouteKey = String
+    private typealias HandlerKey = String
+    private typealias HandlerInfo = _StateMachineHandlerInfo<State, Event>
     
     private typealias TransitionRouteDictionary = [Transition : [RouteKey : Condition?]]
     

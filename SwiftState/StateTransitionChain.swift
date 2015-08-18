@@ -8,10 +8,10 @@
 
 public struct StateTransitionChain<S: StateType>
 {
-    private typealias State = S
-    private typealias Transition = StateTransition<State>
+    public typealias State = S
+    public typealias Transition = StateTransition<State>
     
-    private var states: [State]
+    public var states: [State]
     
     public init(transition: Transition)
     {

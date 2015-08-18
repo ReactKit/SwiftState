@@ -8,7 +8,7 @@
 
 public struct StateTransition<S: StateType>: Hashable
 {
-    private typealias State = S
+    public typealias State = S
     
     public let fromState: State
     public let toState: State

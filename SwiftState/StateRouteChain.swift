@@ -8,11 +8,11 @@
 
 public struct StateRouteChain<S: StateType>
 {
-    private typealias State = S
-    private typealias Transition = StateTransition<State>
-    private typealias TransitionChain = StateTransitionChain<State>
-    private typealias Route = StateRoute<State>
-    private typealias Condition = Route.Condition
+    public typealias State = S
+    public typealias Transition = StateTransition<State>
+    public typealias TransitionChain = StateTransitionChain<State>
+    public typealias Route = StateRoute<State>
+    public typealias Condition = Route.Condition
     
     internal var routes: [Route]
     

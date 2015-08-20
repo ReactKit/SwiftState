@@ -314,7 +314,9 @@ public class StateMachine<S: StateType, E: StateEventType>
                 for (transition, routeKeyDict) in transitionDict {
                     if transition.fromState == self.state || transition.fromState == nil {
                         for (_, condition) in routeKeyDict {
-                            if self._canPassCondition(condition, transition: transition) {
+                            // Pass current state as from-state to avoid passing nil by mistake when
+                            // transition has multiple from-states that will be evaluated in its condition closure
+                            if self._canPassCondition(condition, transition: self.state => transition.toState) {
                                 return transition.toState
                             }
                         }

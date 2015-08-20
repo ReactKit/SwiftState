@@ -55,6 +55,8 @@
 		48797D6319B42CD40085D80F /* StateType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA6201F1996606300460108 /* StateType.swift */; };
 		48797D6419B42CD40085D80F /* StateEventType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA620191996606200460108 /* StateEventType.swift */; };
 		48797D6519B42CD40085D80F /* String+SwiftState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FB1EC8E199E60F800ABD937 /* String+SwiftState.swift */; };
+		C662B6F51B861CC400479524 /* RasmusTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C662B6F41B861CC400479524 /* RasmusTest.swift */; };
+		C662B6F61B861CC400479524 /* RasmusTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C662B6F41B861CC400479524 /* RasmusTest.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -97,6 +99,7 @@
 		1FD01B6219EC2B6700DA1C91 /* HierarchicalStateMachineTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HierarchicalStateMachineTests.swift; sourceTree = "<group>"; };
 		4822F0A619D0085E00F5F572 /* SwiftStateTests-iOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SwiftStateTests-iOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4872D5AC19B4211900F326B5 /* SwiftState.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftState.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C662B6F41B861CC400479524 /* RasmusTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RasmusTest.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -181,18 +184,19 @@
 			isa = PBXGroup;
 			children = (
 				1FA62027199660CA00460108 /* _TestCase.swift */,
-				1FB1EC8D199E609900ABD937 /* Type */,
 				1FA62028199660CA00460108 /* BasicTests.swift */,
+				1FB4B39B1AAB3B190072E65D /* BugFixTests.swift */,
+				1FD01B6219EC2B6700DA1C91 /* HierarchicalStateMachineTests.swift */,
 				1F198C5B19972320001C3700 /* QiitaTests.swift */,
-				1FA6202C199660CA00460108 /* StateMachineTests.swift */,
+				C662B6F41B861CC400479524 /* RasmusTest.swift */,
 				1FA6202A199660CA00460108 /* StateMachineChainTests.swift */,
 				1FA6202B199660CA00460108 /* StateMachineEventTests.swift */,
-				1FA6202F199660CA00460108 /* StateTransitionTests.swift */,
-				1FA6202E199660CA00460108 /* StateTransitionChainTests.swift */,
+				1FA6202C199660CA00460108 /* StateMachineTests.swift */,
 				1FA6202D199660CA00460108 /* StateRouteTests.swift */,
-				1FD01B6219EC2B6700DA1C91 /* HierarchicalStateMachineTests.swift */,
-				1FB4B39B1AAB3B190072E65D /* BugFixTests.swift */,
+				1FA6202E199660CA00460108 /* StateTransitionChainTests.swift */,
+				1FA6202F199660CA00460108 /* StateTransitionTests.swift */,
 				1FA6200D1996601000460108 /* Supporting Files */,
+				1FB1EC8D199E609900ABD937 /* Type */,
 			);
 			path = SwiftStateTests;
 			sourceTree = "<group>";
@@ -422,6 +426,7 @@
 				1FB4B39C1AAB3B190072E65D /* BugFixTests.swift in Sources */,
 				1FA62035199660CA00460108 /* StateMachineTests.swift in Sources */,
 				1FA62037199660CA00460108 /* StateTransitionChainTests.swift in Sources */,
+				C662B6F51B861CC400479524 /* RasmusTest.swift in Sources */,
 				1FA62032199660CA00460108 /* MyState.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -442,6 +447,7 @@
 				1FB4B39D1AAB3B190072E65D /* BugFixTests.swift in Sources */,
 				4822F0B219D008EB00F5F572 /* StateRouteTests.swift in Sources */,
 				4822F0B119D008EB00F5F572 /* StateTransitionChainTests.swift in Sources */,
+				C662B6F61B861CC400479524 /* RasmusTest.swift in Sources */,
 				4822F0AD19D008EB00F5F572 /* StateMachineTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

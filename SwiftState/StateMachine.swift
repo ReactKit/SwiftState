@@ -166,7 +166,7 @@ public class StateMachine<S: StateType, E: StateEventType>
             var transitionDicts: [TransitionRouteDictionary] = []
             
             if event == nil as Event {
-                transitionDicts += self._routes.values.array
+                transitionDicts += [TransitionRouteDictionary](self._routes.values)
             }
             else {
                 for (ev, transitionDict) in self._routes {
@@ -303,7 +303,7 @@ public class StateMachine<S: StateType, E: StateEventType>
     {
         var validEvents: [Event] = []
         if event == nil as Event {
-            validEvents += self._routes.keys.array
+            validEvents += [Event](self._routes.keys)
         }
         else {
             validEvents += [event]

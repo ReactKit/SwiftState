@@ -61,6 +61,17 @@ machine.state = 1
 Use `<-!` operator to try transition by `Event` rather than specifying target `State` ([Test Case](https://github.com/ReactKit/SwiftState/blob/6858f8f49087c4b8b30bd980cfc81e8e74205718/SwiftStateTests/StateMachineEventTests.swift#L54-L76)).
 
 ```swift
+enum MyEvent: StateEventType {
+    case Event0, Event1
+    case AnyEvent   // create case=Any
+    
+    init(nilLiteral: Void) {
+        self = AnyEvent
+    }
+}
+```
+
+```swift
 let machine = StateMachine<MyState, MyEvent>(state: .State0) { machine in
         
     // add 0 => 1 => 2

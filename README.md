@@ -1,4 +1,4 @@
-SwiftState [![Circle CI](https://circleci.com/gh/ReactKit/SwiftState/tree/swift%2F1.2.svg?style=svg)](https://circleci.com/gh/ReactKit/SwiftState/tree/swift%2F1.2)
+SwiftState [![Circle CI](https://circleci.com/gh/ReactKit/SwiftState/tree/swift%2F2.0.svg?style=svg)](https://circleci.com/gh/ReactKit/SwiftState/tree/swift%2F2.0)
 ==========
 
 Elegant state machine for Swift.
@@ -54,6 +54,34 @@ Any => 2, msg=Hello
 2 => Any, msg=Bye
 [ERROR] 1 => 0
 machine.state = 1
+```
+
+### Transition by Event
+
+Use `<-!` operator to try transition by `Event` rather than specifying target `State` ([Test Case](https://github.com/ReactKit/SwiftState/blob/6858f8f49087c4b8b30bd980cfc81e8e74205718/SwiftStateTests/StateMachineEventTests.swift#L54-L76)).
+
+```swift
+let machine = StateMachine<MyState, MyEvent>(state: .State0) { machine in
+        
+    // add 0 => 1 => 2
+    machine.addRouteEvent(.Event0, transitions: [
+        .State0 => .State1,
+        .State1 => .State2,
+    ])
+}
+   
+// tryEvent
+machine <-! .Event0
+XCTAssertEqual(machine.state, MyState.State1)
+
+// tryEvent
+machine <-! .Event0
+XCTAssertEqual(machine.state, MyState.State2)
+
+// tryEvent
+let success = machine <-! .Event0
+XCTAssertEqual(machine.state, MyState.State2)
+XCTAssertFalse(success, "Event0 doesn't have 2 => Any")
 ```
 
 For more examples, please see XCTest cases.

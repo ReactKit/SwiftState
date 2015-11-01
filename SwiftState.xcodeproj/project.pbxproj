@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		1F198C5C19972320001C3700 /* QiitaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F198C5B19972320001C3700 /* QiitaTests.swift */; };
 		1F24C72C19D068B900C2FDC7 /* SwiftState.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4872D5AC19B4211900F326B5 /* SwiftState.framework */; };
+		1F27771E1BE68D1D00C57CC9 /* FrogcjnTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F27771C1BE68C7F00C57CC9 /* FrogcjnTest.swift */; };
+		1F27771F1BE68D1E00C57CC9 /* FrogcjnTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F27771C1BE68C7F00C57CC9 /* FrogcjnTest.swift */; };
 		1FA620061996601000460108 /* SwiftState.h in Headers */ = {isa = PBXBuildFile; fileRef = 1FA620051996601000460108 /* SwiftState.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		1FA620201996606300460108 /* StateEventType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA620191996606200460108 /* StateEventType.swift */; };
 		1FA620211996606300460108 /* StateMachine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA6201A1996606300460108 /* StateMachine.swift */; };
@@ -71,6 +73,7 @@
 
 /* Begin PBXFileReference section */
 		1F198C5B19972320001C3700 /* QiitaTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QiitaTests.swift; sourceTree = "<group>"; };
+		1F27771C1BE68C7F00C57CC9 /* FrogcjnTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FrogcjnTest.swift; sourceTree = "<group>"; };
 		1FA620001996601000460108 /* SwiftState.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftState.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		1FA620041996601000460108 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1FA620051996601000460108 /* SwiftState.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwiftState.h; sourceTree = "<group>"; };
@@ -189,6 +192,7 @@
 				1FD01B6219EC2B6700DA1C91 /* HierarchicalStateMachineTests.swift */,
 				1F198C5B19972320001C3700 /* QiitaTests.swift */,
 				C662B6F41B861CC400479524 /* RasmusTest.swift */,
+				1F27771C1BE68C7F00C57CC9 /* FrogcjnTest.swift */,
 				1FA6202A199660CA00460108 /* StateMachineChainTests.swift */,
 				1FA6202B199660CA00460108 /* StateMachineEventTests.swift */,
 				1FA6202C199660CA00460108 /* StateMachineTests.swift */,
@@ -427,6 +431,7 @@
 				1FA62035199660CA00460108 /* StateMachineTests.swift in Sources */,
 				1FA62037199660CA00460108 /* StateTransitionChainTests.swift in Sources */,
 				C662B6F51B861CC400479524 /* RasmusTest.swift in Sources */,
+				1F27771E1BE68D1D00C57CC9 /* FrogcjnTest.swift in Sources */,
 				1FA62032199660CA00460108 /* MyState.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -448,6 +453,7 @@
 				4822F0B219D008EB00F5F572 /* StateRouteTests.swift in Sources */,
 				4822F0B119D008EB00F5F572 /* StateTransitionChainTests.swift in Sources */,
 				C662B6F61B861CC400479524 /* RasmusTest.swift in Sources */,
+				1F27771F1BE68D1E00C57CC9 /* FrogcjnTest.swift in Sources */,
 				4822F0AD19D008EB00F5F572 /* StateMachineTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

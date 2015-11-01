@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name     = 'SwiftState'
-  s.version  = '3.0.0'
+  s.version  = '3.0.1'
   s.license  = { :type => 'MIT' }
   s.homepage = 'https://github.com/ReactKit/SwiftState'
   s.authors  = { 'Yasuhiro Inami' => 'inamiy@gmail.com' }

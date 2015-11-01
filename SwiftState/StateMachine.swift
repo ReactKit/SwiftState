@@ -860,7 +860,7 @@ public class StateMachine<S: StateType, E: StateEventType>
     public func addEventHandler(event: Event, order: HandlerOrder, handler: Handler) -> HandlerID
     {
         let handlerID = self.addHandler(nil => nil, order: order) { context in
-            if context.event == event {
+            if context.event == event || event == nil {
                 handler(context)
             }
         }

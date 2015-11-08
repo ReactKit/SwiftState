@@ -137,4 +137,4 @@ Chain     | `StateTransitionChain`        | Group of continuous routes represent
 
 ## Licence
 
-[MIT](https://github.com/ReactKit/SwiftState/blob/master/LICENSE)
+[MIT](LICENSE)

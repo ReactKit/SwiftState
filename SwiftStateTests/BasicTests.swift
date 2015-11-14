@@ -13,11 +13,11 @@ class BasicTests: _TestCase
 {
     func testREADME()
     {
-        let machine = StateMachine<MyState, MyEvent>(state: .State0) { machine in
+        let machine = Machine<MyState, MyEvent>(state: .State0) { machine in
             
             machine.addRoute(.State0 => .State1)
-            machine.addRoute(nil => .State2) { context in print("Any => 2, msg=\(context.userInfo)") }
-            machine.addRoute(.State2 => nil) { context in print("2 => Any, msg=\(context.userInfo)") }
+            machine.addRoute(.Any => .State2) { context in print("Any => 2, msg=\(context.userInfo)") }
+            machine.addRoute(.State2 => .Any) { context in print("2 => Any, msg=\(context.userInfo)") }
             
             // add handler (handlerContext = (event, transition, order, userInfo))
             machine.addHandler(.State0 => .State1) { context in
@@ -25,39 +25,126 @@ class BasicTests: _TestCase
             }
             
             // add errorHandler
-            machine.addErrorHandler { (event, transition, order, userInfo) in
-                print("[ERROR] \(transition.fromState) => \(transition.toState)")
+            machine.addErrorHandler { event, fromState, toState, userInfo in
+                print("[ERROR] \(fromState) => \(toState)")
             }
         }
         
         // tryState 0 => 1 => 2 => 1 => 0
+        
         machine <- .State1
+        XCTAssertTrue(machine.state == .State1)
+        
         machine <- (.State2, "Hello")
+        XCTAssertTrue(machine.state == .State2)
+        
         machine <- (.State1, "Bye")
+        XCTAssertTrue(machine.state == .State1)
+        
         machine <- .State0  // fail: no 1 => 0
+        XCTAssertTrue(machine.state == .State1)
         
         print("machine.state = \(machine.state)")
     }
     
+    func testREADME_string()
+    {
+        let machine = Machine<String, String>(state: ".State0") { machine in
+            
+            machine.addRoute(".State0" => ".State1")
+            machine.addRoute(.Any => ".State2") { context in print("Any => 2, msg=\(context.userInfo)") }
+            machine.addRoute(".State2" => .Any) { context in print("2 => Any, msg=\(context.userInfo)") }
+            
+            // add handler (handlerContext = (event, transition, order, userInfo))
+            machine.addHandler(".State0" => ".State1") { context in
+                print("0 => 1")
+            }
+            
+            // add errorHandler
+            machine.addErrorHandler { event, fromState, toState, userInfo in
+                print("[ERROR] \(fromState) => \(toState)")
+            }
+        }
+        
+        // tryState 0 => 1 => 2 => 1 => 0
+        
+        machine <- ".State1"
+        XCTAssertTrue(machine.state == ".State1")
+        
+        machine <- (".State2", "Hello")
+        XCTAssertTrue(machine.state == ".State2")
+        
+        machine <- (".State1", "Bye")
+        XCTAssertTrue(machine.state == ".State1")
+        
+        machine <- ".State0"  // fail: no 1 => 0
+        XCTAssertTrue(machine.state == ".State1")
+        
+        print("machine.state = \(machine.state)")
+    }
+    
+    
+    
+    
+    func testREADME_MyState2()
+    {
+        let machine = Machine<MyState2, MyEvent2>(state: .State0("0")) { machine in
+            
+            machine.addRoute(.State0("0") => .State0("1"))
+            machine.addRoute(.Any => .State0("2")) { context in print("Any => 2, msg=\(context.userInfo)") }
+            machine.addRoute(.State0("2") => .Any) { context in print("2 => Any, msg=\(context.userInfo)") }
+            
+            // add handler (handlerContext = (event, transition, order, userInfo))
+            machine.addHandler(.State0("0") => .State0("1")) { context in
+                print("0 => 1")
+            }
+            
+            // add errorHandler
+            machine.addErrorHandler { event, fromState, toState, userInfo in
+                print("[ERROR] \(fromState) => \(toState)")
+            }
+        }
+        
+        // tryState 0 => 1 => 2 => 1 => 0
+        
+        machine <- .State0("1")
+        XCTAssertTrue(machine.state == .State0("1"))
+        
+        machine <- (.State0("2"), "Hello")
+        XCTAssertTrue(machine.state == .State0("2"))
+        
+        machine <- (.State0("1"), "Bye")
+        XCTAssertTrue(machine.state == .State0("1"))
+        
+        machine <- .State0("0")  // fail: no 1 => 0
+        XCTAssertTrue(machine.state == .State0("1"))
+        
+        print("machine.state = \(machine.state)")
+    }
+    
+    
+    
+    
+    
     func testExample()
     {
-        let machine = StateMachine<MyState, String>(state: .State0) {
+        let machine = Machine<MyState, NoEvent>(state: .State0) {
         
             // add 0 => 1
             $0.addRoute(.State0 => .State1) { context in
-                print("[Transition 0=>1] \(context.transition.fromState.rawValue) => \(context.transition.toState.rawValue)")
+                print("[Transition 0=>1] \(context.fromState) => \(context.toState)")
             }
             // add 0 => 1 once more
             $0.addRoute(.State0 => .State1) { context in
-                print("[Transition 0=>1b] \(context.transition.fromState.rawValue) => \(context.transition.toState.rawValue)")
+                print("[Transition 0=>1b] \(context.fromState) => \(context.toState)")
             }
             // add 2 => Any
-            $0.addRoute(.State2 => nil) { context in
-                print("[Transition exit 2] \(context.transition.fromState.rawValue) => \(context.transition.toState.rawValue) (Any)")
+            $0.addRoute(.State2 => .Any) { context in
+                print("[Transition exit 2] \(context.fromState) => \(context.toState) (Any)")
             }
             // add Any => 2
-            $0.addRoute(nil => .State2) { context in
-                print("[Transition Entry 2] \(context.transition.fromState.rawValue) (Any) => \(context.transition.toState.rawValue)")
+            $0.addRoute(.Any => .State2) { context in
+                print("[Transition Entry 2] \(context.fromState) (Any) => \(context.toState)")
             }
             // add 1 => 0 (no handler)
             $0.addRoute(.State1 => .State0)
@@ -94,35 +181,35 @@ class BasicTests: _TestCase
             
             // error
             $0.addErrorHandler { context in
-                print("[ERROR 1] \(context.transition.fromState.rawValue) => \(context.transition.toState.rawValue)")
+                print("[ERROR 1] \(context.fromState) => \(context.toState)")
             }
             
             // entry
             $0.addEntryHandler(.State0) { context in
-                print("[Entry 0] \(context.transition.fromState.rawValue) => \(context.transition.toState.rawValue)")   // NOTE: this should not be called
+                print("[Entry 0] \(context.fromState) => \(context.toState)")   // NOTE: this should not be called
             }
             $0.addEntryHandler(.State1) { context in
-                print("[Entry 1] \(context.transition.fromState.rawValue) => \(context.transition.toState.rawValue)")
+                print("[Entry 1] \(context.fromState) => \(context.toState)")
             }
             $0.addEntryHandler(.State2) { context in
-                print("[Entry 2] \(context.transition.fromState.rawValue) => \(context.transition.toState.rawValue), userInfo = \(context.userInfo)")
+                print("[Entry 2] \(context.fromState) => \(context.toState), userInfo = \(context.userInfo)")
             }
             $0.addEntryHandler(.State2) { context in
-                print("[Entry 2b] \(context.transition.fromState.rawValue) => \(context.transition.toState.rawValue), userInfo = \(context.userInfo)")
+                print("[Entry 2b] \(context.fromState) => \(context.toState), userInfo = \(context.userInfo)")
             }
             
             // exit
             $0.addExitHandler(.State0) { context in
-                print("[Exit 0] \(context.transition.fromState.rawValue) => \(context.transition.toState.rawValue)")
+                print("[Exit 0] \(context.fromState) => \(context.toState)")
             }
             $0.addExitHandler(.State1) { context in
-                print("[Exit 1] \(context.transition.fromState.rawValue) => \(context.transition.toState.rawValue)")
+                print("[Exit 1] \(context.fromState) => \(context.toState)")
             }
             $0.addExitHandler(.State2) { context in
-                print("[Exit 2] \(context.transition.fromState.rawValue) => \(context.transition.toState.rawValue), userInfo = \(context.userInfo)")
+                print("[Exit 2] \(context.fromState) => \(context.toState), userInfo = \(context.userInfo)")
             }
             $0.addExitHandler(.State2) { context in
-                print("[Exit 2b] \(context.transition.fromState.rawValue) => \(context.transition.toState.rawValue), userInfo = \(context.userInfo)")
+                print("[Exit 2b] \(context.fromState) => \(context.toState), userInfo = \(context.userInfo)")
             }
         }
         

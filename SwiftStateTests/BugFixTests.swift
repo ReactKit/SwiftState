@@ -11,12 +11,13 @@ import XCTest
 
 class BugFixTests: _TestCase
 {
-    /// `hasRoute` test for "AnyEvent" & "SomeEvent" routes
+    // Fix hasRoute() bug when there are routes for both AnyEvent & SomeEvent.
+    // https://github.com/ReactKit/SwiftState/pull/19
     func testHasRoute_anyEvent_someEvent()
     {
-        let machine = StateMachine<MyState, MyEvent>(state: .State0)
+        let machine = Machine<MyState, MyEvent>(state: .State0)
         
-        machine.addRoute(.State0 => .State1);
+        machine.addRoute(.State0 => .State1)
         machine.addRouteEvent(.Event0, transitions: [.State1 => .State2])
         
         let hasRoute = machine.hasRoute(.State1 => .State2, forEvent: .Event0)

@@ -13,16 +13,10 @@ import XCTest
 // Swiftで有限オートマトン（ステートマシン）を作る - Qiita
 // http://qiita.com/inamiy/items/cd218144c90926f9a134
 
-enum InputKey: StateType, NilLiteralConvertible
+enum InputKey: StateType
 {
     case None
     case Key0, Key1, Key2, Key3, Key4, Key5, Key6, Key7, Key8, Key9
-    case Any
-    
-    init(nilLiteral: Void)
-    {
-        self = Any
-    }
 }
 
 class QiitaTests: _TestCase
@@ -31,10 +25,10 @@ class QiitaTests: _TestCase
     {
         var success = false
         
-        let machine = StateMachine<InputKey, String>(state: .None) { machine in
+        let machine = Machine<InputKey, NoEvent>(state: .None) { machine in
             
             // connect all states
-            machine.addRoute(nil => nil)
+            machine.addRoute(.Any => .Any)
             
             // success = true only when transitionChain 2 => 3 => 5 => 7 is fulfilled
             machine.addRouteChain(.Key2 => .Key3 => .Key5 => .Key7) { context in

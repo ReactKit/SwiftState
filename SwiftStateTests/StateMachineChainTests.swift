@@ -1,5 +1,5 @@
 //
-//  StateMachineChainTests.swift
+//  MachineChainTests.swift
 //  SwiftState
 //
 //  Created by Yasuhiro Inami on 2014/08/04.
@@ -9,11 +9,11 @@
 import SwiftState
 import XCTest
 
-class StateMachineChainTests: _TestCase
+class MachineChainTests: _TestCase
 {    
     func testAddRouteChain()
     {
-        let machine = StateMachine<MyState, String>(state: .State0)
+        let machine = Machine<MyState, NoEvent>(state: .State0)
         
         var invokeCount = 0
         
@@ -44,13 +44,13 @@ class StateMachineChainTests: _TestCase
     
     func testAddRouteChain_condition()
     {
-        let machine = StateMachine<MyState, String>(state: .State0)
+        let machine = Machine<MyState, NoEvent>(state: .State0)
         
         var flag = false
         var invokeCount = 0
         
         // add 0 => 1 => 2
-        machine.addRouteChain(.State0 => .State1 => .State2, condition: flag) { context in
+        machine.addRouteChain(.State0 => .State1 => .State2, condition: { _ in flag }) { context in
             invokeCount++
             return
         }
@@ -78,7 +78,7 @@ class StateMachineChainTests: _TestCase
     
     func testAddRouteChain_failBySkipping()
     {
-        let machine = StateMachine<MyState, String>(state: .State0)
+        let machine = Machine<MyState, NoEvent>(state: .State0)
         
         // add 0 => 1 => 2
         machine.addRouteChain(.State0 => .State1 => .State2) { context in
@@ -91,7 +91,7 @@ class StateMachineChainTests: _TestCase
     
     func testAddRouteChain_failByHangingAround()
     {
-        let machine = StateMachine<MyState, String>(state: .State0)
+        let machine = Machine<MyState, NoEvent>(state: .State0)
         
         // add 0 => 1 => 2
         machine.addRouteChain(.State0 => .State1 => .State2) { context in
@@ -107,7 +107,7 @@ class StateMachineChainTests: _TestCase
     
     func testAddRouteChain_succeedByFailingHangingAround()
     {
-        let machine = StateMachine<MyState, String>(state: .State0)
+        let machine = Machine<MyState, NoEvent>(state: .State0)
         
         var invokeCount = 0
         
@@ -128,7 +128,7 @@ class StateMachineChainTests: _TestCase
     
     func testAddRouteChain_goBackHomeAWhile()
     {
-        let machine = StateMachine<MyState, String>(state: .State0)
+        let machine = Machine<MyState, NoEvent>(state: .State0)
         
         var invokeCount = 0
         
@@ -150,11 +150,11 @@ class StateMachineChainTests: _TestCase
     // https://github.com/inamiy/SwiftState/issues/2
     func testAddRouteChain_goBackHomeAWhile2()
     {
-        let machine = StateMachine<MyState, String>(state: .State0)
+        let machine = Machine<MyState, NoEvent>(state: .State0)
         
         var invokeCount = 0
         
-        machine.addRoute(nil => nil)    // connect all states
+        machine.addRoute(.Any => .Any)    // connect all states
         
         // add 0 => 1 => 2 => 0 (back home) => 1 => 2
         machine.addRouteChain(.State0 => .State1 => .State2 => .State0 => .State1 => .State2) { context in
@@ -187,18 +187,18 @@ class StateMachineChainTests: _TestCase
     
     func testRemoveRouteChain()
     {
-        let machine = StateMachine<MyState, String>(state: .State0)
+        let machine = Machine<MyState, NoEvent>(state: .State0)
         
         var invokeCount = 0
         
         // add 0 => 1 => 2
-        let (routeID, _) = machine.addRouteChain(.State0 => .State1 => .State2) { context in
+        let (routeChainID, _) = machine.addRouteChain(.State0 => .State1 => .State2) { context in
             invokeCount++
             return
         }
         
-        // removeRoute
-        machine.removeRoute(routeID)
+        // removeRouteChain
+        machine.removeRouteChain(routeChainID)
         
         // tryState 0 => 1
         let success = machine <- .State1
@@ -209,18 +209,18 @@ class StateMachineChainTests: _TestCase
     
     func testRemoveChainHandler()
     {
-        let machine = StateMachine<MyState, String>(state: .State0)
+        let machine = Machine<MyState, NoEvent>(state: .State0)
         
         var invokeCount = 0
         
         // add 0 => 1 => 2
-        let (_, handlerID) = machine.addRouteChain(.State0 => .State1 => .State2) { context in
+        let (_, chainHandlerID) = machine.addRouteChain(.State0 => .State1 => .State2) { context in
             invokeCount++
             return
         }
         
         // removeHandler
-        XCTAssertTrue(machine.removeHandler(handlerID))
+        XCTAssertTrue(machine.removeChainHandler(chainHandlerID))
         
         // tryState 0 => 1 => 2
         machine <- .State1
@@ -232,13 +232,13 @@ class StateMachineChainTests: _TestCase
     
     func testAddChainErrorHandler()
     {
-        let machine = StateMachine<MyState, String>(state: .State0)
+        let machine = Machine<MyState, NoEvent>(state: .State0)
         
         var errorCount = 0
         
         let transitionChain = MyState.State0 => .State1 => .State2
         
-        machine.addRoute(nil => nil)    // connect all states
+        machine.addRoute(.Any => .Any)    // connect all states
         
         // add 0 => 1 => 2
         machine.addRouteChain(transitionChain) { context in
@@ -265,22 +265,22 @@ class StateMachineChainTests: _TestCase
     
     func testRemoveChainErrorHandler()
     {
-        let machine = StateMachine<MyState, String>(state: .State0)
+        let machine = Machine<MyState, NoEvent>(state: .State0)
         
         var errorCount = 0
         
         let transitionChain = MyState.State0 => .State1 => .State2
         
-        machine.addRoute(nil => nil)    // connect all states
+        machine.addRoute(.Any => .Any)    // connect all states
         
         // add 0 => 1 => 2 chainErrorHandler
-        let handlerID = machine.addChainErrorHandler(transitionChain) { context in
+        let chainHandlerID = machine.addChainErrorHandler(transitionChain) { context in
             errorCount++
             return
         }
         
         // remove chainErrorHandler
-        machine.removeHandler(handlerID)
+        machine.removeChainHandler(chainHandlerID)
         
         // tryState 0 (starting state) => 1 => 0
         machine <- .State1

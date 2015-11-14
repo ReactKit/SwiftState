@@ -8,24 +8,27 @@
 
 import SwiftState
 
-enum MyState: Int, StateType, CustomStringConvertible
+enum MyState: Int, StateType
 {
     case State0, State1, State2, State3
-    case AnyState   // IMPORTANT: create case=Any & use it in convertFromNilLiteral()
+}
+
+enum MyState2: StateType
+{
+    case State0(String)
     
-    //
-    // NOTE: enum + associated value is our future, but it won't conform to Equatable so easily
-    // http://stackoverflow.com/questions/24339807/how-to-test-equality-of-swift-enums-with-associated-values
-    //
-    //case MyState(Int)
-    
-    init(nilLiteral: Void)
+    var hashValue: Int
     {
-        self = AnyState
+        switch self {
+            case .State0(let str):  return str.hashValue
+        }
     }
-    
-    var description: String
-    {
-        return "\(self.rawValue)"
+}
+
+func == (lhs: MyState2, rhs: MyState2) -> Bool
+{
+    switch (lhs, rhs) {
+        case let (.State0(str1), .State0(str2)):
+            return str1 == str2
     }
 }

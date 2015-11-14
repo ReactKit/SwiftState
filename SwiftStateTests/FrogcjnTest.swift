@@ -15,12 +15,6 @@ private enum _State: StateType, Hashable
 {
     case Pending
     case Loading(Int)
-    case AnyState
-    
-    init(nilLiteral: ())
-    {
-        self = AnyState
-    }
     
     var hashValue: Int
     {
@@ -29,8 +23,6 @@ private enum _State: StateType, Hashable
                 return "Pending".hashValue
             case let .Loading(x):
                 return "Loading\(x)".hashValue
-            case .AnyState:
-                return "AnyState".hashValue
         }
     }
 }
@@ -42,23 +34,15 @@ private func ==(lhs: _State, rhs: _State) -> Bool
             return true
         case let (.Loading(x1), .Loading(x2)):
             return x1 == x2
-        case (.AnyState, .AnyState):
-            return true
         default:
             return false
     }
 }
 
-private enum _Event: StateEventType, Hashable
+private enum _Event: EventType, Hashable
 {
     case CancelAction
     case LoadAction(Int)
-    case AnyEvent
-    
-    init(nilLiteral: ())
-    {
-        self = AnyEvent
-    }
     
     var hashValue: Int
     {
@@ -67,8 +51,6 @@ private enum _Event: StateEventType, Hashable
                 return "CancelAction".hashValue
             case let .LoadAction(x):
                 return "LoadAction\(x)".hashValue
-            case .AnyEvent:
-                return "AnyEvent".hashValue
         }
     }
 }
@@ -80,8 +62,6 @@ private func ==(lhs: _Event, rhs: _Event) -> Bool
             return true
         case let (.LoadAction(x1), .LoadAction(x2)):
             return x1 == x2
-        case (.AnyEvent, .AnyEvent):
-            return true
         default:
             return false
     }
@@ -93,9 +73,9 @@ class FrogcjnTest: _TestCase
     {
         var count = 0
         
-        let machine = StateMachine<_State, _Event>(state: .Pending) { machine in
+        let machine = Machine<_State, _Event>(state: .Pending) { machine in
             
-            machine.addRouteEvent(.CancelAction, transitions: [ .AnyState => .Pending ], condition: { $0.fromState != .Pending })
+            machine.addRouteEvent(.CancelAction, transitions: [ .Any => .Pending ], condition: { $0.fromState != .Pending })
             
             //
             // If you have **finite** number of `LoadActionId`s (let's say 1 to 100),
@@ -103,11 +83,68 @@ class FrogcjnTest: _TestCase
             // (In this case, `LoadActionId` should have enum type instead)
             //
             for actionId in 1...100 {
-                machine.addRouteEvent(.LoadAction(actionId), transitions: [ .AnyState => .Loading(actionId) ], condition: { $0.fromState != .Loading(actionId) })
+                machine.addRouteEvent(.LoadAction(actionId), transitions: [ .Any => .Loading(actionId) ], condition: { $0.fromState != .Loading(actionId) })
             }
             
             // increment `count` when any events i.e. `.CancelAction` and `.LoadAction(x)` succeed.
-            machine.addEventHandler(.AnyEvent) { event, transition, order, userInfo in
+            machine.addEventHandler(.Any) { event, transition, order, userInfo in
+                count++
+            }
+        }
+        
+        // initial
+        XCTAssertTrue(machine.state == .Pending)
+        XCTAssertEqual(count, 0)
+        
+        // CancelAction (to .Pending state, same as before)
+        machine <-! .CancelAction
+        XCTAssertTrue(machine.state == .Pending)
+        XCTAssertEqual(count, 0, "`tryEvent()` failed, and `count` should not be incremented.")
+        
+        // LoadAction(1) (to .Loading(1) state)
+        machine <-! .LoadAction(1)
+        XCTAssertTrue(machine.state == .Loading(1))
+        XCTAssertEqual(count, 1)
+        
+        // LoadAction(1) (same as before)
+        machine <-! .LoadAction(1)
+        print(machine.state)
+        XCTAssertTrue(machine.state == .Loading(1))
+        XCTAssertEqual(count, 1, "`tryEvent()` failed, and `count` should not be incremented.")
+        
+        machine <-! .LoadAction(2)
+        XCTAssertTrue(machine.state == .Loading(2))
+        XCTAssertEqual(count, 2)
+        
+        machine <-! .CancelAction
+        XCTAssertTrue(machine.state == .Pending)
+        XCTAssertEqual(count, 3)
+    }
+    
+    func testEventWithAssociatedValue2()
+    {
+        var count = 0
+        
+        let machine = Machine<_State, _Event>(state: .Pending) { machine in
+            
+            machine.addRouteMapping { event, fromState, userInfo in
+                // no routes for no event
+                guard let event = event else {
+                    return nil
+                }
+                
+                switch event {
+                    case .CancelAction:
+                        // can transit to `.Pending` if current state is not the same
+                        return fromState == .Pending ? nil : .Pending
+                    case .LoadAction(let actionId):
+                        // can transit to `.Loading(actionId)` if current state is not the same
+                        return fromState == .Loading(actionId) ? nil : .Loading(actionId)
+                }
+            }
+            
+            // increment `count` when any events i.e. `.CancelAction` and `.LoadAction(x)` succeed.
+            machine.addEventHandler(.Any) { event, transition, order, userInfo in
                 count++
             }
         }

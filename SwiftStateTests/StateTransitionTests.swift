@@ -1,5 +1,5 @@
 //
-//  StateTransitionTests.swift
+//  TransitionTests.swift
 //  SwiftState
 //
 //  Created by Yasuhiro Inami on 2014/08/03.
@@ -9,35 +9,35 @@
 import SwiftState
 import XCTest
 
-class StateTransitionTests: _TestCase
+class TransitionTests: _TestCase
 {
     func testInit()
     {
-        let transition = StateTransition<MyState>(fromState: .State0, toState: .State1)
-        XCTAssertEqual(transition.fromState, MyState.State0)
-        XCTAssertEqual(transition.toState, MyState.State1)
+        let transition = Transition<MyState>(fromState: .State0, toState: .State1)
+        XCTAssertEqual(transition.fromState.value, MyState.State0)
+        XCTAssertEqual(transition.toState.value, MyState.State1)
         
         // shorthand
         let transition2 = MyState.State1 => .State0
-        XCTAssertEqual(transition2.fromState, MyState.State1)
-        XCTAssertEqual(transition2.toState, MyState.State0)
+        XCTAssertEqual(transition2.fromState.value, MyState.State1)
+        XCTAssertEqual(transition2.toState.value, MyState.State0)
     }
     
     func testNil()
     {
-        // nil => state
-        let transition = nil => MyState.State0
-        XCTAssertEqual(transition.fromState, nil as MyState)
-        XCTAssertEqual(transition.toState, MyState.State0)
+        // .Any => state
+        let transition = .Any => MyState.State0
+        XCTAssertTrue(transition.fromState == .Any)
+        XCTAssertTrue(transition.toState == .State0)
         
-        // state => nil
-        let transition2 = MyState.State0 => nil
-        XCTAssertEqual(transition2.fromState, MyState.State0)
-        XCTAssertEqual(transition2.toState, nil as MyState)
+        // state => .Any
+        let transition2 = MyState.State0 => .Any
+        XCTAssertTrue(transition2.fromState == .State0)
+        XCTAssertTrue(transition2.toState == .Any)
         
-        // nil => nil
-        let transition3: StateTransition<MyState> = nil => nil
-        XCTAssertEqual(transition3.fromState, nil as MyState)
-        XCTAssertEqual(transition3.toState, nil as MyState)
+        // .Any => .Any
+        let transition3: Transition<MyState> = .Any => .Any
+        XCTAssertTrue(transition3.fromState == .Any)
+        XCTAssertTrue(transition3.toState == .Any)
     }
 }

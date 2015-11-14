@@ -8,13 +8,29 @@
 
 import SwiftState
 
-enum MyEvent: StateEventType
+enum MyEvent: EventType
 {
     case Event0, Event1
-    case AnyEvent   // IMPORTANT: create case=Any & use it in convertFromNilLiteral()
+}
+
+enum MyEvent2: EventType
+{
+    case Event0(String)
     
-    init(nilLiteral: Void)
+    var hashValue: Int
     {
-        self = AnyEvent
+        switch self {
+            case .Event0(let str):  return str.hashValue
+        }
+    }
+}
+
+func == (lhs: MyEvent2, rhs: MyEvent2) -> Bool
+{
+    switch (lhs, rhs) {
+        case let (.Event0(str1), .Event0(str2)):
+            return str1 == str2
+//        default:
+//            return false
     }
 }

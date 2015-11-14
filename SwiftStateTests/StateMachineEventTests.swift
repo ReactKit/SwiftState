@@ -1,5 +1,5 @@
 //
-//  StateMachineEventTests.swift
+//  MachineEventTests.swift
 //  SwiftState
 //
 //  Created by Yasuhiro Inami on 2014/08/05.
@@ -9,11 +9,11 @@
 import SwiftState
 import XCTest
 
-class StateMachineEventTests: _TestCase
+class MachineEventTests: _TestCase
 {
     func testCanTryEvent()
     {
-        let machine = StateMachine<MyState, MyEvent>(state: .State0)
+        let machine = Machine<MyState, MyEvent>(state: .State0)
         
         // add 0 => 1 & 1 => 2
         // (NOTE: this is not chaining e.g. 0 => 1 => 2)
@@ -23,12 +23,11 @@ class StateMachineEventTests: _TestCase
         ])
         
         XCTAssertTrue(machine.canTryEvent(.Event0) != nil)
-        XCTAssertTrue(machine.canTryEvent(.AnyEvent) != nil)
     }
     
     func testTryState()
     {
-        let machine = StateMachine<MyState, MyEvent>(state: .State0)
+        let machine = Machine<MyState, MyEvent>(state: .State0)
         
         // add 0 => 1 & 1 => 2
         // (NOTE: this is not chaining e.g. 0 => 1 => 2)
@@ -53,7 +52,7 @@ class StateMachineEventTests: _TestCase
     
     func testTryEvent()
     {
-        let machine = StateMachine<MyState, MyEvent>(state: .State0)
+        let machine = Machine<MyState, MyEvent>(state: .State0)
         
         // add 0 => 1 => 2
         machine.addRouteEvent(.Event0, transitions: [
@@ -78,8 +77,8 @@ class StateMachineEventTests: _TestCase
     /// https://github.com/ReactKit/SwiftState/issues/20
     func testTryEvent_issue20()
     {
-        let machine = StateMachine<MyState, MyEvent>(state: MyState.State2) { machine in
-            machine.addRouteEvent(.Event0, transitions: [.AnyState => .State0])
+        let machine = Machine<MyState, MyEvent>(state: MyState.State2) { machine in
+            machine.addRouteEvent(.Event0, transitions: [.Any => .State0])
         }
         
         XCTAssertTrue(machine <-! .Event0)
@@ -90,9 +89,9 @@ class StateMachineEventTests: _TestCase
     func testTryEvent_issue28()
     {
         var eventCount = 0
-        let machine = StateMachine<MyState, MyEvent>(state: .State0) { machine in
+        let machine = Machine<MyState, MyEvent>(state: .State0) { machine in
             machine.addRoute(.State0 => .State1)
-            machine.addRouteEvent(.Event0, transitions: [nil => nil]) { _ in
+            machine.addRouteEvent(.Event0, transitions: [.Any => .Any]) { _ in
                 eventCount++
             }
         }
@@ -113,7 +112,7 @@ class StateMachineEventTests: _TestCase
     
     func testTryEvent_string()
     {
-        let machine = StateMachine<MyState, String>(state: .State0)
+        let machine = Machine<MyState, String>(state: .State0)
         
         // add 0 => 1 => 2
         machine.addRouteEvent("Run", transitions: [
@@ -137,7 +136,7 @@ class StateMachineEventTests: _TestCase
     
     func testAddRouteEvent_multiple()
     {
-        let machine = StateMachine<MyState, MyEvent>(state: .State0)
+        let machine = Machine<MyState, MyEvent>(state: .State0)
         
         // add 0 => 1 => 2
         machine.addRouteEvent(.Event0, transitions: [
@@ -186,7 +185,7 @@ class StateMachineEventTests: _TestCase
     
     func testAddRouteEvent_handler()
     {
-        let machine = StateMachine<MyState, MyEvent>(state: .State0)
+        let machine = Machine<MyState, MyEvent>(state: .State0)
         
         var invokeCount = 0
         
@@ -212,7 +211,7 @@ class StateMachineEventTests: _TestCase
     
     func testAddEventHandler()
     {
-        let machine = StateMachine<MyState, MyEvent>(state: .State0)
+        let machine = Machine<MyState, MyEvent>(state: .State0)
         
         var invokeCount = 0
         
@@ -240,7 +239,7 @@ class StateMachineEventTests: _TestCase
     
     func testRemoveRouteEvent()
     {
-        let machine = StateMachine<MyState, MyEvent>(state: .State0)
+        let machine = Machine<MyState, MyEvent>(state: .State0)
         
         var invokeCount = 0
         
@@ -273,7 +272,7 @@ class StateMachineEventTests: _TestCase
     
     func testRemoveEventHandler()
     {
-        let machine = StateMachine<MyState, MyEvent>(state: .State0)
+        let machine = Machine<MyState, MyEvent>(state: .State0)
         
         var invokeCount = 0
         

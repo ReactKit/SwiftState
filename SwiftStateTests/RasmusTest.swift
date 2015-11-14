@@ -10,12 +10,10 @@ import SwiftState
 import XCTest
 
 enum RasmusTestState: StateType {
-    case Any
     case State1, State2, State3, State4
 }
 
 enum RasmusTestEvent: EventType {
-    case Any
     case State2fromState1
     case State4fromState2OrState3
 }

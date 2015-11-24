@@ -13,7 +13,7 @@ class BasicTests: _TestCase
 {
     func testREADME()
     {
-        let machine = Machine<MyState, MyEvent>(state: .State0) { machine in
+        let machine = Machine<MyState, NoEvent>(state: .State0) { machine in
             
             machine.addRoute(.State0 => .State1)
             machine.addRoute(.Any => .State2) { context in print("Any => 2, msg=\(context.userInfo)") }
@@ -49,7 +49,7 @@ class BasicTests: _TestCase
     
     func testREADME_string()
     {
-        let machine = Machine<String, String>(state: ".State0") { machine in
+        let machine = Machine<String, NoEvent>(state: ".State0") { machine in
             
             machine.addRoute(".State0" => ".State1")
             machine.addRoute(.Any => ".State2") { context in print("Any => 2, msg=\(context.userInfo)") }
@@ -66,7 +66,7 @@ class BasicTests: _TestCase
             }
         }
         
-        // tryState 0 => 1 => 2 => 1 => 0
+        // tryState 0 => 1 => 2 => 1 => 0   
         
         machine <- ".State1"
         XCTAssertTrue(machine.state == ".State1")
@@ -83,9 +83,7 @@ class BasicTests: _TestCase
         print("machine.state = \(machine.state)")
     }
     
-    
-    
-    
+    // StateType + associated value
     func testREADME_MyState2()
     {
         let machine = Machine<MyState2, MyEvent2>(state: .State0("0")) { machine in
@@ -121,10 +119,6 @@ class BasicTests: _TestCase
         
         print("machine.state = \(machine.state)")
     }
-    
-    
-    
-    
     
     func testExample()
     {

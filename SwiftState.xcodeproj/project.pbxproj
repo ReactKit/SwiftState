@@ -9,8 +9,8 @@
 /* Begin PBXBuildFile section */
 		1F198C5C19972320001C3700 /* QiitaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F198C5B19972320001C3700 /* QiitaTests.swift */; };
 		1F24C72C19D068B900C2FDC7 /* SwiftState.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4872D5AC19B4211900F326B5 /* SwiftState.framework */; };
-		1F27771E1BE68D1D00C57CC9 /* FrogcjnTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F27771C1BE68C7F00C57CC9 /* FrogcjnTest.swift */; };
-		1F27771F1BE68D1E00C57CC9 /* FrogcjnTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F27771C1BE68C7F00C57CC9 /* FrogcjnTest.swift */; };
+		1F27771E1BE68D1D00C57CC9 /* RouteMappingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F27771C1BE68C7F00C57CC9 /* RouteMappingTests.swift */; };
+		1F27771F1BE68D1E00C57CC9 /* RouteMappingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F27771C1BE68C7F00C57CC9 /* RouteMappingTests.swift */; };
 		1F70FB661BF0F46000E5AC8C /* RouteID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F70FB651BF0F46000E5AC8C /* RouteID.swift */; };
 		1F70FB671BF0F46000E5AC8C /* RouteID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F70FB651BF0F46000E5AC8C /* RouteID.swift */; };
 		1F70FB691BF0F46E00E5AC8C /* RouteChainID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F70FB681BF0F46E00E5AC8C /* RouteChainID.swift */; };
@@ -32,27 +32,25 @@
 		1FA62030199660CA00460108 /* _TestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA62027199660CA00460108 /* _TestCase.swift */; };
 		1FA62031199660CA00460108 /* BasicTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA62028199660CA00460108 /* BasicTests.swift */; };
 		1FA62032199660CA00460108 /* MyState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA62029199660CA00460108 /* MyState.swift */; };
-		1FA62033199660CA00460108 /* StateMachineChainTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA6202A199660CA00460108 /* StateMachineChainTests.swift */; };
-		1FA62034199660CA00460108 /* StateMachineEventTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA6202B199660CA00460108 /* StateMachineEventTests.swift */; };
-		1FA62035199660CA00460108 /* StateMachineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA6202C199660CA00460108 /* StateMachineTests.swift */; };
-		1FA62036199660CA00460108 /* StateRouteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA6202D199660CA00460108 /* StateRouteTests.swift */; };
-		1FA62037199660CA00460108 /* StateTransitionChainTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA6202E199660CA00460108 /* StateTransitionChainTests.swift */; };
-		1FA62038199660CA00460108 /* StateTransitionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA6202F199660CA00460108 /* StateTransitionTests.swift */; };
+		1FA62033199660CA00460108 /* RouteChainTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA6202A199660CA00460108 /* RouteChainTests.swift */; };
+		1FA62034199660CA00460108 /* TryEventTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA6202B199660CA00460108 /* TryEventTests.swift */; };
+		1FA62035199660CA00460108 /* MachineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA6202C199660CA00460108 /* MachineTests.swift */; };
+		1FA62036199660CA00460108 /* RouteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA6202D199660CA00460108 /* RouteTests.swift */; };
+		1FA62037199660CA00460108 /* TransitionChainTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA6202E199660CA00460108 /* TransitionChainTests.swift */; };
+		1FA62038199660CA00460108 /* TransitionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA6202F199660CA00460108 /* TransitionTests.swift */; };
 		1FB1EC8A199E515B00ABD937 /* MyEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FB1EC89199E515B00ABD937 /* MyEvent.swift */; };
-		1FB4B39C1AAB3B190072E65D /* BugFixTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FB4B39B1AAB3B190072E65D /* BugFixTests.swift */; };
-		1FB4B39D1AAB3B190072E65D /* BugFixTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FB4B39B1AAB3B190072E65D /* BugFixTests.swift */; };
 		1FF692041996625900E3CE40 /* SwiftState.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FA620001996601000460108 /* SwiftState.framework */; };
 		4822F0A819D008E300F5F572 /* _TestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA62027199660CA00460108 /* _TestCase.swift */; };
 		4822F0A919D008E700F5F572 /* MyState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA62029199660CA00460108 /* MyState.swift */; };
 		4822F0AA19D008E700F5F572 /* MyEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FB1EC89199E515B00ABD937 /* MyEvent.swift */; };
 		4822F0AB19D008EB00F5F572 /* BasicTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA62028199660CA00460108 /* BasicTests.swift */; };
 		4822F0AC19D008EB00F5F572 /* QiitaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F198C5B19972320001C3700 /* QiitaTests.swift */; };
-		4822F0AD19D008EB00F5F572 /* StateMachineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA6202C199660CA00460108 /* StateMachineTests.swift */; };
-		4822F0AE19D008EB00F5F572 /* StateMachineChainTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA6202A199660CA00460108 /* StateMachineChainTests.swift */; };
-		4822F0AF19D008EB00F5F572 /* StateMachineEventTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA6202B199660CA00460108 /* StateMachineEventTests.swift */; };
-		4822F0B019D008EB00F5F572 /* StateTransitionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA6202F199660CA00460108 /* StateTransitionTests.swift */; };
-		4822F0B119D008EB00F5F572 /* StateTransitionChainTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA6202E199660CA00460108 /* StateTransitionChainTests.swift */; };
-		4822F0B219D008EB00F5F572 /* StateRouteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA6202D199660CA00460108 /* StateRouteTests.swift */; };
+		4822F0AD19D008EB00F5F572 /* MachineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA6202C199660CA00460108 /* MachineTests.swift */; };
+		4822F0AE19D008EB00F5F572 /* RouteChainTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA6202A199660CA00460108 /* RouteChainTests.swift */; };
+		4822F0AF19D008EB00F5F572 /* TryEventTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA6202B199660CA00460108 /* TryEventTests.swift */; };
+		4822F0B019D008EB00F5F572 /* TransitionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA6202F199660CA00460108 /* TransitionTests.swift */; };
+		4822F0B119D008EB00F5F572 /* TransitionChainTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA6202E199660CA00460108 /* TransitionChainTests.swift */; };
+		4822F0B219D008EB00F5F572 /* RouteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA6202D199660CA00460108 /* RouteTests.swift */; };
 		48797D5D19B42CBE0085D80F /* SwiftState.h in Headers */ = {isa = PBXBuildFile; fileRef = 1FA620051996601000460108 /* SwiftState.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		48797D5E19B42CCE0085D80F /* Machine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA6201A1996606300460108 /* Machine.swift */; };
 		48797D5F19B42CCE0085D80F /* Transition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA6201D1996606300460108 /* Transition.swift */; };
@@ -61,8 +59,6 @@
 		48797D6219B42CCE0085D80F /* RouteChain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA6201C1996606300460108 /* RouteChain.swift */; };
 		48797D6319B42CD40085D80F /* StateType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA6201F1996606300460108 /* StateType.swift */; };
 		48797D6419B42CD40085D80F /* EventType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1FA620191996606200460108 /* EventType.swift */; };
-		C662B6F51B861CC400479524 /* RasmusTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C662B6F41B861CC400479524 /* RasmusTest.swift */; };
-		C662B6F61B861CC400479524 /* RasmusTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C662B6F41B861CC400479524 /* RasmusTest.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -77,7 +73,7 @@
 
 /* Begin PBXFileReference section */
 		1F198C5B19972320001C3700 /* QiitaTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QiitaTests.swift; sourceTree = "<group>"; };
-		1F27771C1BE68C7F00C57CC9 /* FrogcjnTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FrogcjnTest.swift; sourceTree = "<group>"; };
+		1F27771C1BE68C7F00C57CC9 /* RouteMappingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteMappingTests.swift; sourceTree = "<group>"; };
 		1F70FB651BF0F46000E5AC8C /* RouteID.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteID.swift; sourceTree = "<group>"; };
 		1F70FB681BF0F46E00E5AC8C /* RouteChainID.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteChainID.swift; sourceTree = "<group>"; };
 		1F70FB6B1BF0F47700E5AC8C /* RouteMappingID.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteMappingID.swift; sourceTree = "<group>"; };
@@ -98,17 +94,15 @@
 		1FA62027199660CA00460108 /* _TestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = _TestCase.swift; sourceTree = "<group>"; };
 		1FA62028199660CA00460108 /* BasicTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasicTests.swift; sourceTree = "<group>"; };
 		1FA62029199660CA00460108 /* MyState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyState.swift; sourceTree = "<group>"; };
-		1FA6202A199660CA00460108 /* StateMachineChainTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StateMachineChainTests.swift; sourceTree = "<group>"; };
-		1FA6202B199660CA00460108 /* StateMachineEventTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StateMachineEventTests.swift; sourceTree = "<group>"; };
-		1FA6202C199660CA00460108 /* StateMachineTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StateMachineTests.swift; sourceTree = "<group>"; };
-		1FA6202D199660CA00460108 /* StateRouteTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StateRouteTests.swift; sourceTree = "<group>"; };
-		1FA6202E199660CA00460108 /* StateTransitionChainTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StateTransitionChainTests.swift; sourceTree = "<group>"; };
-		1FA6202F199660CA00460108 /* StateTransitionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StateTransitionTests.swift; sourceTree = "<group>"; };
+		1FA6202A199660CA00460108 /* RouteChainTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteChainTests.swift; sourceTree = "<group>"; };
+		1FA6202B199660CA00460108 /* TryEventTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TryEventTests.swift; sourceTree = "<group>"; };
+		1FA6202C199660CA00460108 /* MachineTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MachineTests.swift; sourceTree = "<group>"; };
+		1FA6202D199660CA00460108 /* RouteTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteTests.swift; sourceTree = "<group>"; };
+		1FA6202E199660CA00460108 /* TransitionChainTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransitionChainTests.swift; sourceTree = "<group>"; };
+		1FA6202F199660CA00460108 /* TransitionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransitionTests.swift; sourceTree = "<group>"; };
 		1FB1EC89199E515B00ABD937 /* MyEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyEvent.swift; sourceTree = "<group>"; };
-		1FB4B39B1AAB3B190072E65D /* BugFixTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BugFixTests.swift; sourceTree = "<group>"; };
 		4822F0A619D0085E00F5F572 /* SwiftStateTests-iOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "SwiftStateTests-iOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4872D5AC19B4211900F326B5 /* SwiftState.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftState.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		C662B6F41B861CC400479524 /* RasmusTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RasmusTest.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -214,16 +208,14 @@
 				1FA62027199660CA00460108 /* _TestCase.swift */,
 				1FB1EC8D199E609900ABD937 /* State & Event */,
 				1FA62028199660CA00460108 /* BasicTests.swift */,
-				1FB4B39B1AAB3B190072E65D /* BugFixTests.swift */,
 				1F198C5B19972320001C3700 /* QiitaTests.swift */,
-				C662B6F41B861CC400479524 /* RasmusTest.swift */,
-				1F27771C1BE68C7F00C57CC9 /* FrogcjnTest.swift */,
-				1FA6202A199660CA00460108 /* StateMachineChainTests.swift */,
-				1FA6202B199660CA00460108 /* StateMachineEventTests.swift */,
-				1FA6202C199660CA00460108 /* StateMachineTests.swift */,
-				1FA6202D199660CA00460108 /* StateRouteTests.swift */,
-				1FA6202E199660CA00460108 /* StateTransitionChainTests.swift */,
-				1FA6202F199660CA00460108 /* StateTransitionTests.swift */,
+				1FA6202C199660CA00460108 /* MachineTests.swift */,
+				1FA6202B199660CA00460108 /* TryEventTests.swift */,
+				1FA6202F199660CA00460108 /* TransitionTests.swift */,
+				1FA6202E199660CA00460108 /* TransitionChainTests.swift */,
+				1FA6202D199660CA00460108 /* RouteTests.swift */,
+				1FA6202A199660CA00460108 /* RouteChainTests.swift */,
+				1F27771C1BE68C7F00C57CC9 /* RouteMappingTests.swift */,
 				1FA6200D1996601000460108 /* Supporting Files */,
 			);
 			path = SwiftStateTests;
@@ -447,17 +439,15 @@
 				1FB1EC8A199E515B00ABD937 /* MyEvent.swift in Sources */,
 				1F198C5C19972320001C3700 /* QiitaTests.swift in Sources */,
 				1F70FB791BF0FB7000E5AC8C /* String+TestExt.swift in Sources */,
-				1FA62038199660CA00460108 /* StateTransitionTests.swift in Sources */,
-				1FA62033199660CA00460108 /* StateMachineChainTests.swift in Sources */,
+				1FA62038199660CA00460108 /* TransitionTests.swift in Sources */,
+				1FA62033199660CA00460108 /* RouteChainTests.swift in Sources */,
 				1FA62030199660CA00460108 /* _TestCase.swift in Sources */,
-				1FA62036199660CA00460108 /* StateRouteTests.swift in Sources */,
+				1FA62036199660CA00460108 /* RouteTests.swift in Sources */,
 				1FA62031199660CA00460108 /* BasicTests.swift in Sources */,
-				1FA62034199660CA00460108 /* StateMachineEventTests.swift in Sources */,
-				1FB4B39C1AAB3B190072E65D /* BugFixTests.swift in Sources */,
-				1FA62035199660CA00460108 /* StateMachineTests.swift in Sources */,
-				1FA62037199660CA00460108 /* StateTransitionChainTests.swift in Sources */,
-				C662B6F51B861CC400479524 /* RasmusTest.swift in Sources */,
-				1F27771E1BE68D1D00C57CC9 /* FrogcjnTest.swift in Sources */,
+				1FA62034199660CA00460108 /* TryEventTests.swift in Sources */,
+				1FA62035199660CA00460108 /* MachineTests.swift in Sources */,
+				1FA62037199660CA00460108 /* TransitionChainTests.swift in Sources */,
+				1F27771E1BE68D1D00C57CC9 /* RouteMappingTests.swift in Sources */,
 				1FA62032199660CA00460108 /* MyState.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -469,18 +459,16 @@
 				4822F0AC19D008EB00F5F572 /* QiitaTests.swift in Sources */,
 				4822F0AB19D008EB00F5F572 /* BasicTests.swift in Sources */,
 				1F70FB7A1BF0FB7100E5AC8C /* String+TestExt.swift in Sources */,
-				4822F0AF19D008EB00F5F572 /* StateMachineEventTests.swift in Sources */,
+				4822F0AF19D008EB00F5F572 /* TryEventTests.swift in Sources */,
 				4822F0A819D008E300F5F572 /* _TestCase.swift in Sources */,
 				4822F0AA19D008E700F5F572 /* MyEvent.swift in Sources */,
-				4822F0AE19D008EB00F5F572 /* StateMachineChainTests.swift in Sources */,
-				4822F0B019D008EB00F5F572 /* StateTransitionTests.swift in Sources */,
+				4822F0AE19D008EB00F5F572 /* RouteChainTests.swift in Sources */,
+				4822F0B019D008EB00F5F572 /* TransitionTests.swift in Sources */,
 				4822F0A919D008E700F5F572 /* MyState.swift in Sources */,
-				1FB4B39D1AAB3B190072E65D /* BugFixTests.swift in Sources */,
-				4822F0B219D008EB00F5F572 /* StateRouteTests.swift in Sources */,
-				4822F0B119D008EB00F5F572 /* StateTransitionChainTests.swift in Sources */,
-				C662B6F61B861CC400479524 /* RasmusTest.swift in Sources */,
-				1F27771F1BE68D1E00C57CC9 /* FrogcjnTest.swift in Sources */,
-				4822F0AD19D008EB00F5F572 /* StateMachineTests.swift in Sources */,
+				4822F0B219D008EB00F5F572 /* RouteTests.swift in Sources */,
+				4822F0B119D008EB00F5F572 /* TransitionChainTests.swift in Sources */,
+				1F27771F1BE68D1E00C57CC9 /* RouteMappingTests.swift in Sources */,
+				4822F0AD19D008EB00F5F572 /* MachineTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

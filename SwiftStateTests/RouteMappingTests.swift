@@ -1,5 +1,5 @@
 //
-//  FrogcjnTest.swift
+//  RouteMappingTests.swift
 //  SwiftState
 //
 //  Created by Yasuhiro Inami on 2015-11-02.
@@ -9,7 +9,12 @@
 import SwiftState
 import XCTest
 
+//
+// RouteMapping for StateType & EventType using associated values
+//
 // https://github.com/ReactKit/SwiftState/issues/34
+// https://github.com/ReactKit/SwiftState/pull/36
+//
 
 private enum _State: StateType, Hashable
 {
@@ -67,61 +72,9 @@ private func ==(lhs: _Event, rhs: _Event) -> Bool
     }
 }
 
-class FrogcjnTest: _TestCase
+class RouteMappingTests: _TestCase
 {
     func testEventWithAssociatedValue()
-    {
-        var count = 0
-        
-        let machine = Machine<_State, _Event>(state: .Pending) { machine in
-            
-            machine.addRouteEvent(.CancelAction, transitions: [ .Any => .Pending ], condition: { $0.fromState != .Pending })
-            
-            //
-            // If you have **finite** number of `LoadActionId`s (let's say 1 to 100),
-            // you can `addRouteEvent()` in finite number of times.
-            // (In this case, `LoadActionId` should have enum type instead)
-            //
-            for actionId in 1...100 {
-                machine.addRouteEvent(.LoadAction(actionId), transitions: [ .Any => .Loading(actionId) ], condition: { $0.fromState != .Loading(actionId) })
-            }
-            
-            // increment `count` when any events i.e. `.CancelAction` and `.LoadAction(x)` succeed.
-            machine.addEventHandler(.Any) { event, transition, order, userInfo in
-                count++
-            }
-        }
-        
-        // initial
-        XCTAssertTrue(machine.state == .Pending)
-        XCTAssertEqual(count, 0)
-        
-        // CancelAction (to .Pending state, same as before)
-        machine <-! .CancelAction
-        XCTAssertTrue(machine.state == .Pending)
-        XCTAssertEqual(count, 0, "`tryEvent()` failed, and `count` should not be incremented.")
-        
-        // LoadAction(1) (to .Loading(1) state)
-        machine <-! .LoadAction(1)
-        XCTAssertTrue(machine.state == .Loading(1))
-        XCTAssertEqual(count, 1)
-        
-        // LoadAction(1) (same as before)
-        machine <-! .LoadAction(1)
-        print(machine.state)
-        XCTAssertTrue(machine.state == .Loading(1))
-        XCTAssertEqual(count, 1, "`tryEvent()` failed, and `count` should not be incremented.")
-        
-        machine <-! .LoadAction(2)
-        XCTAssertTrue(machine.state == .Loading(2))
-        XCTAssertEqual(count, 2)
-        
-        machine <-! .CancelAction
-        XCTAssertTrue(machine.state == .Pending)
-        XCTAssertEqual(count, 3)
-    }
-    
-    func testEventWithAssociatedValue2()
     {
         var count = 0
         
@@ -147,6 +100,7 @@ class FrogcjnTest: _TestCase
             machine.addEventHandler(.Any) { event, transition, order, userInfo in
                 count++
             }
+            
         }
         
         // initial

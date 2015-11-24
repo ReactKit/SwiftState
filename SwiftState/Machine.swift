@@ -86,7 +86,13 @@ public class Machine<S: StateType, E: EventType>
         return self.hasRoute(fromState: fromState, toState: toState, forEvent: .Some(event), userInfo: userInfo)
     }
     
+    ///
     /// Check for `_routes`.
+    ///
+    /// - Parameter event:
+    ///   If `event` is nil, all registered routes will be examined.
+    ///   Otherwise, only routes for `event` and `.Any` will be examined.
+    ///
     private func _hasRoute(fromState fromState: S, toState: S, forEvent event: E? = nil, userInfo: Any? = nil) -> Bool
     {
         let validTransitions = _validTransitions(fromState: fromState, toState: toState)

@@ -20,11 +20,11 @@ public class Machine<S: StateType, E: EventType>
     
     public typealias Handler = Context -> ()
     
-    public typealias Mapping = (event: E?, fromState: S, userInfo: Any?) -> S?
+    public typealias RouteMapping = (event: E?, fromState: S, userInfo: Any?) -> S?
     
     private var _routes: [_Event<E> : [Transition<S> : [String : Condition?]]] = [:]
     
-    private var _routeMappings: [String : Mapping] = [:]
+    private var _routeMappings: [String : RouteMapping] = [:]
     
     private var _handlers: [Transition<S> : [_HandlerInfo<S, E>]] = [:]
     private var _errorHandlers: [_HandlerInfo<S, E>] = []
@@ -686,7 +686,7 @@ public class Machine<S: StateType, E: EventType>
     
     // MARK: addRouteMapping
     
-    public func addRouteMapping(routeMapping: Mapping) -> RouteMappingID
+    public func addRouteMapping(routeMapping: RouteMapping) -> RouteMappingID
     {
         let key = _createUniqueString()
         
@@ -699,7 +699,7 @@ public class Machine<S: StateType, E: EventType>
     
     // MARK: addRouteMapping + conditional handler
     
-    public func addRouteMapping(routeMapping: Mapping, handler: Handler) -> (RouteMappingID, HandlerID<S, E>)
+    public func addRouteMapping(routeMapping: RouteMapping, handler: Handler) -> (RouteMappingID, HandlerID<S, E>)
     {
         let routeMappingID = self.addRouteMapping(routeMapping)
         

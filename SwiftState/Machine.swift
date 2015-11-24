@@ -294,12 +294,7 @@ public class Machine<S: StateType, E: EventType>
     
     // MARK: addRoute + conditional handler
     
-    public func addRoute(transition: Transition<S>, handler: Handler) -> (RouteID<S, E>, HandlerID<S, E>)
-    {
-        return self.addRoute(transition, condition: nil, handler: handler)
-    }
-    
-    public func addRoute(transition: Transition<S>, condition: Condition?, handler: Handler) -> (RouteID<S, E>, HandlerID<S, E>)
+    public func addRoute(transition: Transition<S>, condition: Condition? = nil, handler: Handler) -> (RouteID<S, E>, HandlerID<S, E>)
     {
         let route = Route(transition: transition, condition: condition)
         return self.addRoute(route, handler: handler)
@@ -444,12 +439,7 @@ public class Machine<S: StateType, E: EventType>
     
     // MARK: addRouteChain + conditional handler
     
-    public func addRouteChain(chain: TransitionChain<S>, handler: Handler) -> (RouteChainID<S, E>, ChainHandlerID<S, E>)
-    {
-        return self.addRouteChain(chain, condition: nil, handler: handler)
-    }
-    
-    public func addRouteChain(chain: TransitionChain<S>, condition: Condition?, handler: Handler) -> (RouteChainID<S, E>, ChainHandlerID<S, E>)
+    public func addRouteChain(chain: TransitionChain<S>, condition: Condition? = nil, handler: Handler) -> (RouteChainID<S, E>, ChainHandlerID<S, E>)
     {
         let routeChain = RouteChain(transitionChain: chain, condition: condition)
         return self.addRouteChain(routeChain, handler: handler)

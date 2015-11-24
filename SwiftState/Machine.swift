@@ -471,7 +471,7 @@ public class Machine<S: StateType, E: EventType>
     
     public func addChainHandler(chain: TransitionChain<S>, order: HandlerOrder = _defaultOrder, handler: Handler) -> ChainHandlerID<S, E>
     {
-        return self.addChainHandler(chain.toRouteChain(), order: order, handler: handler)
+        return self.addChainHandler(RouteChain(transitionChain: chain), order: order, handler: handler)
     }
     
     public func addChainHandler(chain: RouteChain<S, E>, order: HandlerOrder = _defaultOrder, handler: Handler) -> ChainHandlerID<S, E>
@@ -483,7 +483,7 @@ public class Machine<S: StateType, E: EventType>
     
     public func addChainErrorHandler(chain: TransitionChain<S>, order: HandlerOrder = _defaultOrder, handler: Handler) -> ChainHandlerID<S, E>
     {
-        return self.addChainErrorHandler(chain.toRouteChain(), order: order, handler: handler)
+        return self.addChainErrorHandler(RouteChain(transitionChain: chain), order: order, handler: handler)
     }
     
     public func addChainErrorHandler(chain: RouteChain<S, E>, order: HandlerOrder = _defaultOrder, handler: Handler) -> ChainHandlerID<S, E>

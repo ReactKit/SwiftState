@@ -280,7 +280,7 @@ class MachineTests: _TestCase
     }
     
     //--------------------------------------------------
-    // MARK: - tryState a.k.a <-
+    // MARK: - tryState a.k.a `<-`
     //--------------------------------------------------
     
     // machine <- state

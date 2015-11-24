@@ -16,18 +16,6 @@ public struct Route<S: StateType, E: EventType>
         self.transition = transition
         self.condition = condition
     }
-    
-    public func toTransition() -> Transition<S>
-    {
-        return self.transition
-    }
-    
-    public func toRouteChain() -> RouteChain<S, E>
-    {
-        var routes: [Route<S, E>] = []
-        routes += [self]
-        return RouteChain(routes: routes)
-    }
 }
 
 //--------------------------------------------------

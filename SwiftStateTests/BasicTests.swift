@@ -66,7 +66,7 @@ class BasicTests: _TestCase
             }
         }
         
-        // tryState 0 => 1 => 2 => 1 => 0   
+        // tryState 0 => 1 => 2 => 1 => 0
         
         machine <- ".State1"
         XCTAssertTrue(machine.state == ".State1")

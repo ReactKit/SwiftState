@@ -23,6 +23,30 @@ class TransitionTests: _TestCase
         XCTAssertEqual(transition2.toState.value, MyState.State0)
     }
     
+    func testInit_fromAny()
+    {
+        let transition = Transition<MyState>(fromState: .Any, toState: .State1)
+        XCTAssertNil(transition.fromState.value)
+        XCTAssertEqual(transition.toState.value, MyState.State1)
+        
+        // shorthand
+        let transition2 = .Any => MyState.State0
+        XCTAssertNil(transition2.fromState.value)
+        XCTAssertEqual(transition2.toState.value, MyState.State0)
+    }
+    
+    func testInit_toAny()
+    {
+        let transition = Transition<MyState>(fromState: .State0, toState: .Any)
+        XCTAssertEqual(transition.fromState.value, MyState.State0)
+        XCTAssertNil(transition.toState.value)
+        
+        // shorthand
+        let transition2 = MyState.State1 => .Any
+        XCTAssertEqual(transition2.fromState.value, MyState.State1)
+        XCTAssertNil(transition2.toState.value)
+    }
+    
     func testNil()
     {
         // .Any => state

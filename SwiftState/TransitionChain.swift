@@ -8,25 +8,16 @@
 
 public struct TransitionChain<S: StateType>
 {
-    public var states: [State<S>]
+    public private(set) var states: [State<S>]
+    
+    public init(states: [State<S>])
+    {
+        self.states = states
+    }
     
     public init(transition: Transition<S>)
     {
-        self.init(transitions: [transition])
-    }
-    
-    public init(transitions: [Transition<S>])
-    {
-        assert(transitions.count > 0, "TransitionChain must be initialized with at least 1 transition.")
-        
-        var states: [State<S>] = []
-        for i in 0..<transitions.count {
-            if i == 0 {
-                states += [transitions[i].fromState]
-            }
-            states += [transitions[i].toState]
-        }
-        self.states = states
+        self.init(states: [transition.fromState, transition.toState])
     }
     
     public var transitions: [Transition<S>]
@@ -39,51 +30,6 @@ public struct TransitionChain<S: StateType>
         
         return transitions
     }
-    
-    public var firstState: State<S>
-    {
-        return self.states.first!
-    }
-    
-    public var lastState: State<S>
-    {
-        return self.states.last!
-    }
-    
-    public var numberOfTransitions: Int
-    {
-        return self.states.count-1
-    }
-    
-    mutating public func prepend(state: State<S>)
-    {
-        self.states.insert(state, atIndex: 0)
-    }
-    
-    mutating public func prepend(state: S)
-    {
-        self.states.insert(.Some(state), atIndex: 0)
-    }
-    
-    mutating public func append(state: State<S>)
-    {
-        self.states += [state]
-    }
-    
-    mutating public func append(state: S)
-    {
-        self.states += [.Some(state)]
-    }
-    
-    public func toRouteChain<E: EventType>() -> RouteChain<S, E>
-    {
-        return RouteChain(transitionChain: self, condition: nil)
-    }
-    
-    public func toTransitions() -> [Transition<S>]
-    {
-        return self.transitions
-    }
 }
 
 //--------------------------------------------------
@@ -93,7 +39,7 @@ public struct TransitionChain<S: StateType>
 // e.g. (.State0 => .State1) => .State
 public func => <S: StateType>(left: Transition<S>, right: State<S>) -> TransitionChain<S>
 {
-    return left.toTransitionChain() => right
+    return TransitionChain(states: [left.fromState, left.toState]) => right
 }
 
 public func => <S: StateType>(left: Transition<S>, right: S) -> TransitionChain<S>
@@ -101,10 +47,9 @@ public func => <S: StateType>(left: Transition<S>, right: S) -> TransitionChain<
     return left => .Some(right)
 }
 
-public func => <S: StateType>(var left: TransitionChain<S>, right: State<S>) -> TransitionChain<S>
+public func => <S: StateType>(left: TransitionChain<S>, right: State<S>) -> TransitionChain<S>
 {
-    left.append(right)
-    return left
+    return TransitionChain(states: left.states + [right])
 }
 
 public func => <S: StateType>(left: TransitionChain<S>, right: S) -> TransitionChain<S>
@@ -115,7 +60,7 @@ public func => <S: StateType>(left: TransitionChain<S>, right: S) -> TransitionC
 // e.g. .State0 => (.State1 => .State)
 public func => <S: StateType>(left: State<S>, right:Transition<S>) -> TransitionChain<S>
 {
-    return left => right.toTransitionChain()
+    return left => TransitionChain(states: [right.fromState, right.toState])
 }
 
 public func => <S: StateType>(left: S, right:Transition<S>) -> TransitionChain<S>
@@ -123,10 +68,9 @@ public func => <S: StateType>(left: S, right:Transition<S>) -> TransitionChain<S
     return .Some(left) => right
 }
 
-public func => <S: StateType>(left: State<S>, var right: TransitionChain<S>) -> TransitionChain<S>
+public func => <S: StateType>(left: State<S>, right: TransitionChain<S>) -> TransitionChain<S>
 {
-    right.prepend(left)
-    return right
+    return TransitionChain(states: [left] + right.states)
 }
 
 public func => <S: StateType>(left: S, right: TransitionChain<S>) -> TransitionChain<S>

@@ -313,4 +313,5 @@ class MachineChainTests: _TestCase
         machine <- .State2
         XCTAssertEqual(errorCount, 0, "Chain error, but chainErrorHandler should NOT be performed.")
     }
+    
 }

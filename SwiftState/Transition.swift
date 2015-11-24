@@ -36,16 +36,6 @@ public struct Transition<S: StateType>: Hashable
     {
         return self.fromState.hashValue &+ self.toState.hashValue.byteSwapped
     }
-    
-    public func toTransitionChain() -> TransitionChain<S>
-    {
-        return TransitionChain(transition: self)
-    }
-    
-    public func toRoute<E: EventType>() -> Route<S, E>
-    {
-        return Route(transition: self, condition: nil)
-    }
 }
 
 // for Transition Equatable

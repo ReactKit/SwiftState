@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		1F198C5C19972320001C3700 /* QiitaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F198C5B19972320001C3700 /* QiitaTests.swift */; };
+		1F1F74BC1C09FAA000675EAA /* ChainHandlerID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F1F74BB1C09FAA000675EAA /* ChainHandlerID.swift */; };
+		1F1F74C01C0A017E00675EAA /* ChainHandlerID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F1F74BB1C09FAA000675EAA /* ChainHandlerID.swift */; };
 		1F24C72C19D068B900C2FDC7 /* SwiftState.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4872D5AC19B4211900F326B5 /* SwiftState.framework */; };
 		1F27771E1BE68D1D00C57CC9 /* RouteMappingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F27771C1BE68C7F00C57CC9 /* RouteMappingTests.swift */; };
 		1F27771F1BE68D1E00C57CC9 /* RouteMappingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F27771C1BE68C7F00C57CC9 /* RouteMappingTests.swift */; };
@@ -73,6 +75,7 @@
 
 /* Begin PBXFileReference section */
 		1F198C5B19972320001C3700 /* QiitaTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QiitaTests.swift; sourceTree = "<group>"; };
+		1F1F74BB1C09FAA000675EAA /* ChainHandlerID.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChainHandlerID.swift; sourceTree = "<group>"; };
 		1F27771C1BE68C7F00C57CC9 /* RouteMappingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteMappingTests.swift; sourceTree = "<group>"; };
 		1F70FB651BF0F46000E5AC8C /* RouteID.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteID.swift; sourceTree = "<group>"; };
 		1F70FB681BF0F46E00E5AC8C /* RouteChainID.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteChainID.swift; sourceTree = "<group>"; };
@@ -146,6 +149,7 @@
 				1F70FB681BF0F46E00E5AC8C /* RouteChainID.swift */,
 				1F70FB6B1BF0F47700E5AC8C /* RouteMappingID.swift */,
 				1F70FB6E1BF0F59600E5AC8C /* HandlerID.swift */,
+				1F1F74BB1C09FAA000675EAA /* ChainHandlerID.swift */,
 			);
 			name = Identifiers;
 			sourceTree = "<group>";
@@ -423,6 +427,7 @@
 				1FA620241996606300460108 /* Transition.swift in Sources */,
 				1F70FB661BF0F46000E5AC8C /* RouteID.swift in Sources */,
 				1FA620201996606300460108 /* EventType.swift in Sources */,
+				1F1F74BC1C09FAA000675EAA /* ChainHandlerID.swift in Sources */,
 				1F70FB6C1BF0F47700E5AC8C /* RouteMappingID.swift in Sources */,
 				1FA620221996606300460108 /* Route.swift in Sources */,
 				1F70FB6F1BF0F59600E5AC8C /* HandlerID.swift in Sources */,
@@ -481,6 +486,7 @@
 				48797D6019B42CCE0085D80F /* TransitionChain.swift in Sources */,
 				1F70FB671BF0F46000E5AC8C /* RouteID.swift in Sources */,
 				48797D5F19B42CCE0085D80F /* Transition.swift in Sources */,
+				1F1F74C01C0A017E00675EAA /* ChainHandlerID.swift in Sources */,
 				1F70FB6D1BF0F47700E5AC8C /* RouteMappingID.swift in Sources */,
 				48797D6319B42CD40085D80F /* StateType.swift in Sources */,
 				1F70FB701BF0F59600E5AC8C /* HandlerID.swift in Sources */,

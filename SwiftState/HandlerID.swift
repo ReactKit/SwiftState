@@ -6,7 +6,7 @@
 //  Copyright © 2015 Yasuhiro Inami. All rights reserved.
 //
 
-public class HandlerID<S: StateType, E: EventType>
+public final class HandlerID<S: StateType, E: EventType>
 {
     /// - Note: `nil` is used for error-handlerID
     internal let transition: Transition<S>?
@@ -17,15 +17,5 @@ public class HandlerID<S: StateType, E: EventType>
     {
         self.transition = transition
         self.key = key
-    }
-}
-
-public class ChainHandlerID<S: StateType, E: EventType>
-{
-    internal let bundledHandlerIDs: [HandlerID<S, E>]
-    
-    internal init(bundledHandlerIDs: [HandlerID<S, E>])
-    {
-        self.bundledHandlerIDs = bundledHandlerIDs
     }
 }

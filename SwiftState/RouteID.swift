@@ -6,7 +6,7 @@
 //  Copyright © 2015 Yasuhiro Inami. All rights reserved.
 //
 
-public class RouteID<S: StateType, E: EventType>
+public final class RouteID<S: StateType, E: EventType>
 {
     internal let event: _Event<E>
     internal let transition: Transition<S>

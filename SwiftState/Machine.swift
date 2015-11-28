@@ -11,7 +11,7 @@ import Darwin
 public typealias HandlerOrder = UInt8
 private let _defaultOrder: HandlerOrder = 100
 
-public class Machine<S: StateType, E: EventType>
+public final class Machine<S: StateType, E: EventType>
 {
     // NOTE: `event = nil` is equivalent to `_Event.None`, which happens when non-event-based transition e.g. `tryState()` occurs.
     public typealias Context = (event: E?, fromState: S, toState: S, userInfo: Any?)

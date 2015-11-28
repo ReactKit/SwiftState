@@ -6,7 +6,7 @@
 //  Copyright © 2015 Yasuhiro Inami. All rights reserved.
 //
 
-public class RouteChainID<S: StateType, E: EventType>
+public final class RouteChainID<S: StateType, E: EventType>
 {
     internal let bundledRouteIDs: [RouteID<S, E>]?
     

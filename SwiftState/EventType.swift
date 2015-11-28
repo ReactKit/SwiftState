@@ -8,47 +8,6 @@
 
 public protocol EventType: Hashable {}
 
-// MARK: _Event (internal)
-
-internal enum _Event<E: EventType>: Hashable
-{
-    case Some(E)
-    case Any        // represents any `Some(E)` events but not `.None`
-    case None       // default internal value for `addRoute()` without event
-    
-    internal var hashValue: Int
-    {
-        switch self {
-            case .Some(let x):  return x.hashValue
-            case .Any:          return -4611686018427387904
-            case .None:         return -4611686018427387905
-        }
-    }
-    
-    internal var value: E?
-    {
-        switch self {
-            case .Some(let x):  return x
-            default:            return nil
-        }
-    }
-}
-
-internal func == <E: Hashable>(lhs: _Event<E>, rhs: _Event<E>) -> Bool
-{
-    return lhs.hashValue == rhs.hashValue
-}
-
-internal func == <E: Hashable>(lhs: _Event<E>, rhs: E) -> Bool
-{
-    return lhs.hashValue == rhs.hashValue
-}
-
-internal func == <E: Hashable>(lhs: E, rhs: _Event<E>) -> Bool
-{
-    return lhs.hashValue == rhs.hashValue
-}
-
 // MARK: Event (public)
 
 /// `EventType` wrapper for handling`.Any` event.
@@ -100,4 +59,46 @@ public enum NoEvent: EventType
 public func == (lhs: NoEvent, rhs: NoEvent) -> Bool
 {
     return true
+}
+
+// MARK: _Event (internal)
+
+/// Internal `EventType` wrapper for `Event` + `Optional` + `Hashable`.
+internal enum _Event<E: EventType>: Hashable
+{
+    case Some(E)
+    case Any        // represents any `Some(E)` events but not `.None`, for `addRouteEvent(.Any)`
+    case None       // default internal value for `addRoute()` without event
+    
+    internal var hashValue: Int
+    {
+        switch self {
+            case .Some(let x):  return x.hashValue
+            case .Any:          return -4611686018427387904
+            case .None:         return -4611686018427387905
+        }
+    }
+    
+    internal var value: E?
+    {
+        switch self {
+            case .Some(let x):  return x
+            default:            return nil
+        }
+    }
+}
+
+internal func == <E: Hashable>(lhs: _Event<E>, rhs: _Event<E>) -> Bool
+{
+    return lhs.hashValue == rhs.hashValue
+}
+
+internal func == <E: Hashable>(lhs: _Event<E>, rhs: E) -> Bool
+{
+    return lhs.hashValue == rhs.hashValue
+}
+
+internal func == <E: Hashable>(lhs: E, rhs: _Event<E>) -> Bool
+{
+    return lhs.hashValue == rhs.hashValue
 }

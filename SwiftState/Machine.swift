@@ -81,11 +81,6 @@ public class Machine<S: StateType, E: EventType>
         return false
     }
     
-    public func hasRoute(fromState fromState: S, toState: S, forEvent event: E, userInfo: Any? = nil) -> Bool
-    {
-        return self.hasRoute(fromState: fromState, toState: toState, forEvent: .Some(event), userInfo: userInfo)
-    }
-    
     ///
     /// Check for `_routes`.
     ///
@@ -102,8 +97,9 @@ public class Machine<S: StateType, E: EventType>
             var transitionDicts: [[Transition<S> : [String : Condition?]]] = []
             
             if let event = event {
-                for (ev, transitionDict) in self._routes {
-                    if ev.value == event || ev == .Any {    // NOTE: no .Default
+                for (_event, transitionDict) in self._routes {
+                    // NOTE: `_event = .None` should be excluded
+                    if _event.value == event || _event == .Any {
                         transitionDicts += [transitionDict]
                     }
                 }

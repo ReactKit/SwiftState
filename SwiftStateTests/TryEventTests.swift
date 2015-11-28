@@ -116,7 +116,8 @@ class TryEventTests: _TestCase
     
     // Fix for transitioning of routes w/ multiple from-states
     // https://github.com/ReactKit/SwiftState/pull/32
-    func testTryEvent_issue32() {
+    func testTryEvent_issue32()
+    {
         let machine = Machine<MyState, MyEvent>(state: .State0) { machine in
             machine.addRouteEvent(.Event0, transitions: [ .State0 => .State1 ])
             machine.addRouteEvent(.Event1, routes: [ [ .State1, .State2 ] => .State3 ])
@@ -129,6 +130,31 @@ class TryEventTests: _TestCase
         
         machine <-! .Event1
         XCTAssertEqual(machine.state, MyState.State3)
+    }
+    
+    // MARK: hasRoute + event
+    
+    func testHasRoute_anyEvent()
+    {
+        ({
+            let machine = Machine<MyState, MyEvent>(state: .State0) { machine in
+                machine.addRoute(.State0 => .State1)
+                machine.addRouteEvent(.Any, transitions: [.State0 => .State1])
+            }
+            
+            let hasRoute = machine.hasRoute(.State0 => .State1, forEvent: .Event0)
+            XCTAssertTrue(hasRoute)
+        })()
+        
+        ({
+            let machine = Machine<MyState, MyEvent>(state: .State0) { machine in
+                machine.addRoute(.State0 => .State1)
+                machine.addRouteEvent(.Any, transitions: [.State2 => .State3])
+            }
+            
+            let hasRoute = machine.hasRoute(.State0 => .State1, forEvent: .Event0)
+            XCTAssertFalse(hasRoute)
+        })()
     }
     
     // Fix hasRoute() bug when there are routes for no-event & with-event.

@@ -10,6 +10,8 @@
 		1F198C5C19972320001C3700 /* QiitaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F198C5B19972320001C3700 /* QiitaTests.swift */; };
 		1F1F74BC1C09FAA000675EAA /* ChainHandlerID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F1F74BB1C09FAA000675EAA /* ChainHandlerID.swift */; };
 		1F1F74C01C0A017E00675EAA /* ChainHandlerID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F1F74BB1C09FAA000675EAA /* ChainHandlerID.swift */; };
+		1F1F74C31C0A02EA00675EAA /* HierarchicalMachineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F1F74C11C0A02E700675EAA /* HierarchicalMachineTests.swift */; };
+		1F1F74C41C0A02EB00675EAA /* HierarchicalMachineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F1F74C11C0A02E700675EAA /* HierarchicalMachineTests.swift */; };
 		1F24C72C19D068B900C2FDC7 /* SwiftState.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4872D5AC19B4211900F326B5 /* SwiftState.framework */; };
 		1F27771E1BE68D1D00C57CC9 /* RouteMappingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F27771C1BE68C7F00C57CC9 /* RouteMappingTests.swift */; };
 		1F27771F1BE68D1E00C57CC9 /* RouteMappingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F27771C1BE68C7F00C57CC9 /* RouteMappingTests.swift */; };
@@ -76,6 +78,7 @@
 /* Begin PBXFileReference section */
 		1F198C5B19972320001C3700 /* QiitaTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QiitaTests.swift; sourceTree = "<group>"; };
 		1F1F74BB1C09FAA000675EAA /* ChainHandlerID.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChainHandlerID.swift; sourceTree = "<group>"; };
+		1F1F74C11C0A02E700675EAA /* HierarchicalMachineTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HierarchicalMachineTests.swift; sourceTree = "<group>"; };
 		1F27771C1BE68C7F00C57CC9 /* RouteMappingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteMappingTests.swift; sourceTree = "<group>"; };
 		1F70FB651BF0F46000E5AC8C /* RouteID.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteID.swift; sourceTree = "<group>"; };
 		1F70FB681BF0F46E00E5AC8C /* RouteChainID.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteChainID.swift; sourceTree = "<group>"; };
@@ -220,6 +223,7 @@
 				1FA6202D199660CA00460108 /* RouteTests.swift */,
 				1FA6202A199660CA00460108 /* RouteChainTests.swift */,
 				1F27771C1BE68C7F00C57CC9 /* RouteMappingTests.swift */,
+				1F1F74C11C0A02E700675EAA /* HierarchicalMachineTests.swift */,
 				1FA6200D1996601000460108 /* Supporting Files */,
 			);
 			path = SwiftStateTests;
@@ -447,6 +451,7 @@
 				1FA62038199660CA00460108 /* TransitionTests.swift in Sources */,
 				1FA62033199660CA00460108 /* RouteChainTests.swift in Sources */,
 				1FA62030199660CA00460108 /* _TestCase.swift in Sources */,
+				1F1F74C31C0A02EA00675EAA /* HierarchicalMachineTests.swift in Sources */,
 				1FA62036199660CA00460108 /* RouteTests.swift in Sources */,
 				1FA62031199660CA00460108 /* BasicTests.swift in Sources */,
 				1FA62034199660CA00460108 /* TryEventTests.swift in Sources */,
@@ -467,6 +472,7 @@
 				4822F0AF19D008EB00F5F572 /* TryEventTests.swift in Sources */,
 				4822F0A819D008E300F5F572 /* _TestCase.swift in Sources */,
 				4822F0AA19D008E700F5F572 /* MyEvent.swift in Sources */,
+				1F1F74C41C0A02EB00675EAA /* HierarchicalMachineTests.swift in Sources */,
 				4822F0AE19D008EB00F5F572 /* RouteChainTests.swift in Sources */,
 				4822F0B019D008EB00F5F572 /* TransitionTests.swift in Sources */,
 				4822F0A919D008E700F5F572 /* MyState.swift in Sources */,

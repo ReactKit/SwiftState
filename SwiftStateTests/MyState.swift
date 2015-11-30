@@ -8,7 +8,7 @@
 
 import SwiftState
 
-enum MyState: Int, StateType
+enum MyState: StateType
 {
     case State0, State1, State2, State3
 }

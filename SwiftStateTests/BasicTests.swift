@@ -13,13 +13,14 @@ class BasicTests: _TestCase
 {
     func testREADME()
     {
+        // setup state machine
         let machine = Machine<MyState, NoEvent>(state: .State0) { machine in
             
             machine.addRoute(.State0 => .State1)
             machine.addRoute(.Any => .State2) { context in print("Any => 2, msg=\(context.userInfo)") }
             machine.addRoute(.State2 => .Any) { context in print("2 => Any, msg=\(context.userInfo)") }
             
-            // add handler (handlerContext = (event, transition, order, userInfo))
+            // add handler (`context = (event, fromState, toState, userInfo)`)
             machine.addHandler(.State0 => .State1) { context in
                 print("0 => 1")
             }
@@ -29,6 +30,9 @@ class BasicTests: _TestCase
                 print("[ERROR] \(fromState) => \(toState)")
             }
         }
+        
+        // initial
+        XCTAssertTrue(machine.state == .State0)
         
         // tryState 0 => 1 => 2 => 1 => 0
         
@@ -43,8 +47,6 @@ class BasicTests: _TestCase
         
         machine <- .State0  // fail: no 1 => 0
         XCTAssertTrue(machine.state == .State1)
-        
-        print("machine.state = \(machine.state)")
     }
     
     func testREADME_string()

@@ -13,22 +13,22 @@ enum MyEvent: EventType
     case Event0, Event1
 }
 
-enum MyEvent2: EventType
+enum StrEvent: EventType
 {
-    case Event0(String)
+    case Str(String)
     
     var hashValue: Int
     {
         switch self {
-            case .Event0(let str):  return str.hashValue
+            case .Str(let str):  return str.hashValue
         }
     }
 }
 
-func == (lhs: MyEvent2, rhs: MyEvent2) -> Bool
+func == (lhs: StrEvent, rhs: StrEvent) -> Bool
 {
     switch (lhs, rhs) {
-        case let (.Event0(str1), .Event0(str2)):
+        case let (.Str(str1), .Str(str2)):
             return str1 == str2
 //        default:
 //            return false

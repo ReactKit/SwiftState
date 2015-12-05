@@ -62,7 +62,7 @@ Any => 2, msg=Optional("Hello")
 
 ### Transition by Event
 
-Use `<-!` operator to try transition by `Event` rather than specifying target `State` ([Test Case](https://github.com/ReactKit/SwiftState/blob/1be67826b3cc9187dfaac85c2e70613f3129fad6/SwiftStateTests/TryEventTests.swift#L32-L54)).
+Use `<-!` operator to try transition by `Event` rather than specifying target `State`.
 
 ```swift
 enum MyEvent: EventType {
@@ -79,7 +79,10 @@ let machine = StateMachine<MyState, MyEvent>(state: .State0) { machine in
         .State1 => .State2,
     ])
 }
-   
+ 
+// initial
+XCTAssertEqual(machine.state, MyState.State0)
+          
 // tryEvent
 machine <-! .Event0
 XCTAssertEqual(machine.state, MyState.State1)
@@ -88,12 +91,80 @@ XCTAssertEqual(machine.state, MyState.State1)
 machine <-! .Event0
 XCTAssertEqual(machine.state, MyState.State2)
 
-// tryEvent
+// tryEvent (fails)
 machine <-! .Event0
 XCTAssertEqual(machine.state, MyState.State2, "Event0 doesn't have 2 => Any")
 ```
 
 If there is no `Event`-based transition, use built-in `NoEvent` instead.
+
+### State & Event enums with associated values
+
+Above examples use _arrow-style routing_ which are easy to understand, but it lacks in ability to handle state & event enums with associated values. In such cases, use `machine.addRouteMapping()` and pass either of the following closure types (_closure-style routing_):
+
+- `EventRouteMapping`: `(event: E?, fromState: S, userInfo: Any?) -> S?`
+- `StateRouteMapping`: `(fromState: S, userInfo: Any?) -> [S]?`
+
+For example:
+
+```swift
+enum StrState: StateType {
+    case Str(String) ...
+}
+enum StrEvent: EventType {
+    case Str(String) ...
+}
+
+let machine = Machine<StrState, StrEvent>(state: .Str("initial")) { machine in
+    
+    // add EventRouteMapping
+    machine.addRouteMapping { event, fromState, userInfo -> StrState? in
+        // no route for no-event
+        guard let event = event else { return nil }
+        
+        switch (event, fromState) {
+            case (.Str("gogogo"), .Str("initial")):
+                return .Str("Phase 1")
+            case (.Str("gogogo"), .Str("Phase 1")):
+                return .Str("Phase 2")
+            case (.Str("finish"), .Str("Phase 2")):
+                return .Str("end")
+            default:
+                return nil
+        }
+    }
+    
+}
+
+// initial
+XCTAssertEqual(machine.state, StrState.Str("initial"))
+
+// tryEvent (fails)
+machine <-! .Str("go?")
+XCTAssertEqual(machine.state, StrState.Str("initial"), "No change.")
+
+// tryEvent
+machine <-! .Str("gogogo")
+XCTAssertEqual(machine.state, StrState.Str("Phase 1"))
+
+// tryEvent (fails)
+machine <-! .Str("finish")
+XCTAssertEqual(machine.state, StrState.Str("Phase 1"), "No change.")
+
+// tryEvent
+machine <-! .Str("gogogo")
+XCTAssertEqual(machine.state, StrState.Str("Phase 2"))
+
+// tryEvent (fails)
+machine <-! .Str("gogogo")
+XCTAssertEqual(machine.state, StrState.Str("Phase 2"), "No change.")
+
+// tryEvent
+machine <-! .Str("finish")
+XCTAssertEqual(machine.state, StrState.Str("end"))
+```
+
+This behaves very similar to JavaScript's safe state-container [rackt/Redux](https://github.com/rackt/redux), where `EventRouteMapping` can be interpretted as `Redux.Reducer`.
 
 For more examples, please see XCTest cases.
 

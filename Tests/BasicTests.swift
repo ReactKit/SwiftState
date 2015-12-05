@@ -60,6 +60,9 @@ class BasicTests: _TestCase
             ])
         }
         
+        // initial
+        XCTAssertEqual(machine.state, MyState.State0)
+        
         // tryEvent
         machine <-! .Event0
         XCTAssertEqual(machine.state, MyState.State1)
@@ -68,8 +71,59 @@ class BasicTests: _TestCase
         machine <-! .Event0
         XCTAssertEqual(machine.state, MyState.State2)
         
-        // tryEvent
+        // tryEvent (fails)
         machine <-! .Event0
         XCTAssertEqual(machine.state, MyState.State2, "Event0 doesn't have 2 => Any")
+    }
+    
+    func testREADME_routeMapping()
+    {
+        let machine = Machine<StrState, StrEvent>(state: .Str("initial")) { machine in
+            
+            // add EventRouteMapping
+            machine.addRouteMapping { event, fromState, userInfo -> StrState? in
+                // no route for no-event
+                guard let event = event else { return nil }
+                
+                switch (event, fromState) {
+                    case (.Str("gogogo"), .Str("initial")):
+                        return .Str("Phase 1")
+                    case (.Str("gogogo"), .Str("Phase 1")):
+                        return .Str("Phase 2")
+                    case (.Str("finish"), .Str("Phase 2")):
+                        return .Str("end")
+                    default:
+                        return nil
+                }
+            }
+            
+        }
+        
+        // initial
+        XCTAssertEqual(machine.state, StrState.Str("initial"))
+        
+        // tryEvent (fails)
+        machine <-! .Str("go?")
+        XCTAssertEqual(machine.state, StrState.Str("initial"), "No change.")
+        
+        // tryEvent
+        machine <-! .Str("gogogo")
+        XCTAssertEqual(machine.state, StrState.Str("Phase 1"))
+        
+        // tryEvent (fails)
+        machine <-! .Str("finish")
+        XCTAssertEqual(machine.state, StrState.Str("Phase 1"), "No change.")
+        
+        // tryEvent
+        machine <-! .Str("gogogo")
+        XCTAssertEqual(machine.state, StrState.Str("Phase 2"))
+        
+        // tryEvent (fails)
+        machine <-! .Str("gogogo")
+        XCTAssertEqual(machine.state, StrState.Str("Phase 2"), "No change.")
+        
+        // tryEvent
+        machine <-! .Str("finish")
+        XCTAssertEqual(machine.state, StrState.Str("end"))
     }
 }

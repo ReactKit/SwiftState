@@ -13,22 +13,22 @@ enum MyState: StateType
     case State0, State1, State2, State3
 }
 
-enum MyState2: StateType
+enum StrState: StateType
 {
-    case State0(String)
+    case Str(String)
     
     var hashValue: Int
     {
         switch self {
-            case .State0(let str):  return str.hashValue
+            case .Str(let str):  return str.hashValue
         }
     }
 }
 
-func == (lhs: MyState2, rhs: MyState2) -> Bool
+func == (lhs: StrState, rhs: StrState) -> Bool
 {
     switch (lhs, rhs) {
-        case let (.State0(str1), .State0(str2)):
+        case let (.Str(str1), .Str(str2)):
             return str1 == str2
     }
 }

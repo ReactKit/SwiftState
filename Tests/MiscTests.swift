@@ -51,14 +51,14 @@ class MiscTests: _TestCase
     // StateType + associated value
     func testREADME_associatedValue()
     {
-        let machine = StateMachine<MyState2, MyEvent2>(state: .State0("0")) { machine in
+        let machine = StateMachine<StrState, StrEvent>(state: .Str("0")) { machine in
             
-            machine.addRoute(.State0("0") => .State0("1"))
-            machine.addRoute(.Any => .State0("2")) { context in print("Any => 2, msg=\(context.userInfo)") }
-            machine.addRoute(.State0("2") => .Any) { context in print("2 => Any, msg=\(context.userInfo)") }
+            machine.addRoute(.Str("0") => .Str("1"))
+            machine.addRoute(.Any => .Str("2")) { context in print("Any => 2, msg=\(context.userInfo)") }
+            machine.addRoute(.Str("2") => .Any) { context in print("2 => Any, msg=\(context.userInfo)") }
             
             // add handler (handlerContext = (event, transition, order, userInfo))
-            machine.addHandler(.State0("0") => .State0("1")) { context in
+            machine.addHandler(.Str("0") => .Str("1")) { context in
                 print("0 => 1")
             }
             
@@ -70,17 +70,17 @@ class MiscTests: _TestCase
         
         // tryState 0 => 1 => 2 => 1 => 0
         
-        machine <- .State0("1")
-        XCTAssertEqual(machine.state, MyState2.State0("1"))
+        machine <- .Str("1")
+        XCTAssertEqual(machine.state, StrState.Str("1"))
         
-        machine <- (.State0("2"), "Hello")
-        XCTAssertEqual(machine.state, MyState2.State0("2"))
+        machine <- (.Str("2"), "Hello")
+        XCTAssertEqual(machine.state, StrState.Str("2"))
         
-        machine <- (.State0("1"), "Bye")
-        XCTAssertEqual(machine.state, MyState2.State0("1"))
+        machine <- (.Str("1"), "Bye")
+        XCTAssertEqual(machine.state, StrState.Str("1"))
         
-        machine <- .State0("0")  // fail: no 1 => 0
-        XCTAssertEqual(machine.state, MyState2.State0("1"))
+        machine <- .Str("0")  // fail: no 1 => 0
+        XCTAssertEqual(machine.state, StrState.Str("1"))
         
         print("machine.state = \(machine.state)")
     }

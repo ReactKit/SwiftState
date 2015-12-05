@@ -306,26 +306,26 @@ class MachineTests: _TestCase
     {
         var invokeCount = 0
         
-        let machine = Machine<MyState2, MyEvent2>(state: .State0("initial")) { machine in
+        let machine = Machine<StrState, StrEvent>(state: .Str("initial")) { machine in
             
             // add EventRouteMapping
-            machine.addRouteMapping { event, fromState, userInfo -> MyState2? in
+            machine.addRouteMapping { event, fromState, userInfo -> StrState? in
                 // no route for no-event
                 guard let event = event else { return nil }
                 
                 switch (event, fromState) {
-                    case (.Event0("gogogo"), .State0("initial")):
-                        return .State0("Phase 1")
-                    case (.Event0("gogogo"), .State0("Phase 1")):
-                        return .State0("Phase 2")
-                    case (.Event0("finish"), .State0("Phase 2")):
-                        return .State0("end")
+                    case (.Str("gogogo"), .Str("initial")):
+                        return .Str("Phase 1")
+                    case (.Str("gogogo"), .Str("Phase 1")):
+                        return .Str("Phase 2")
+                    case (.Str("finish"), .Str("Phase 2")):
+                        return .Str("end")
                     default:
                         return nil
                 }
             }
             
-            machine.addHandler(event: .Event0("gogogo")) { context in
+            machine.addHandler(event: .Str("gogogo")) { context in
                 invokeCount++
                 return
             }
@@ -333,36 +333,36 @@ class MachineTests: _TestCase
         }
         
         // initial
-        XCTAssertEqual(machine.state, MyState2.State0("initial"))
+        XCTAssertEqual(machine.state, StrState.Str("initial"))
         
         // tryEvent (fails)
-        machine <-! .Event0("go?")
-        XCTAssertEqual(machine.state, MyState2.State0("initial"), "No change.")
+        machine <-! .Str("go?")
+        XCTAssertEqual(machine.state, StrState.Str("initial"), "No change.")
         XCTAssertEqual(invokeCount, 0, "Handler should NOT be performed")
         
         // tryEvent
-        machine <-! .Event0("gogogo")
-        XCTAssertEqual(machine.state, MyState2.State0("Phase 1"))
+        machine <-! .Str("gogogo")
+        XCTAssertEqual(machine.state, StrState.Str("Phase 1"))
         XCTAssertEqual(invokeCount, 1)
         
         // tryEvent (fails)
-        machine <-! .Event0("finish")
-        XCTAssertEqual(machine.state, MyState2.State0("Phase 1"), "No change.")
+        machine <-! .Str("finish")
+        XCTAssertEqual(machine.state, StrState.Str("Phase 1"), "No change.")
         XCTAssertEqual(invokeCount, 1, "Handler should NOT be performed")
         
         // tryEvent
-        machine <-! .Event0("gogogo")
-        XCTAssertEqual(machine.state, MyState2.State0("Phase 2"))
+        machine <-! .Str("gogogo")
+        XCTAssertEqual(machine.state, StrState.Str("Phase 2"))
         XCTAssertEqual(invokeCount, 2)
         
         // tryEvent (fails)
-        machine <-! .Event0("gogogo")
-        XCTAssertEqual(machine.state, MyState2.State0("Phase 2"), "No change.")
+        machine <-! .Str("gogogo")
+        XCTAssertEqual(machine.state, StrState.Str("Phase 2"), "No change.")
         XCTAssertEqual(invokeCount, 2, "Handler should NOT be performed")
         
         // tryEvent
-        machine <-! .Event0("finish")
-        XCTAssertEqual(machine.state, MyState2.State0("end"))
+        machine <-! .Str("finish")
+        XCTAssertEqual(machine.state, StrState.Str("end"))
         XCTAssertEqual(invokeCount, 2, "gogogo-Handler should NOT be performed")
         
     }

@@ -297,4 +297,74 @@ class MachineTests: _TestCase
         
         XCTAssertEqual(invokeCount, 0, "Handler should NOT be performed")
     }
+    
+    //--------------------------------------------------
+    // MARK: - EventRouteMapping
+    //--------------------------------------------------
+    
+    func testAddEventRouteMapping()
+    {
+        var invokeCount = 0
+        
+        let machine = Machine<MyState2, MyEvent2>(state: .State0("initial")) { machine in
+            
+            // add EventRouteMapping
+            machine.addRouteMapping { event, fromState, userInfo -> MyState2? in
+                // no route for no-event
+                guard let event = event else { return nil }
+                
+                switch (event, fromState) {
+                    case (.Event0("gogogo"), .State0("initial")):
+                        return .State0("Phase 1")
+                    case (.Event0("gogogo"), .State0("Phase 1")):
+                        return .State0("Phase 2")
+                    case (.Event0("finish"), .State0("Phase 2")):
+                        return .State0("end")
+                    default:
+                        return nil
+                }
+            }
+            
+            machine.addHandler(event: .Event0("gogogo")) { context in
+                invokeCount++
+                return
+            }
+            
+        }
+        
+        // initial
+        XCTAssertEqual(machine.state, MyState2.State0("initial"))
+        
+        // tryEvent (fails)
+        machine <-! .Event0("go?")
+        XCTAssertEqual(machine.state, MyState2.State0("initial"), "No change.")
+        XCTAssertEqual(invokeCount, 0, "Handler should NOT be performed")
+        
+        // tryEvent
+        machine <-! .Event0("gogogo")
+        XCTAssertEqual(machine.state, MyState2.State0("Phase 1"))
+        XCTAssertEqual(invokeCount, 1)
+        
+        // tryEvent (fails)
+        machine <-! .Event0("finish")
+        XCTAssertEqual(machine.state, MyState2.State0("Phase 1"), "No change.")
+        XCTAssertEqual(invokeCount, 1, "Handler should NOT be performed")
+        
+        // tryEvent
+        machine <-! .Event0("gogogo")
+        XCTAssertEqual(machine.state, MyState2.State0("Phase 2"))
+        XCTAssertEqual(invokeCount, 2)
+        
+        // tryEvent (fails)
+        machine <-! .Event0("gogogo")
+        XCTAssertEqual(machine.state, MyState2.State0("Phase 2"), "No change.")
+        XCTAssertEqual(invokeCount, 2, "Handler should NOT be performed")
+        
+        // tryEvent
+        machine <-! .Event0("finish")
+        XCTAssertEqual(machine.state, MyState2.State0("end"))
+        XCTAssertEqual(invokeCount, 2, "gogogo-Handler should NOT be performed")
+        
+    }
+    
 }

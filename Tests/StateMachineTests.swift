@@ -544,10 +544,11 @@ class StateMachineTests: _TestCase
     }
     
     //--------------------------------------------------
-    // MARK: - StateRouteMapping
+    // MARK: - Event/StateRouteMapping
     //--------------------------------------------------
     
-    func testStateRouteMapping()
+    /// Test `Event/StateRouteMapping`s.
+    func testRouteMapping()
     {
         var routeMappingDisposable: Disposable?
         

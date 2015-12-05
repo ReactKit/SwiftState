@@ -25,7 +25,7 @@ class QiitaTests: _TestCase
     {
         var success = false
         
-        let machine = Machine<InputKey, NoEvent>(state: .None) { machine in
+        let machine = StateMachine<InputKey, NoEvent>(state: .None) { machine in
             
             // connect all states
             machine.addRoute(.Any => .Any)

@@ -15,7 +15,7 @@ class MachineChainTests: _TestCase
     {
         var invokeCount = 0
         
-        let machine = Machine<MyState, NoEvent>(state: .State0) { machine in
+        let machine = StateMachine<MyState, NoEvent>(state: .State0) { machine in
         
             // add 0 => 1 => 2
             machine.addRouteChain(.State0 => .State1 => .State2) { context in
@@ -49,7 +49,7 @@ class MachineChainTests: _TestCase
         var flag = false
         var invokeCount = 0
         
-        let machine = Machine<MyState, NoEvent>(state: .State0) { machine in
+        let machine = StateMachine<MyState, NoEvent>(state: .State0) { machine in
         
             // add 0 => 1 => 2
             machine.addRouteChain(.State0 => .State1 => .State2, condition: { _ in flag }) { context in
@@ -82,7 +82,7 @@ class MachineChainTests: _TestCase
     
     func testAddRouteChain_failBySkipping()
     {
-        let machine = Machine<MyState, NoEvent>(state: .State0) { machine in
+        let machine = StateMachine<MyState, NoEvent>(state: .State0) { machine in
         
             // add 0 => 1 => 2
             machine.addRouteChain(.State0 => .State1 => .State2) { context in
@@ -97,7 +97,7 @@ class MachineChainTests: _TestCase
     
     func testAddRouteChain_failByHangingAround()
     {
-        let machine = Machine<MyState, NoEvent>(state: .State0) { machine in
+        let machine = StateMachine<MyState, NoEvent>(state: .State0) { machine in
         
             // add 0 => 1 => 2
             machine.addRouteChain(.State0 => .State1 => .State2) { context in
@@ -117,7 +117,7 @@ class MachineChainTests: _TestCase
     {
         var invokeCount = 0
         
-        let machine = Machine<MyState, NoEvent>(state: .State0) { machine in
+        let machine = StateMachine<MyState, NoEvent>(state: .State0) { machine in
         
             // add 0 => 1 => 2
             machine.addRouteChain(.State0 => .State1 => .State2) { context in
@@ -140,7 +140,7 @@ class MachineChainTests: _TestCase
     {
         var invokeCount = 0
         
-        let machine = Machine<MyState, NoEvent>(state: .State0) { machine in
+        let machine = StateMachine<MyState, NoEvent>(state: .State0) { machine in
         
             // add 0 => 1 => 2 => 0 (back home) => 2
             machine.addRouteChain(.State0 => .State1 => .State2 => .State0 => .State2) { context in
@@ -164,7 +164,7 @@ class MachineChainTests: _TestCase
     {
         var invokeCount = 0
         
-        let machine = Machine<MyState, NoEvent>(state: .State0) { machine in
+        let machine = StateMachine<MyState, NoEvent>(state: .State0) { machine in
         
             machine.addRoute(.Any => .Any)    // connect all states
             
@@ -203,48 +203,25 @@ class MachineChainTests: _TestCase
     {
         var invokeCount = 0
         
-        let machine = Machine<MyState, NoEvent>(state: .State0) { machine in
+        let machine = StateMachine<MyState, NoEvent>(state: .State0) { machine in
         
             // add 0 => 1 => 2
-            let (routeChainID, _) = machine.addRouteChain(.State0 => .State1 => .State2) { context in
+            let chainDisposable = machine.addRouteChain(.State0 => .State1 => .State2) { context in
                 invokeCount++
                 return
             }
             
-            // removeRouteChain
-            machine.removeRouteChain(routeChainID)
-            
-        }
-        
-        // tryState 0 => 1
-        let success = machine <- .State1
-        
-        XCTAssertFalse(success, "RouteChain should be removed.")
-        XCTAssertEqual(invokeCount, 0, "ChainHandler should NOT be performed.")
-    }
-    
-    func testRemoveChainHandler()
-    {
-        var invokeCount = 0
-        
-        let machine = Machine<MyState, NoEvent>(state: .State0) { machine in
-        
-            // add 0 => 1 => 2
-            let (_, chainHandlerID) = machine.addRouteChain(.State0 => .State1 => .State2) { context in
-                invokeCount++
-                return
-            }
-            
-            // removeHandler
-            machine.removeChainHandler(chainHandlerID)
+            // remove chain
+            chainDisposable.dispose()
             
         }
         
         // tryState 0 => 1 => 2
-        machine <- .State1
-        let success = machine <- .State2
         
-        XCTAssertTrue(success, "0 => 1 => 2 should be successful.")
+        machine <- .State1
+        XCTAssertEqual(invokeCount, 0, "ChainHandler should NOT be performed.")
+        
+        machine <- .State2
         XCTAssertEqual(invokeCount, 0, "ChainHandler should NOT be performed.")
     }
     
@@ -252,7 +229,7 @@ class MachineChainTests: _TestCase
     {
         var errorCount = 0
         
-        let machine = Machine<MyState, NoEvent>(state: .State0) { machine in
+        let machine = StateMachine<MyState, NoEvent>(state: .State0) { machine in
         
             let transitionChain = MyState.State0 => .State1 => .State2
             
@@ -287,20 +264,20 @@ class MachineChainTests: _TestCase
     {
         var errorCount = 0
         
-        let machine = Machine<MyState, NoEvent>(state: .State0) { machine in
+        let machine = StateMachine<MyState, NoEvent>(state: .State0) { machine in
         
             let transitionChain = MyState.State0 => .State1 => .State2
             
             machine.addRoute(.Any => .Any)    // connect all states
             
             // add 0 => 1 => 2 chainErrorHandler
-            let chainHandlerID = machine.addChainErrorHandler(transitionChain) { context in
+            let chainErrorHandlerDisposable = machine.addChainErrorHandler(transitionChain) { context in
                 errorCount++
                 return
             }
             
             // remove chainErrorHandler
-            machine.removeChainHandler(chainHandlerID)
+            chainErrorHandlerDisposable.dispose()
         
         }
         

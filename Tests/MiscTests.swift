@@ -1,57 +1,20 @@
 //
-//  BasicTests.swift
+//  MiscTests.swift
 //  SwiftState
 //
-//  Created by Yasuhiro Inami on 2014/08/08.
-//  Copyright (c) 2014年 Yasuhiro Inami. All rights reserved.
+//  Created by Yasuhiro Inami on 2015-12-05.
+//  Copyright © 2015 Yasuhiro Inami. All rights reserved.
 //
 
 import SwiftState
 import XCTest
 
-class BasicTests: _TestCase
+/// Unarranged tests.
+class MiscTests: _TestCase
 {
-    func testREADME()
-    {
-        // setup state machine
-        let machine = Machine<MyState, NoEvent>(state: .State0) { machine in
-            
-            machine.addRoute(.State0 => .State1)
-            machine.addRoute(.Any => .State2) { context in print("Any => 2, msg=\(context.userInfo)") }
-            machine.addRoute(.State2 => .Any) { context in print("2 => Any, msg=\(context.userInfo)") }
-            
-            // add handler (`context = (event, fromState, toState, userInfo)`)
-            machine.addHandler(.State0 => .State1) { context in
-                print("0 => 1")
-            }
-            
-            // add errorHandler
-            machine.addErrorHandler { event, fromState, toState, userInfo in
-                print("[ERROR] \(fromState) => \(toState)")
-            }
-        }
-        
-        // initial
-        XCTAssertTrue(machine.state == .State0)
-        
-        // tryState 0 => 1 => 2 => 1 => 0
-        
-        machine <- .State1
-        XCTAssertTrue(machine.state == .State1)
-        
-        machine <- (.State2, "Hello")
-        XCTAssertTrue(machine.state == .State2)
-        
-        machine <- (.State1, "Bye")
-        XCTAssertTrue(machine.state == .State1)
-        
-        machine <- .State0  // fail: no 1 => 0
-        XCTAssertTrue(machine.state == .State1)
-    }
-    
     func testREADME_string()
     {
-        let machine = Machine<String, NoEvent>(state: ".State0") { machine in
+        let machine = StateMachine<String, NoEvent>(state: ".State0") { machine in
             
             machine.addRoute(".State0" => ".State1")
             machine.addRoute(.Any => ".State2") { context in print("Any => 2, msg=\(context.userInfo)") }
@@ -71,24 +34,24 @@ class BasicTests: _TestCase
         // tryState 0 => 1 => 2 => 1 => 0
         
         machine <- ".State1"
-        XCTAssertTrue(machine.state == ".State1")
+        XCTAssertEqual(machine.state, ".State1")
         
         machine <- (".State2", "Hello")
-        XCTAssertTrue(machine.state == ".State2")
+        XCTAssertEqual(machine.state, ".State2")
         
         machine <- (".State1", "Bye")
-        XCTAssertTrue(machine.state == ".State1")
+        XCTAssertEqual(machine.state, ".State1")
         
         machine <- ".State0"  // fail: no 1 => 0
-        XCTAssertTrue(machine.state == ".State1")
+        XCTAssertEqual(machine.state, ".State1")
         
         print("machine.state = \(machine.state)")
     }
     
     // StateType + associated value
-    func testREADME_MyState2()
+    func testREADME_associatedValue()
     {
-        let machine = Machine<MyState2, MyEvent2>(state: .State0("0")) { machine in
+        let machine = StateMachine<MyState2, MyEvent2>(state: .State0("0")) { machine in
             
             machine.addRoute(.State0("0") => .State0("1"))
             machine.addRoute(.Any => .State0("2")) { context in print("Any => 2, msg=\(context.userInfo)") }
@@ -108,24 +71,24 @@ class BasicTests: _TestCase
         // tryState 0 => 1 => 2 => 1 => 0
         
         machine <- .State0("1")
-        XCTAssertTrue(machine.state == .State0("1"))
+        XCTAssertEqual(machine.state, MyState2.State0("1"))
         
         machine <- (.State0("2"), "Hello")
-        XCTAssertTrue(machine.state == .State0("2"))
+        XCTAssertEqual(machine.state, MyState2.State0("2"))
         
         machine <- (.State0("1"), "Bye")
-        XCTAssertTrue(machine.state == .State0("1"))
+        XCTAssertEqual(machine.state, MyState2.State0("1"))
         
         machine <- .State0("0")  // fail: no 1 => 0
-        XCTAssertTrue(machine.state == .State0("1"))
+        XCTAssertEqual(machine.state, MyState2.State0("1"))
         
         print("machine.state = \(machine.state)")
     }
     
     func testExample()
     {
-        let machine = Machine<MyState, NoEvent>(state: .State0) {
-        
+        let machine = StateMachine<MyState, NoEvent>(state: .State0) {
+            
             // add 0 => 1
             $0.addRoute(.State0 => .State1) { context in
                 print("[Transition 0=>1] \(context.fromState) => \(context.toState)")
@@ -175,47 +138,57 @@ class BasicTests: _TestCase
         
         machine.configure {
             
-            // error
+            // add error handlers
             $0.addErrorHandler { context in
                 print("[ERROR 1] \(context.fromState) => \(context.toState)")
             }
             
-            // entry
-            $0.addEntryHandler(.State0) { context in
+            // add entry handlers
+            $0.addHandler(.Any => .State0) { context in
                 print("[Entry 0] \(context.fromState) => \(context.toState)")   // NOTE: this should not be called
             }
-            $0.addEntryHandler(.State1) { context in
+            $0.addHandler(.Any => .State1) { context in
                 print("[Entry 1] \(context.fromState) => \(context.toState)")
             }
-            $0.addEntryHandler(.State2) { context in
+            $0.addHandler(.Any => .State2) { context in
                 print("[Entry 2] \(context.fromState) => \(context.toState), userInfo = \(context.userInfo)")
             }
-            $0.addEntryHandler(.State2) { context in
+            $0.addHandler(.Any => .State2) { context in
                 print("[Entry 2b] \(context.fromState) => \(context.toState), userInfo = \(context.userInfo)")
             }
             
-            // exit
-            $0.addExitHandler(.State0) { context in
+            // add exit handlers
+            $0.addHandler(.State0 => .Any) { context in
                 print("[Exit 0] \(context.fromState) => \(context.toState)")
             }
-            $0.addExitHandler(.State1) { context in
+            $0.addHandler(.State1 => .Any) { context in
                 print("[Exit 1] \(context.fromState) => \(context.toState)")
             }
-            $0.addExitHandler(.State2) { context in
+            $0.addHandler(.State2 => .Any) { context in
                 print("[Exit 2] \(context.fromState) => \(context.toState), userInfo = \(context.userInfo)")
             }
-            $0.addExitHandler(.State2) { context in
+            $0.addHandler(.State2 => .Any) { context in
                 print("[Exit 2b] \(context.fromState) => \(context.toState), userInfo = \(context.userInfo)")
             }
         }
         
-        // tryState 0 => 1 => 2 => 1 => 0 => 3
-        XCTAssertTrue(machine <- .State1)
-        XCTAssertTrue(machine <- (.State2, "State2 activate"))
-        XCTAssertTrue(machine <- (.State1, "State2 deactivate"))
-        XCTAssertTrue(machine <- .State0)
-        XCTAssertFalse(machine <- .State3)
-        
         XCTAssertEqual(machine.state, MyState.State0)
+        
+        // tryState 0 => 1 => 2 => 1 => 0 => 3
+        
+        machine <- .State1
+        XCTAssertEqual(machine.state, MyState.State1)
+        
+        machine <- (.State2, "State2 activate")
+        XCTAssertEqual(machine.state, MyState.State2)
+        
+        machine <- (.State1, "State2 deactivate")
+        XCTAssertEqual(machine.state, MyState.State1)
+        
+        machine <- .State0
+        XCTAssertEqual(machine.state, MyState.State0)
+        
+        machine <- .State3
+        XCTAssertEqual(machine.state, MyState.State0, "No 0 => 3.")
     }
 }

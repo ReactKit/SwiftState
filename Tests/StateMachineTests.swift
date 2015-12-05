@@ -1,6 +1,6 @@
 //
-//  MachineTests.swift
-//  MachineTests
+//  StateMachineTests.swift
+//  SwiftState
 //
 //  Created by Yasuhiro Inami on 2014/08/03.
 //  Copyright (c) 2014年 Yasuhiro Inami. All rights reserved.
@@ -9,13 +9,52 @@
 import SwiftState
 import XCTest
 
-class MachineTests: _TestCase
+class StateMachineTests: _TestCase
 {
     func testInit()
     {
-        let machine = Machine<MyState, NoEvent>(state: .State0)
+        let machine = StateMachine<MyState, NoEvent>(state: .State0)
         
         XCTAssertEqual(machine.state, MyState.State0)
+    }
+    
+    //--------------------------------------------------
+    // MARK: - tryState a.k.a `<-`
+    //--------------------------------------------------
+    
+    // machine <- state
+    func testTryState()
+    {
+        let machine = StateMachine<MyState, NoEvent>(state: .State0)
+        
+        // tryState 0 => 1, without registering any transitions
+        machine <- .State1
+        
+        XCTAssertEqual(machine.state, MyState.State0, "0 => 1 should fail because transition is not added yet.")
+        
+        // add 0 => 1
+        machine.addRoute(.State0 => .State1)
+        
+        // tryState 0 => 1
+        machine <- .State1
+        XCTAssertEqual(machine.state, MyState.State1)
+    }
+    
+    func testTryState_string()
+    {
+        let machine = StateMachine<String, NoEvent>(state: "0")
+        
+        // tryState 0 => 1, without registering any transitions
+        machine <- "1"
+        
+        XCTAssertEqual(machine.state, "0", "0 => 1 should fail because transition is not added yet.")
+        
+        // add 0 => 1
+        machine.addRoute("0" => "1")
+        
+        // tryState 0 => 1
+        machine <- "1"
+        XCTAssertEqual(machine.state, "1")
     }
     
     //--------------------------------------------------
@@ -25,7 +64,7 @@ class MachineTests: _TestCase
     // add state1 => state2
     func testAddRoute()
     {
-        let machine = Machine<MyState, NoEvent>(state: .State0) { machine in
+        let machine = StateMachine<MyState, NoEvent>(state: .State0) { machine in
             machine.addRoute(.State0 => .State1)
         }
         
@@ -40,7 +79,7 @@ class MachineTests: _TestCase
     // add .Any => state
     func testAddRoute_fromAnyState()
     {
-        let machine = Machine<MyState, NoEvent>(state: .State0) { machine in
+        let machine = StateMachine<MyState, NoEvent>(state: .State0) { machine in
             machine.addRoute(.Any => .State1) // Any => State1
         }
         
@@ -55,7 +94,7 @@ class MachineTests: _TestCase
     // add state => .Any
     func testAddRoute_toAnyState()
     {
-        let machine = Machine<MyState, NoEvent>(state: .State0) { machine in
+        let machine = StateMachine<MyState, NoEvent>(state: .State0) { machine in
             machine.addRoute(.State1 => .Any) // State1 => Any
         }
         
@@ -70,7 +109,7 @@ class MachineTests: _TestCase
     // add .Any => .Any
     func testAddRoute_bothAnyState()
     {
-        let machine = Machine<MyState, NoEvent>(state: .State0) { machine in
+        let machine = StateMachine<MyState, NoEvent>(state: .State0) { machine in
             machine.addRoute(.Any => .Any) // Any => Any
         }
         
@@ -85,14 +124,11 @@ class MachineTests: _TestCase
     // add state0 => state0
     func testAddRoute_sameState()
     {
-        let machine = Machine<MyState, NoEvent>(state: .State0) { machine in
+        let machine = StateMachine<MyState, NoEvent>(state: .State0) { machine in
             machine.addRoute(.State0 => .State0)
         }
         
         XCTAssertTrue(machine.hasRoute(.State0 => .State0))
-        
-        // tryState 0 => 0
-        XCTAssertTrue(machine <- .State0)
     }
     
     // add route + condition
@@ -100,7 +136,7 @@ class MachineTests: _TestCase
     {
         var flag = false
         
-        let machine = Machine<MyState, NoEvent>(state: .State0) { machine in
+        let machine = StateMachine<MyState, NoEvent>(state: .State0) { machine in
             // add 0 => 1
             machine.addRoute(.State0 => .State1, condition: { _ in flag })
         
@@ -116,7 +152,7 @@ class MachineTests: _TestCase
     // add route + condition + blacklist
     func testAddRoute_condition_blacklist()
     {
-        let machine = Machine<MyState, NoEvent>(state: .State0) { machine in
+        let machine = StateMachine<MyState, NoEvent>(state: .State0) { machine in
             // add 0 => Any, except 0 => 2
             machine.addRoute(.State0 => .Any, condition: { context in
                 return context.toState != .State2
@@ -134,7 +170,7 @@ class MachineTests: _TestCase
     {
         var invokedCount = 0
         
-        let machine = Machine<MyState, NoEvent>(state: .State0) { machine in
+        let machine = StateMachine<MyState, NoEvent>(state: .State0) { machine in
             
             machine.addRoute(.State0 => .State1) { context in
                 XCTAssertEqual(context.fromState, MyState.State0)
@@ -159,7 +195,7 @@ class MachineTests: _TestCase
         var invokedCount = 0
         var flag = false
         
-        let machine = Machine<MyState, NoEvent>(state: .State0) { machine in
+        let machine = StateMachine<MyState, NoEvent>(state: .State0) { machine in
         
             // add 0 => 1 without condition to guarantee 0 => 1 transition
             machine.addRoute(.State0 => .State1)
@@ -202,7 +238,7 @@ class MachineTests: _TestCase
     
     func testAddRoute_array_left()
     {
-        let machine = Machine<MyState, NoEvent>(state: .State0) { machine in
+        let machine = StateMachine<MyState, NoEvent>(state: .State0) { machine in
             // add 0 => 2 or 1 => 2
             machine.addRoute([.State0, .State1] => .State2)
         }
@@ -217,7 +253,7 @@ class MachineTests: _TestCase
     
     func testAddRoute_array_right()
     {
-        let machine = Machine<MyState, NoEvent>(state: .State0) { machine in
+        let machine = StateMachine<MyState, NoEvent>(state: .State0) { machine in
             // add 0 => 1 or 0 => 2
             machine.addRoute(.State0 => [.State1, .State2])
         }
@@ -232,7 +268,7 @@ class MachineTests: _TestCase
     
     func testAddRoute_array_both()
     {
-        let machine = Machine<MyState, NoEvent>(state: .State0) { machine in
+        let machine = StateMachine<MyState, NoEvent>(state: .State0) { machine in
             // add 0 => 2 or 0 => 3 or 1 => 2 or 1 => 3
             machine.addRoute([MyState.State0, MyState.State1] => [MyState.State2, MyState.State3])
         }
@@ -261,65 +297,16 @@ class MachineTests: _TestCase
     
     func testRemoveRoute()
     {
-        let machine = Machine<MyState, NoEvent>(state: .State0)
+        let machine = StateMachine<MyState, NoEvent>(state: .State0)
         
-        let routeID = machine.addRoute(.State0 => .State1)
+        let routeDisposable = machine.addRoute(.State0 => .State1)
         
         XCTAssertTrue(machine.hasRoute(.State0 => .State1))
         
-        var success: Bool
-        success = machine.removeRoute(routeID)
+        // remove route
+        routeDisposable.dispose()
         
-        XCTAssertTrue(success)
         XCTAssertFalse(machine.hasRoute(.State0 => .State1))
-        
-        // fails removing already unregistered route
-        success = machine.removeRoute(routeID)
-        
-        XCTAssertFalse(success)
-    }
-    
-    //--------------------------------------------------
-    // MARK: - tryState a.k.a `<-`
-    //--------------------------------------------------
-    
-    // machine <- state
-    func testTryState()
-    {
-        let machine = Machine<MyState, NoEvent>(state: .State0)
-        
-        // tryState 0 => 1, without registering any transitions
-        machine <- .State1
-        
-        XCTAssertEqual(machine.state, MyState.State0, "0 => 1 should fail because transition is not added yet.")
-        
-        // add 0 => 1
-        machine.addRoute(.State0 => .State1)
-        
-        // tryState 0 => 1, returning flag
-        let success = machine <- .State1
-        
-        XCTAssertTrue(success)
-        XCTAssertEqual(machine.state, MyState.State1)
-    }
-    
-    func testTryState_string()
-    {
-        let machine = Machine<String, NoEvent>(state: "0")
-        
-        // tryState 0 => 1, without registering any transitions
-        machine <- "1"
-        
-        XCTAssertEqual(machine.state, "0", "0 => 1 should fail because transition is not added yet.")
-        
-        // add 0 => 1
-        machine.addRoute("0" => "1")
-        
-        // tryState 0 => 1, returning flag
-        let success = machine <- "1"
-        
-        XCTAssertTrue(success)
-        XCTAssertEqual(machine.state, "1")
     }
     
     //--------------------------------------------------
@@ -330,7 +317,7 @@ class MachineTests: _TestCase
     {
         var invokedCount = 0
         
-        let machine = Machine<MyState, NoEvent>(state: .State0) { machine in
+        let machine = StateMachine<MyState, NoEvent>(state: .State0) { machine in
         
             // add 0 => 1
             machine.addRoute(.State0 => .State1)
@@ -357,7 +344,7 @@ class MachineTests: _TestCase
     {
         var invokedCount = 0
         
-        let machine = Machine<MyState, NoEvent>(state: .State0) { machine in
+        let machine = StateMachine<MyState, NoEvent>(state: .State0) { machine in
         
             // add 0 => 1
             machine.addRoute(.State0 => .State1)
@@ -398,7 +385,7 @@ class MachineTests: _TestCase
         var passed1 = false
         var passed2 = false
         
-        let machine = Machine<MyState, NoEvent>(state: .State0) { machine in
+        let machine = StateMachine<MyState, NoEvent>(state: .State0) { machine in
         
             // add 0 => 1
             machine.addRoute(.State0 => .State1)
@@ -427,7 +414,7 @@ class MachineTests: _TestCase
     {
         var passed = false
         
-        let machine = Machine<MyState, NoEvent>(state: .State0) { machine in
+        let machine = StateMachine<MyState, NoEvent>(state: .State0) { machine in
         
             machine.addRoute(.State0 => .State1)
             
@@ -456,12 +443,12 @@ class MachineTests: _TestCase
     {
         var passed = false
         
-        let machine = Machine<MyState, NoEvent>(state: .State0) { machine in
+        let machine = StateMachine<MyState, NoEvent>(state: .State0) { machine in
         
             // add 0 => 1
             machine.addRoute(.State0 => .State1)
             
-            let handlerID = machine.addHandler(.State0 => .State1) { context in
+            let handlerDisposable = machine.addHandler(.State0 => .State1) { context in
                 XCTFail("Should never reach here")
             }
             
@@ -472,7 +459,8 @@ class MachineTests: _TestCase
                 passed = true
             }
             
-            machine.removeHandler(handlerID)
+            // remove handler
+            handlerDisposable.dispose()
         
         }
         
@@ -486,32 +474,34 @@ class MachineTests: _TestCase
     
     func testRemoveHandler_unregistered()
     {
-        let machine = Machine<MyState, NoEvent>(state: .State0)
+        let machine = StateMachine<MyState, NoEvent>(state: .State0)
         
         // add 0 => 1
         machine.addRoute(.State0 => .State1)
         
-        let handlerID = machine.addHandler(.State0 => .State1) { context in
+        let handlerDisposable = machine.addHandler(.State0 => .State1) { context in
             // empty
         }
         
+        XCTAssertFalse(handlerDisposable.disposed)
+        
         // remove handler
-        XCTAssertTrue(machine.removeHandler(handlerID))
+        handlerDisposable.dispose()
         
         // remove already unregistered handler
-        XCTAssertFalse(machine.removeHandler(handlerID), "removeHandler should fail because handler is already removed.")
+        XCTAssertTrue(handlerDisposable.disposed, "removeHandler should fail because handler is already removed.")
     }
     
     func testRemoveErrorHandler()
     {
         var passed = false
         
-        let machine = Machine<MyState, NoEvent>(state: .State0) { machine in
+        let machine = StateMachine<MyState, NoEvent>(state: .State0) { machine in
         
             // add 2 => 1
             machine.addRoute(.State2 => .State1)
             
-            let handlerID = machine.addErrorHandler { context in
+            let handlerDisposable = machine.addErrorHandler { context in
                 XCTFail("Should never reach here")
             }
             
@@ -522,7 +512,8 @@ class MachineTests: _TestCase
                 passed = true
             }
             
-            machine.removeHandler(handlerID)
+            // remove handler
+            handlerDisposable.dispose()
         
         }
         
@@ -534,19 +525,78 @@ class MachineTests: _TestCase
     
     func testRemoveErrorHandler_unregistered()
     {
-        let machine = Machine<MyState, NoEvent>(state: .State0)
+        let machine = StateMachine<MyState, NoEvent>(state: .State0)
         
         // add 0 => 1
         machine.addRoute(.State0 => .State1)
         
-        let handlerID = machine.addErrorHandler { context in
+        let handlerDisposable = machine.addErrorHandler { context in
             // empty
         }
         
+        XCTAssertFalse(handlerDisposable.disposed)
+        
         // remove handler
-        XCTAssertTrue(machine.removeHandler(handlerID))
+        handlerDisposable.dispose()
         
         // remove already unregistered handler
-        XCTAssertFalse(machine.removeHandler(handlerID), "removeHandler should fail because handler is already removed.")
+        XCTAssertTrue(handlerDisposable.disposed, "removeHandler should fail because handler is already removed.")
+    }
+    
+    //--------------------------------------------------
+    // MARK: - StateRouteMapping
+    //--------------------------------------------------
+    
+    func testStateRouteMapping()
+    {
+        var routeMappingDisposable: Disposable?
+        
+        let machine = StateMachine<MyState, NoEvent>(state: .State0) { machine in
+            
+            // add 0 => 1 & 0 => 2 (using `StateRouteMapping` closure)
+            routeMappingDisposable = machine.addRouteMapping { fromState, userInfo -> [MyState]? in
+                if fromState == .State0 {
+                    return [.State1, .State2]
+                }
+                else {
+                    return nil
+                }
+            }
+            
+            // add 1 => 0 (can also use `EventRouteMapping` closure for single-`toState`)
+            machine.addRouteMapping { event, fromState, userInfo -> MyState? in
+                guard event == nil else { return nil }
+                
+                if fromState == .State1 {
+                    return .State0
+                }
+                else {
+                    return nil
+                }
+            }
+        }
+        
+        XCTAssertFalse(machine.hasRoute(.State0 => .State0))
+        XCTAssertTrue(machine.hasRoute(.State0 => .State1))
+        XCTAssertTrue(machine.hasRoute(.State0 => .State2))
+        XCTAssertTrue(machine.hasRoute(.State1 => .State0))
+        XCTAssertFalse(machine.hasRoute(.State1 => .State1))
+        XCTAssertFalse(machine.hasRoute(.State1 => .State2))
+        XCTAssertFalse(machine.hasRoute(.State2 => .State0))
+        XCTAssertFalse(machine.hasRoute(.State2 => .State1))
+        XCTAssertFalse(machine.hasRoute(.State2 => .State2))
+        
+        // remove routeMapping
+        routeMappingDisposable?.dispose()
+        
+        XCTAssertFalse(machine.hasRoute(.State0 => .State0))
+        XCTAssertFalse(machine.hasRoute(.State0 => .State1))
+        XCTAssertFalse(machine.hasRoute(.State0 => .State2))
+        XCTAssertTrue(machine.hasRoute(.State1 => .State0))
+        XCTAssertFalse(machine.hasRoute(.State1 => .State1))
+        XCTAssertFalse(machine.hasRoute(.State1 => .State2))
+        XCTAssertFalse(machine.hasRoute(.State2 => .State0))
+        XCTAssertFalse(machine.hasRoute(.State2 => .State1))
+        XCTAssertFalse(machine.hasRoute(.State2 => .State2))
     }
 }

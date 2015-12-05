@@ -6,6 +6,7 @@
 //  Copyright (c) 2014年 Yasuhiro Inami. All rights reserved.
 //
 
+/// Group of continuous `Route`s.
 public struct RouteChain<S: StateType, E: EventType>
 {
     public private(set) var routes: [Route<S, E>]

@@ -64,16 +64,16 @@ class HierarchicalMachineTests: _TestCase
     /// - Warning: 
     /// This is a naive implementation and easily lose consistency when `subMachine.state` is changed directly, e.g. `subMachine1 <- .SubState1`.
     ///
-    private var mainMachine: Machine<_MainState, NoEvent>?
+    private var mainMachine: StateMachine<_MainState, NoEvent>?
     
-    private var subMachine1: Machine<_SubState, NoEvent>?
-    private var subMachine2: Machine<_SubState, NoEvent>?
+    private var subMachine1: StateMachine<_SubState, NoEvent>?
+    private var subMachine2: StateMachine<_SubState, NoEvent>?
 
     override func setUp()
     {
         super.setUp()
         
-        let subMachine1 = Machine<_SubState, NoEvent>(state: .SubState0) { subMachine1 in
+        let subMachine1 = StateMachine<_SubState, NoEvent>(state: .SubState0) { subMachine1 in
             // add Sub1-0 => Sub1-1
             subMachine1.addRoute(.SubState0 => .SubState1)
             
@@ -81,7 +81,7 @@ class HierarchicalMachineTests: _TestCase
             subMachine1.addErrorHandler { print("[ERROR][Sub1] \($0.fromState) => \($0.toState)") }
         }
         
-        let subMachine2 = Machine<_SubState, NoEvent>(state: .SubState0) { subMachine2 in
+        let subMachine2 = StateMachine<_SubState, NoEvent>(state: .SubState0) { subMachine2 in
             // add Sub2-0 => Sub2-1
             subMachine2.addRoute(.SubState0 => .SubState1)
             
@@ -89,7 +89,7 @@ class HierarchicalMachineTests: _TestCase
             subMachine2.addErrorHandler { print("[ERROR][Sub2] \($0.fromState) => \($0.toState)") }
         }
         
-        let mainMachine = Machine<_MainState, NoEvent>(state: .MainState0) { mainMachine in
+        let mainMachine = StateMachine<_MainState, NoEvent>(state: .MainState0) { mainMachine in
             
             // add routes & handle for same-subMachine internal transitions
             mainMachine.addRoute(.Any => .Any, condition: { _, fromState, toState, userInfo in
@@ -115,7 +115,7 @@ class HierarchicalMachineTests: _TestCase
             })
             
             // add routes for mainMachine-state transitions (submachine switching)
-            mainMachine.addRouteMapping { _, fromState, _ -> _MainState? in
+            mainMachine.addRouteMapping { event, fromState, userInfo -> _MainState? in
                 
                 // NOTE: use external submachine's states only for evaluating `toState`, but not for `fromState`
                 switch fromState {

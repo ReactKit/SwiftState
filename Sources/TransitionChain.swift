@@ -6,6 +6,7 @@
 //  Copyright (c) 2014年 Yasuhiro Inami. All rights reserved.
 //
 
+/// Group of continuous `Transition`s represented as `.State1 => .State2 => .State3`.
 public struct TransitionChain<S: StateType>
 {
     public private(set) var states: [State<S>]

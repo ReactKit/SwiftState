@@ -6,6 +6,10 @@
 //  Copyright (c) 2014年 Yasuhiro Inami. All rights reserved.
 //
 
+///
+/// "From-" and "to-" states represented as `.State1 => .State2`.
+/// Also, `.Any` can be used to represent _any state_.
+///
 public struct Transition<S: StateType>: Hashable
 {
     public let fromState: State<S>

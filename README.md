@@ -74,7 +74,7 @@ enum MyEvent: EventType {
 let machine = StateMachine<MyState, MyEvent>(state: .State0) { machine in
         
     // add 0 => 1 => 2
-    machine.addRouteEvent(.Event0, transitions: [
+    machine.addRoute(event: .Event0, transitions: [
         .State0 => .State1,
         .State1 => .State2,
     ])
@@ -89,9 +89,8 @@ machine <-! .Event0
 XCTAssertEqual(machine.state, MyState.State2)
 
 // tryEvent
-let success = machine <-! .Event0
-XCTAssertEqual(machine.state, MyState.State2)
-XCTAssertFalse(success, "Event0 doesn't have 2 => Any")
+machine <-! .Event0
+XCTAssertEqual(machine.state, MyState.State2, "Event0 doesn't have 2 => Any")
 ```
 
 If there is no `Event`-based transition, use built-in `NoEvent` instead.
@@ -126,8 +125,9 @@ State Machine | `Machine`                     | State transition manager which c
 Transition    | `Transition`                  | `From-` and `to-` states represented as `.State1 => .State2`. Also, `.Any` can be used to represent _any state_.
 Route         | `Route`                       | `Transition` + `Condition`.
 Condition     | `Context -> Bool`             | Closure for validating transition. If condition returns `false`, transition will fail and associated handlers will not be invoked.
-Route Mapping | `(event: E?, fromState: S, userInfo: Any?) -> S?`                | Another way of defining routes **using closure instead of transition arrows (`=>`)**. This is useful when state & event are enum with associated values. Return value (`S?`) means "preferred-toState", where passing `nil` means no routes available. See [#36](https://github.com/ReactKit/SwiftState/pull/36) for more info.
-Handler       | `Context -> Void`             | Transition callback invoked after state has been changed.
+Event Route Mapping | `(event: E?, fromState: S, userInfo: Any?) -> S?`                | Another way of defining routes **using closure instead of transition arrows (`=>`)**. This is useful when state & event are enum with associated values. Return value (`S?`) means preferred-`toState`, where passing `nil` means no routes available. See [#36](https://github.com/ReactKit/SwiftState/pull/36) for more info.
+State Route Mapping | `(fromState: S, userInfo: Any?) -> [S]?`                | Another way of defining routes **using closure instead of transition arrows (`=>`)**. This is useful when state is enum with associated values. Return value (`[S]?`) means multiple `toState`s from single `fromState`. See [#36](https://github.com/ReactKit/SwiftState/pull/36) for more info.
+Handler       | `Context -> Void`             | Transition callback invoked when state has been changed successfully.
 Context       | `(event: E?, fromState: S, toState: S, userInfo: Any?)` | Closure argument for `Condition` & `Handler`.
 Chain         | `TransitionChain` / `RouteChain` | Group of continuous routes represented as `.State1 => .State2 => .State3`
 

@@ -1,12 +1,12 @@
 //
-//  RouteMappingID.swift
+//  _RouteMappingID.swift
 //  SwiftState
 //
 //  Created by Yasuhiro Inami on 2015-11-10.
 //  Copyright © 2015 Yasuhiro Inami. All rights reserved.
 //
 
-public final class RouteMappingID
+internal final class _RouteMappingID
 {
     internal let key: String
     

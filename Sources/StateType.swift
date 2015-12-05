@@ -20,7 +20,7 @@ public enum State<S: StateType>: Hashable
     {
         switch self {
             case .Some(let x):  return x.hashValue
-            case .Any:          return -4611686018427387904
+            case .Any:          return _hashValueForAny
         }
     }
     
@@ -47,3 +47,7 @@ public func == <S: StateType>(lhs: S, rhs: State<S>) -> Bool
 {
     return lhs.hashValue == rhs.hashValue
 }
+
+// MARK: Private
+
+internal let _hashValueForAny = Int.min/2

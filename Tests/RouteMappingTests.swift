@@ -78,7 +78,7 @@ class RouteMappingTests: _TestCase
     {
         var count = 0
         
-        let machine = Machine<_State, _Event>(state: .Pending) { machine in
+        let machine = StateMachine<_State, _Event>(state: .Pending) { machine in
             
             machine.addRouteMapping { event, fromState, userInfo in
                 // no routes for no event
@@ -97,38 +97,38 @@ class RouteMappingTests: _TestCase
             }
             
             // increment `count` when any events i.e. `.CancelAction` and `.LoadAction(x)` succeed.
-            machine.addEventHandler(.Any) { event, transition, order, userInfo in
+            machine.addHandler(event: .Any) { event, transition, order, userInfo in
                 count++
             }
             
         }
         
         // initial
-        XCTAssertTrue(machine.state == .Pending)
+        XCTAssertEqual(machine.state, _State.Pending)
         XCTAssertEqual(count, 0)
         
         // CancelAction (to .Pending state, same as before)
         machine <-! .CancelAction
-        XCTAssertTrue(machine.state == .Pending)
+        XCTAssertEqual(machine.state, _State.Pending)
         XCTAssertEqual(count, 0, "`tryEvent()` failed, and `count` should not be incremented.")
         
         // LoadAction(1) (to .Loading(1) state)
         machine <-! .LoadAction(1)
-        XCTAssertTrue(machine.state == .Loading(1))
+        XCTAssertEqual(machine.state, _State.Loading(1))
         XCTAssertEqual(count, 1)
         
         // LoadAction(1) (same as before)
         machine <-! .LoadAction(1)
         print(machine.state)
-        XCTAssertTrue(machine.state == .Loading(1))
+        XCTAssertEqual(machine.state, _State.Loading(1))
         XCTAssertEqual(count, 1, "`tryEvent()` failed, and `count` should not be incremented.")
         
         machine <-! .LoadAction(2)
-        XCTAssertTrue(machine.state == .Loading(2))
+        XCTAssertEqual(machine.state, _State.Loading(2))
         XCTAssertEqual(count, 2)
         
         machine <-! .CancelAction
-        XCTAssertTrue(machine.state == .Pending)
+        XCTAssertEqual(machine.state, _State.Pending)
         XCTAssertEqual(count, 3)
     }
 }

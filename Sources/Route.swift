@@ -6,6 +6,7 @@
 //  Copyright (c) 2014年 Yasuhiro Inami. All rights reserved.
 //
 
+/// `Transition` + `Condition`.
 public struct Route<S: StateType, E: EventType>
 {
     public let transition: Transition<S>

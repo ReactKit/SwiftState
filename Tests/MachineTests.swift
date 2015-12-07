@@ -299,16 +299,15 @@ class MachineTests: _TestCase
     }
     
     //--------------------------------------------------
-    // MARK: - EventRouteMapping
+    // MARK: - RouteMapping
     //--------------------------------------------------
     
-    func testAddEventRouteMapping()
+    func testAddRouteMapping()
     {
         var invokeCount = 0
         
         let machine = Machine<StrState, StrEvent>(state: .Str("initial")) { machine in
             
-            // add EventRouteMapping
             machine.addRouteMapping { event, fromState, userInfo -> StrState? in
                 // no route for no-event
                 guard let event = event else { return nil }

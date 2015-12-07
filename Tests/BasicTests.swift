@@ -80,7 +80,6 @@ class BasicTests: _TestCase
     {
         let machine = Machine<StrState, StrEvent>(state: .Str("initial")) { machine in
             
-            // add EventRouteMapping
             machine.addRouteMapping { event, fromState, userInfo -> StrState? in
                 // no route for no-event
                 guard let event = event else { return nil }

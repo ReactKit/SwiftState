@@ -100,10 +100,13 @@ If there is no `Event`-based transition, use built-in `NoEvent` instead.
 
 ### State & Event enums with associated values
 
-Above examples use _arrow-style routing_ which are easy to understand, but it lacks in ability to handle state & event enums with associated values. In such cases, use `machine.addRouteMapping()` and pass either of the following closure types (_closure-style routing_):
+Above examples use _arrow-style routing_ which are easy to understand, but it lacks in ability to handle state & event enums with associated values. In such cases, use either of the following functions to apply _closure-style routing_:
 
-- `EventRouteMapping`: `(event: E?, fromState: S, userInfo: Any?) -> S?`
-- `StateRouteMapping`: `(fromState: S, userInfo: Any?) -> [S]?`
+- `machine.addRouteMapping(routeMapping)`
+  - `RouteMapping`: `(event: E?, fromState: S, userInfo: Any?) -> S?`
+- `machine.addStateRouteMapping(stateRouteMapping)`
+  - `StateRouteMapping`: `(fromState: S, userInfo: Any?) -> [S]?`
+  - This is a synonym for multiple routing e.g. `.State0 => [.State1, .State2]`
 
 For example:
 
@@ -117,7 +120,6 @@ enum StrEvent: EventType {
 
 let machine = Machine<StrState, StrEvent>(state: .Str("initial")) { machine in
     
-    // add EventRouteMapping
     machine.addRouteMapping { event, fromState, userInfo -> StrState? in
         // no route for no-event
         guard let event = event else { return nil }
@@ -164,7 +166,7 @@ machine <-! .Str("finish")
 XCTAssertEqual(machine.state, StrState.Str("end"))
 ```
 
-This behaves very similar to JavaScript's safe state-container [rackt/Redux](https://github.com/rackt/redux), where `EventRouteMapping` can be interpretted as `Redux.Reducer`.
+This behaves very similar to JavaScript's safe state-container [rackt/Redux](https://github.com/rackt/redux), where `RouteMapping` can be interpretted as `Redux.Reducer`.
 
 For more examples, please see XCTest cases.
 

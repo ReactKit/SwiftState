@@ -554,8 +554,8 @@ class StateMachineTests: _TestCase
         
         let machine = StateMachine<MyState, NoEvent>(state: .State0) { machine in
             
-            // add 0 => 1 & 0 => 2 (using `StateRouteMapping` closure)
-            routeMappingDisposable = machine.addRouteMapping { fromState, userInfo -> [MyState]? in
+            // add 0 => 1 & 0 => 2
+            routeMappingDisposable = machine.addStateRouteMapping { fromState, userInfo -> [MyState]? in
                 if fromState == .State0 {
                     return [.State1, .State2]
                 }
@@ -564,7 +564,7 @@ class StateMachineTests: _TestCase
                 }
             }
             
-            // add 1 => 0 (can also use `EventRouteMapping` closure for single-`toState`)
+            // add 1 => 0 (can also use `RouteMapping` closure for single-`toState`)
             machine.addRouteMapping { event, fromState, userInfo -> MyState? in
                 guard event == nil else { return nil }
                 

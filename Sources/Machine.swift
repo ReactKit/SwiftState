@@ -12,7 +12,7 @@
 /// This is a superclass (simpler version) of `StateMachine` that doesn't allow `tryState()` (direct state change).
 ///
 /// This class can be used as a safe state-container in similar way as [rackt/Redux](https://github.com/rackt/redux),
-/// where `EventRouteMapping` can be interpretted as `Redux.Reducer`.
+/// where `RouteMapping` can be interpretted as `Redux.Reducer`.
 ///
 public class Machine<S: StateType, E: EventType>
 {
@@ -28,12 +28,12 @@ public class Machine<S: StateType, E: EventType>
     
     /// Closure-based route, mainly for `tryEvent()` (and also works for subclass's `tryState()`).
     /// - Returns: Preferred `toState`.
-    public typealias EventRouteMapping = (event: E?, fromState: S, userInfo: Any?) -> S?
+    public typealias RouteMapping = (event: E?, fromState: S, userInfo: Any?) -> S?
     
     internal typealias _RouteDict = [Transition<S> : [String : Condition?]]
     
     private lazy var _routes: [Event<E> : _RouteDict] = [:]
-    private lazy var _routeMappings: [String : EventRouteMapping] = [:]
+    private lazy var _routeMappings: [String : RouteMapping] = [:]
     
     /// `tryEvent()`-based handler collection.
     private lazy var _handlers: [Event<E> : [_HandlerInfo<S, E>]] = [:]
@@ -356,12 +356,12 @@ public class Machine<S: StateType, E: EventType>
     }
     
     //--------------------------------------------------
-    // MARK: - EventRouteMapping
+    // MARK: - RouteMapping
     //--------------------------------------------------
     
     // MARK: addRouteMapping
     
-    public func addRouteMapping(routeMapping: EventRouteMapping) -> Disposable
+    public func addRouteMapping(routeMapping: RouteMapping) -> Disposable
     {
         let key = _createUniqueString()
         
@@ -376,7 +376,7 @@ public class Machine<S: StateType, E: EventType>
     
     // MARK: addRouteMapping + conditional handler
     
-    public func addRouteMapping(routeMapping: EventRouteMapping, order: HandlerOrder = _defaultOrder, handler: Machine.Handler) -> Disposable
+    public func addRouteMapping(routeMapping: RouteMapping, order: HandlerOrder = _defaultOrder, handler: Machine.Handler) -> Disposable
     {
         let routeDisposable = self.addRouteMapping(routeMapping)
         

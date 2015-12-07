@@ -80,7 +80,6 @@ class RouteMappingTests: _TestCase
         
         let machine = StateMachine<_State, _Event>(state: .Pending) { machine in
             
-            // add EventRouteMapping
             machine.addRouteMapping { event, fromState, userInfo in
                 // no routes for no event
                 guard let event = event else {
@@ -138,8 +137,11 @@ class RouteMappingTests: _TestCase
         
         let machine = StateMachine<_State, _Event>(state: .Pending) { machine in
             
-            // add StateRouteMapping
-            machine.addRouteMapping { fromState, userInfo in
+            // Add following routes:
+            // - `.Pending => .Loading(1)`
+            // - `.Loading(x) => .Loading(x+10)`
+            // - `.Loading(x) => .Loading(x+100)`
+            machine.addStateRouteMapping { fromState, userInfo in
                 switch fromState {
                     case .Pending:
                         return [.Loading(1)]

@@ -15,11 +15,11 @@
 public final class StateMachine<S: StateType, E: EventType>: Machine<S, E>
 {
     /// Closure-based routes for `tryState()`.
-    /// - Returns: Multiple `toState`s from single `fromState`.
+    /// - Returns: Multiple `toState`s from single `fromState`, similar to `.State0 => [.State1, .State2]`
     public typealias StateRouteMapping = (fromState: S, userInfo: Any?) -> [S]?
     
     private lazy var _routes: _RouteDict = [:]
-    private lazy var _routeMappings: [String : StateRouteMapping] = [:] // NOTE: `StateRouteMapping`, not `EventRouteMapping`
+    private lazy var _routeMappings: [String : StateRouteMapping] = [:] // NOTE: `StateRouteMapping`, not `RouteMapping`
     
     /// `tryState()`-based handler collection.
     private lazy var _handlers: [Transition<S> : [_HandlerInfo<S, E>]] = [:]
@@ -442,9 +442,9 @@ public final class StateMachine<S: StateType, E: EventType>: Machine<S, E>
     // MARK: - StateRouteMapping
     //--------------------------------------------------
     
-    // MARK: addRouteMapping
+    // MARK: addStateRouteMapping
     
-    public func addRouteMapping(routeMapping: StateRouteMapping) -> Disposable
+    public func addStateRouteMapping(routeMapping: StateRouteMapping) -> Disposable
     {
         let key = _createUniqueString()
         
@@ -453,15 +453,15 @@ public final class StateMachine<S: StateType, E: EventType>: Machine<S, E>
         let routeMappingID = _RouteMappingID(key: key)
         
         return ActionDisposable.init { [weak self] in
-            self?._removeRouteMapping(routeMappingID)
+            self?._removeStateRouteMapping(routeMappingID)
         }
     }
     
-    // MARK: addRouteMapping + conditional handler
+    // MARK: addStateRouteMapping + conditional handler
     
-    public func addRouteMapping(routeMapping: StateRouteMapping, handler: Handler) -> Disposable
+    public func addStateRouteMapping(routeMapping: StateRouteMapping, handler: Handler) -> Disposable
     {
-        let routeDisposable = self.addRouteMapping(routeMapping)
+        let routeDisposable = self.addStateRouteMapping(routeMapping)
         
         let handlerDisposable = self.addHandler(.Any => .Any) { context in
             if self._hasRouteMappingInDict(fromState: context.fromState, toState: context.toState, userInfo: context.userInfo) != nil {
@@ -475,9 +475,9 @@ public final class StateMachine<S: StateType, E: EventType>: Machine<S, E>
         }
     }
     
-    // MARK: removeRouteMapping
+    // MARK: removeStateRouteMapping
     
-    private func _removeRouteMapping(routeMappingID: _RouteMappingID) -> Bool
+    private func _removeStateRouteMapping(routeMappingID: _RouteMappingID) -> Bool
     {
         if self._routeMappings[routeMappingID.key] != nil {
             self._routeMappings[routeMappingID.key] = nil

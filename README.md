@@ -100,13 +100,12 @@ If there is no `Event`-based transition, use built-in `NoEvent` instead.
 
 ### State & Event enums with associated values
 
-Above examples use _arrow-style routing_ which are easy to understand, but it lacks in ability to handle state & event enums with associated values. In such cases, use either of the following functions to apply _closure-style routing_:
+Above examples use _arrow-style routing_ which are easy to understand, but it lacks in ability to handle **state & event enums with associated values**. In such cases, use either of the following functions to apply _closure-style routing_:
 
 - `machine.addRouteMapping(routeMapping)`
-  - `RouteMapping`: `(event: E?, fromState: S, userInfo: Any?) -> S?`
+    - `RouteMapping`: `(event: E?, fromState: S, userInfo: Any?) -> S?`
 - `machine.addStateRouteMapping(stateRouteMapping)`
-  - `StateRouteMapping`: `(fromState: S, userInfo: Any?) -> [S]?`
-  - This is a synonym for multiple routing e.g. `.State0 => [.State1, .State2]`
+    - `StateRouteMapping`: `(fromState: S, userInfo: Any?) -> [S]?`
 
 For example:
 
@@ -175,17 +174,21 @@ For more examples, please see XCTest cases.
 
 - Easy Swift syntax
     - Transition: `.State0 => .State1`, `[.State0, .State1] => .State2`
-    - Try transition: `machine <- .State1`
-    - Try transition + messaging: `machine <- (.State1, "GoGoGo")`
+    - Try state: `machine <- .State1`
+    - Try state + messaging: `machine <- (.State1, "GoGoGo")`
     - Try event: `machine <-! .Event1`
 - Highly flexible transition routing
     - Using `Condition`
-    - Using `.Any` state/event
-    - Blacklisting: `.Any => .Any` + `Condition`
+    - Using `.Any` state
+        - Entry handling: `.Any => .SomeState`
+        - Exit handling: `.SomeState => .Any`
+        - Blacklisting: `.Any => .Any` + `Condition`
+    - Using `.Any` event
+    
     - Route Mapping (closure-based routing): [#36](https://github.com/ReactKit/SwiftState/pull/36)
-- Success/Error/Entry/Exit handlers with `order: UInt8` (more flexible than before/after handlers)
-- Removable routes and handlers
-- Chaining: `.State0 => .State1 => .State2`
+- Success/Error handlers with `order: UInt8` (more flexible than before/after handlers)
+- Removable routes and handlers using `Disposable`
+- Route Chaining: `.State0 => .State1 => .State2`
 - Hierarchical State Machine: [#10](https://github.com/ReactKit/SwiftState/pull/10)
 
 ## Terms
@@ -198,8 +201,8 @@ State Machine | `Machine`                     | State transition manager which c
 Transition    | `Transition`                  | `From-` and `to-` states represented as `.State1 => .State2`. Also, `.Any` can be used to represent _any state_.
 Route         | `Route`                       | `Transition` + `Condition`.
 Condition     | `Context -> Bool`             | Closure for validating transition. If condition returns `false`, transition will fail and associated handlers will not be invoked.
-Event Route Mapping | `(event: E?, fromState: S, userInfo: Any?) -> S?`                | Another way of defining routes **using closure instead of transition arrows (`=>`)**. This is useful when state & event are enum with associated values. Return value (`S?`) means preferred-`toState`, where passing `nil` means no routes available. See [#36](https://github.com/ReactKit/SwiftState/pull/36) for more info.
-State Route Mapping | `(fromState: S, userInfo: Any?) -> [S]?`                | Another way of defining routes **using closure instead of transition arrows (`=>`)**. This is useful when state is enum with associated values. Return value (`[S]?`) means multiple `toState`s from single `fromState`. See [#36](https://github.com/ReactKit/SwiftState/pull/36) for more info.
+Route Mapping | `(event: E?, fromState: S, userInfo: Any?) -> S?`                | Another way of defining routes **using closure instead of transition arrows (`=>`)**. This is useful when state & event are enum with associated values. Return value (`S?`) means preferred-`toState`, where passing `nil` means no routes available. See [#36](https://github.com/ReactKit/SwiftState/pull/36) for more info.
+State Route Mapping | `(fromState: S, userInfo: Any?) -> [S]?`                | Another way of defining routes **using closure instead of transition arrows (`=>`)**. This is useful when state is enum with associated values. Return value (`[S]?`) means multiple `toState`s from single `fromState` (synonym for multiple routing e.g. `.State0 => [.State1, .State2]`). See [#36](https://github.com/ReactKit/SwiftState/pull/36) for more info.
 Handler       | `Context -> Void`             | Transition callback invoked when state has been changed successfully.
 Context       | `(event: E?, fromState: S, toState: S, userInfo: Any?)` | Closure argument for `Condition` & `Handler`.
 Chain         | `TransitionChain` / `RouteChain` | Group of continuous routes represented as `.State1 => .State2 => .State3`

@@ -464,9 +464,16 @@ public final class StateMachine<S: StateType, E: EventType>: Machine<S, E>
         let routeDisposable = self.addStateRouteMapping(routeMapping)
         
         let handlerDisposable = self.addHandler(.Any => .Any) { context in
-            if self._hasRouteMappingInDict(fromState: context.fromState, toState: context.toState, userInfo: context.userInfo) != nil {
-                handler(context)
+            
+            guard context.event == nil else { return }
+            
+            guard let preferredToStates = routeMapping(fromState: context.fromState, userInfo: context.userInfo)
+                where preferredToStates.contains(context.toState) else
+            {
+                return
             }
+            
+            handler(context)
         }
         
         return ActionDisposable.init {

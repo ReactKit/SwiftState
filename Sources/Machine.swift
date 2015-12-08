@@ -294,13 +294,8 @@ public class Machine<S: StateType, E: EventType>
     
     public func addRoutes(event event: Event<E>, transitions: [Transition<S>], condition: Condition? = nil, handler: Handler) -> Disposable
     {
-        let routeDisposable = self.addRoutes(event: event, transitions: transitions, condition: condition)
-        let handlerDisposable = self.addHandler(event: event, handler: handler)
-        
-        return ActionDisposable.init {
-            routeDisposable.dispose()
-            handlerDisposable.dispose()
-        }
+        let routes = transitions.map { Route(transition: $0, condition: condition) }
+        return self.addRoutes(event: event, routes: routes, handler: handler)
     }
     
     public func addRoutes(event event: E, routes: [Route<S, E>], handler: Handler) -> Disposable

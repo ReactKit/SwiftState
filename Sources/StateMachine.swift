@@ -49,8 +49,8 @@ public final class StateMachine<S: StateType, E: EventType>: Machine<S, E>
     /// - Note: This method also checks for event-based-routes.
     public func hasRoute(transition: Transition<S>, userInfo: Any? = nil) -> Bool
     {
-        guard let fromState = transition.fromState.value,
-            toState = transition.toState.value else
+        guard let fromState = transition.fromState.rawValue,
+            toState = transition.toState.rawValue else
         {
             assertionFailure("State = `.Any` is not supported for `hasRoute()` (always returns `false`)")
             return false

@@ -70,8 +70,8 @@ public class Machine<S: StateType, E: EventType>
     /// Check for added routes & routeMappings.
     public func hasRoute(event event: E, transition: Transition<S>, userInfo: Any? = nil) -> Bool
     {
-        guard let fromState = transition.fromState.value,
-            toState = transition.toState.value else
+        guard let fromState = transition.fromState.rawValue,
+            toState = transition.toState.rawValue else
         {
             assertionFailure("State = `.Any` is not supported for `hasRoute()` (always returns `false`)")
             return false
@@ -110,7 +110,7 @@ public class Machine<S: StateType, E: EventType>
             
             if let event = event {
                 for (ev, routeDict) in self._routes {
-                    if ev.value == event || ev == .Any {
+                    if ev.rawValue == event || ev == .Any {
                         routeDicts += [routeDict]
                     }
                 }
@@ -165,7 +165,7 @@ public class Machine<S: StateType, E: EventType>
                 if transition.fromState == .Some(self.state) || transition.fromState == .Any {
                     for (_, condition) in keyConditionDict {
                         // if toState is `.Any`, always treat as identity transition
-                        let toState = transition.toState.value ?? self.state
+                        let toState = transition.toState.rawValue ?? self.state
                         
                         if _canPassCondition(condition, forEvent: event, fromState: self.state, toState: toState, userInfo: userInfo) {
                             return toState
@@ -426,7 +426,7 @@ public class Machine<S: StateType, E: EventType>
                 return
             }
             
-            if triggeredEvent == event.value || event == .Any {
+            if triggeredEvent == event.rawValue || event == .Any {
                 handler(context)
             }
         }

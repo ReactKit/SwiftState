@@ -10,12 +10,15 @@ public protocol StateType: Hashable {}
 
 // MARK: State
 
-/// `StateType` wrapper for handling`.Any` state.
-public enum State<S: StateType>: Hashable
+/// `StateType` wrapper for handling `.Any` state.
+public enum State<S: StateType>
 {
     case Some(S)
     case Any
-    
+}
+
+extension State: Hashable
+{
     public var hashValue: Int
     {
         switch self {
@@ -23,8 +26,21 @@ public enum State<S: StateType>: Hashable
             case .Any:          return _hashValueForAny
         }
     }
+}
+
+extension State: RawRepresentable
+{
+    public init(rawValue: S?)
+    {
+        if let rawValue = rawValue {
+            self = .Some(rawValue)
+        }
+        else {
+            self = .Any
+        }
+    }
     
-    public var value: S?
+    public var rawValue: S?
     {
         switch self {
             case .Some(let x):  return x

@@ -74,7 +74,8 @@ private func ==(lhs: _Event, rhs: _Event) -> Bool
 
 class RouteMappingTests: _TestCase
 {
-    func testEventWithAssociatedValue()
+    /// Test for state & event with associated values
+    func testAddRouteMapping()
     {
         var count = 0
         
@@ -131,7 +132,8 @@ class RouteMappingTests: _TestCase
         XCTAssertEqual(count, 3)
     }
     
-    func testStateWithAssociatedValue()
+    /// Test for state with associated values
+    func testAddStateRouteMapping()
     {
         var count = 0
         

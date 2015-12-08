@@ -309,6 +309,20 @@ class StateMachineTests: _TestCase
         XCTAssertFalse(machine.hasRoute(.State0 => .State1))
     }
     
+    func testRemoveRoute_handler()
+    {
+        let machine = StateMachine<MyState, NoEvent>(state: .State0)
+        
+        let routeDisposable = machine.addRoute(.State0 => .State1, handler: { _ in })
+        
+        XCTAssertTrue(machine.hasRoute(.State0 => .State1))
+        
+        // remove route
+        routeDisposable.dispose()
+        
+        XCTAssertFalse(machine.hasRoute(.State0 => .State1))
+    }
+    
     //--------------------------------------------------
     // MARK: - addHandler
     //--------------------------------------------------
@@ -544,11 +558,174 @@ class StateMachineTests: _TestCase
     }
     
     //--------------------------------------------------
+    // MARK: - addRouteChain
+    //--------------------------------------------------
+    
+    func testAddRouteChain()
+    {
+        var success = false
+        
+        let machine = StateMachine<MyState, NoEvent>(state: .State0) { machine in
+            
+            // add 0 => 1 => 2 => 3
+            machine.addRouteChain(.State0 => .State1 => .State2 => .State3) { context in
+                success = true
+            }
+        }
+        
+        // initial
+        XCTAssertEqual(machine.state, MyState.State0)
+        
+        // 0 => 1
+        machine <- .State1
+        XCTAssertEqual(machine.state, MyState.State1)
+        XCTAssertFalse(success, "RouteChain is not completed yet.")
+        
+        // 1 => 2
+        machine <- .State2
+        XCTAssertEqual(machine.state, MyState.State2)
+        XCTAssertFalse(success, "RouteChain is not completed yet.")
+        
+        // 2 => 3
+        machine <- .State3
+        XCTAssertEqual(machine.state, MyState.State3)
+        XCTAssertTrue(success)
+    }
+    
+    func testAddChainHandler()
+    {
+        var success = false
+        
+        let machine = StateMachine<MyState, NoEvent>(state: .State0) { machine in
+            
+            // add all routes
+            machine.addRoute(.Any => .Any)
+            
+            // add 0 => 1 => 2 => 3
+            machine.addChainHandler(.State0 => .State1 => .State2 => .State3) { context in
+                success = true
+            }
+        }
+        
+        // initial
+        XCTAssertEqual(machine.state, MyState.State0)
+        
+        // 0 => 1
+        machine <- .State1
+        XCTAssertEqual(machine.state, MyState.State1)
+        XCTAssertFalse(success, "RouteChain is not completed yet.")
+        
+        // 1 => 2
+        machine <- .State2
+        XCTAssertEqual(machine.state, MyState.State2)
+        XCTAssertFalse(success, "RouteChain is not completed yet.")
+        
+        // 2 => 2 (fails & resets chaining count)
+        machine <- .State2
+        XCTAssertEqual(machine.state, MyState.State2, "State should not change.")
+        XCTAssertFalse(success, "RouteChain failed and reset count.")
+        
+        // 2 => 3 (chaining is failed)
+        machine <- .State3
+        XCTAssertEqual(machine.state, MyState.State3)
+        XCTAssertFalse(success, "RouteChain is already failed.")
+        
+        // go back to 0 & run 0 => 1 => 2 => 3
+        machine <- .State0 <- .State1 <- .State2 <- .State3
+        XCTAssertEqual(machine.state, MyState.State3)
+        XCTAssertTrue(success, "RouteChain is resetted & should succeed its chaining.")
+    }
+    
+    //--------------------------------------------------
     // MARK: - Event/StateRouteMapping
     //--------------------------------------------------
     
+    func testAddStateRouteMapping()
+    {
+        var routeMappingDisposable: Disposable?
+        
+        let machine = StateMachine<MyState, NoEvent>(state: .State0) { machine in
+            
+            // add 0 => 1 & 0 => 2
+            routeMappingDisposable = machine.addStateRouteMapping { fromState, userInfo -> [MyState]? in
+                if fromState == .State0 {
+                    return [.State1, .State2]
+                }
+                else {
+                    return nil
+                }
+            }
+            
+        }
+        
+        XCTAssertFalse(machine.hasRoute(.State0 => .State0))
+        XCTAssertTrue(machine.hasRoute(.State0 => .State1))
+        XCTAssertTrue(machine.hasRoute(.State0 => .State2))
+        XCTAssertFalse(machine.hasRoute(.State1 => .State0))
+        XCTAssertFalse(machine.hasRoute(.State1 => .State1))
+        XCTAssertFalse(machine.hasRoute(.State1 => .State2))
+        XCTAssertFalse(machine.hasRoute(.State2 => .State0))
+        XCTAssertFalse(machine.hasRoute(.State2 => .State1))
+        XCTAssertFalse(machine.hasRoute(.State2 => .State2))
+        
+        // remove routeMapping
+        routeMappingDisposable?.dispose()
+        
+        XCTAssertFalse(machine.hasRoute(.State0 => .State0))
+        XCTAssertFalse(machine.hasRoute(.State0 => .State1))
+        XCTAssertFalse(machine.hasRoute(.State0 => .State2))
+        XCTAssertFalse(machine.hasRoute(.State1 => .State0))
+        XCTAssertFalse(machine.hasRoute(.State1 => .State1))
+        XCTAssertFalse(machine.hasRoute(.State1 => .State2))
+        XCTAssertFalse(machine.hasRoute(.State2 => .State0))
+        XCTAssertFalse(machine.hasRoute(.State2 => .State1))
+        XCTAssertFalse(machine.hasRoute(.State2 => .State2))
+    }
+    
+    func testAddStateRouteMapping_handler()
+    {
+        var invokedCount = 0
+        var routeMappingDisposable: Disposable?
+        
+        let machine = StateMachine<MyState, NoEvent>(state: .State0) { machine in
+            
+            // add 0 => 1 & 0 => 2
+            routeMappingDisposable = machine.addStateRouteMapping({ fromState, userInfo -> [MyState]? in
+                
+                if fromState == .State0 {
+                    return [.State1, .State2]
+                }
+                else {
+                    return nil
+                }
+                
+            }, handler: { context in
+                invokedCount++
+            })
+            
+        }
+        
+        // initial
+        XCTAssertEqual(machine.state, MyState.State0)
+        XCTAssertEqual(invokedCount, 0)
+        
+        // 0 => 1
+        machine <- .State1
+        XCTAssertEqual(machine.state, MyState.State1)
+        XCTAssertEqual(invokedCount, 1)
+        
+        // remove routeMapping
+        routeMappingDisposable?.dispose()
+        
+        // 1 => 2 (fails)
+        machine <- .State1
+        XCTAssertEqual(machine.state, MyState.State1)
+        XCTAssertEqual(invokedCount, 1)
+        
+    }
+    
     /// Test `Event/StateRouteMapping`s.
-    func testRouteMapping()
+    func testAddBothRouteMappings()
     {
         var routeMappingDisposable: Disposable?
         

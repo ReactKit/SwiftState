@@ -1,0 +1,11 @@
+//
+//  Release.xcconfig
+//  SwiftState
+//
+//  Created by Yasuhiro Inami on 2015-12-09.
+//  Copyright © 2015 Yasuhiro Inami. All rights reserved.
+//
+
+#include "Base.xcconfig"
+
+SWIFT_OPTIMIZATION_LEVEL = -Owholemodule;

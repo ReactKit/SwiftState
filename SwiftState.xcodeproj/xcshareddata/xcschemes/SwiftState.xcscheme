@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "4872D5AB19B4211900F326B5"
+               BlueprintIdentifier = "1FA61FFF1996601000460108"
                BuildableName = "SwiftState.framework"
-               BlueprintName = "SwiftState-iOS"
+               BlueprintName = "SwiftState"
                ReferencedContainer = "container:SwiftState.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -33,9 +33,9 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "4822F09E19D0085E00F5F572"
-               BuildableName = "SwiftStateTests-iOS.xctest"
-               BlueprintName = "SwiftState-iOSTests"
+               BlueprintIdentifier = "1FA6200A1996601000460108"
+               BuildableName = "SwiftStateTests.xctest"
+               BlueprintName = "SwiftStateTests"
                ReferencedContainer = "container:SwiftState.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -43,9 +43,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "4872D5AB19B4211900F326B5"
+            BlueprintIdentifier = "1FA61FFF1996601000460108"
             BuildableName = "SwiftState.framework"
-            BlueprintName = "SwiftState-iOS"
+            BlueprintName = "SwiftState"
             ReferencedContainer = "container:SwiftState.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -65,9 +65,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "4872D5AB19B4211900F326B5"
+            BlueprintIdentifier = "1FA61FFF1996601000460108"
             BuildableName = "SwiftState.framework"
-            BlueprintName = "SwiftState-iOS"
+            BlueprintName = "SwiftState"
             ReferencedContainer = "container:SwiftState.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -83,9 +83,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "4872D5AB19B4211900F326B5"
+            BlueprintIdentifier = "1FA61FFF1996601000460108"
             BuildableName = "SwiftState.framework"
-            BlueprintName = "SwiftState-iOS"
+            BlueprintName = "SwiftState"
             ReferencedContainer = "container:SwiftState.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

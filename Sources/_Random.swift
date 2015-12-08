@@ -6,7 +6,7 @@
 //  Copyright © 2015 Yasuhiro Inami. All rights reserved.
 //
 
-#if os(OSX) || os(iOS)
+#if os(OSX) || os(iOS) || os(watchOS) || os(tvOS)
 import Darwin
 #else
 import Glibc

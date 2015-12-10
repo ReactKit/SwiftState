@@ -16,39 +16,39 @@ enum MyState: StateType {
 
 ```swift
 // setup state machine
-let machine = Machine<MyState, NoEvent>(state: .State0) { machine in
-
+let machine = StateMachine<MyState, NoEvent>(state: .State0) { machine in
+    
     machine.addRoute(.State0 => .State1)
     machine.addRoute(.Any => .State2) { context in print("Any => 2, msg=\(context.userInfo)") }
     machine.addRoute(.State2 => .Any) { context in print("2 => Any, msg=\(context.userInfo)") }
-
+    
     // add handler (`context = (event, fromState, toState, userInfo)`)
     machine.addHandler(.State0 => .State1) { context in
         print("0 => 1")
     }
-
+    
     // add errorHandler
     machine.addErrorHandler { event, fromState, toState, userInfo in
-        print("[ERROR] \(transition.fromState) => \(transition.toState)")
+        print("[ERROR] \(fromState) => \(toState)")
     }
 }
 
 // initial
-XCTAssertTrue(machine.state == .State0)
-        
+XCTAssertEqual(machine.state, MyState.State0)
+
 // tryState 0 => 1 => 2 => 1 => 0
 
 machine <- .State1
-XCTAssertTrue(machine.state == .State1)
-        
+XCTAssertEqual(machine.state, MyState.State1)
+
 machine <- (.State2, "Hello")
-XCTAssertTrue(machine.state == .State2)
-        
+XCTAssertEqual(machine.state, MyState.State2)
+
 machine <- (.State1, "Bye")
-XCTAssertTrue(machine.state == .State1)
-        
+XCTAssertEqual(machine.state, MyState.State1)
+
 machine <- .State0  // fail: no 1 => 0
-XCTAssertTrue(machine.state == .State1)
+XCTAssertEqual(machine.state, MyState.State1)
 ```
 
 This will print:
@@ -72,17 +72,17 @@ enum MyEvent: EventType {
 
 ```swift
 let machine = StateMachine<MyState, MyEvent>(state: .State0) { machine in
-        
+    
     // add 0 => 1 => 2
-    machine.addRoute(event: .Event0, transitions: [
+    machine.addRoutes(event: .Event0, transitions: [
         .State0 => .State1,
         .State1 => .State2,
     ])
 }
- 
+
 // initial
 XCTAssertEqual(machine.state, MyState.State0)
-          
+
 // tryEvent
 machine <-! .Event0
 XCTAssertEqual(machine.state, MyState.State1)
@@ -190,6 +190,7 @@ For more examples, please see XCTest cases.
 - Removable routes and handlers using `Disposable`
 - Route Chaining: `.State0 => .State1 => .State2`
 - Hierarchical State Machine: [#10](https://github.com/ReactKit/SwiftState/pull/10)
+
 
 ## Terms
 

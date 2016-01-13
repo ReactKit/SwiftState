@@ -78,6 +78,11 @@ let machine = StateMachine<MyState, MyEvent>(state: .State0) { machine in
         .State0 => .State1,
         .State1 => .State2,
     ])
+    
+    // add event handler
+    machine.addHandler(event: .Event0) { context in
+        print(".Event0 triggered!")
+    }
 }
 
 // initial

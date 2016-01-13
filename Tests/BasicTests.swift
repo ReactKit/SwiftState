@@ -58,6 +58,11 @@ class BasicTests: _TestCase
                 .State0 => .State1,
                 .State1 => .State2,
             ])
+            
+            // add event handler
+            machine.addHandler(event: .Event0) { context in
+                print(".Event0 triggered!")
+            }
         }
         
         // initial

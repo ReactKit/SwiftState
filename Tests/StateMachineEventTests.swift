@@ -374,4 +374,49 @@ class StateMachineEventTests: _TestCase
         
         XCTAssertEqual(invokeCount, 0, "Handler should NOT be performed")
     }
+
+    //--------------------------------------------------
+    // MARK: - addAnyHandler
+    //--------------------------------------------------
+
+    func testAddAnyHandler()
+    {
+        var invokeCount = 0
+
+        let machine = StateMachine<MyState, MyEvent>(state: .State0) { machine in
+
+            // add 0 => 1 => 2 (event-based)
+            machine.addRoutes(event: .Event0, transitions: [
+                .State0 => .State1,
+                .State1 => .State2,
+            ])
+
+            // add 2 => 3 (state-based)
+            machine.addRoute(.State2 => .State3)
+
+            // addAnyHandler (for both event-based & state-based)
+            machine.addAnyHandler { context in
+                invokeCount++
+                return
+            }
+
+        }
+
+        // tryEvent
+        machine <-! .Event0
+        XCTAssertEqual(machine.state, MyState.State1)
+        XCTAssertEqual(invokeCount, 1)
+
+        // tryEvent
+        machine <-! .Event0
+        XCTAssertEqual(machine.state, MyState.State2)
+        XCTAssertEqual(invokeCount, 2)
+
+        // tryState
+        machine <- .State3
+        XCTAssertEqual(machine.state, MyState.State3)
+        XCTAssertEqual(invokeCount, 3)
+        
+    }
+
 }

@@ -307,6 +307,19 @@ public final class StateMachine<S: StateType, E: EventType>: Machine<S, E>
         
         return false
     }
+
+    // MARK: addAnyHandler (event-based & state-based)
+
+    public func addAnyHandler(order order: HandlerOrder = _defaultOrder, handler: Handler) -> Disposable
+    {
+        let disposable1 = self.addHandler(.Any => .Any, order: order, handler: handler)
+        let disposable2 = self.addHandler(event: .Any, order: order, handler: handler)
+
+        return ActionDisposable {
+            disposable1.dispose()
+            disposable2.dispose()
+        }
+    }
     
     //--------------------------------------------------
     // MARK: - RouteChain

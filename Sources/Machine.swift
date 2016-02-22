@@ -251,7 +251,7 @@ public class Machine<S: StateType, E: EventType>
         // NOTE: uses `map` with side-effects
         let disposables = routes.map { self._addRoute(event: event, route: $0) }
         
-        return ActionDisposable.init {
+        return ActionDisposable {
             disposables.forEach { $0.dispose() }
         }
     }
@@ -280,7 +280,7 @@ public class Machine<S: StateType, E: EventType>
         
         let _routeID = _RouteID(event: event, transition: transition, key: key)
         
-        return ActionDisposable.init { [weak self] in
+        return ActionDisposable { [weak self] in
             self?._removeRoute(_routeID)
         }
     }
@@ -308,7 +308,7 @@ public class Machine<S: StateType, E: EventType>
         let routeDisposable = self.addRoutes(event: event, routes: routes)
         let handlerDisposable = self.addHandler(event: event, handler: handler)
         
-        return ActionDisposable.init {
+        return ActionDisposable {
             routeDisposable.dispose()
             handlerDisposable.dispose()
         }
@@ -364,7 +364,7 @@ public class Machine<S: StateType, E: EventType>
         
         let routeMappingID = _RouteMappingID(key: key)
         
-        return ActionDisposable.init { [weak self] in
+        return ActionDisposable { [weak self] in
             self?._removeRouteMapping(routeMappingID)
         }
     }
@@ -386,7 +386,7 @@ public class Machine<S: StateType, E: EventType>
             handler(context)
         }
         
-        return ActionDisposable.init {
+        return ActionDisposable {
             routeDisposable.dispose()
             handlerDisposable.dispose()
         }
@@ -446,7 +446,7 @@ public class Machine<S: StateType, E: EventType>
         
         let handlerID = _HandlerID<S, E>(event: event, transition: .Any => .Any, key: key) // NOTE: use non-`nil` transition
         
-        return ActionDisposable.init { [weak self] in
+        return ActionDisposable { [weak self] in
             self?._removeHandler(handlerID)
         }
     }
@@ -462,7 +462,7 @@ public class Machine<S: StateType, E: EventType>
         
         let handlerID = _HandlerID<S, E>(event: nil, transition: nil, key: key)  // NOTE: use `nil` transition
         
-        return ActionDisposable.init { [weak self] in
+        return ActionDisposable { [weak self] in
             self?._removeHandler(handlerID)
         }
     }

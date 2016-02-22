@@ -204,7 +204,7 @@ public final class StateMachine<S: StateType, E: EventType>: Machine<S, E>
         
         let _routeID = _RouteID(event: Optional<Event<E>>.None, transition: transition, key: key)
         
-        return ActionDisposable.init { [weak self] in
+        return ActionDisposable { [weak self] in
             self?._removeRoute(_routeID)
         }
     }
@@ -230,7 +230,7 @@ public final class StateMachine<S: StateType, E: EventType>: Machine<S, E>
             }
         }
         
-        return ActionDisposable.init {
+        return ActionDisposable {
             routeDisposable.dispose()
             handlerDisposable.dispose()
         }
@@ -285,7 +285,7 @@ public final class StateMachine<S: StateType, E: EventType>: Machine<S, E>
         
         let handlerID = _HandlerID<S, E>(event: nil, transition: transition, key: key)
         
-        return ActionDisposable.init { [weak self] in
+        return ActionDisposable { [weak self] in
             self?._removeHandler(handlerID)
         }
     }
@@ -330,7 +330,7 @@ public final class StateMachine<S: StateType, E: EventType>: Machine<S, E>
         let routeDisposables = chain.routes.map { self.addRoute($0) }
         let handlerDisposable = self.addChainHandler(chain, handler: handler)
         
-        return ActionDisposable.init {
+        return ActionDisposable {
             routeDisposables.forEach { $0.dispose() }
             handlerDisposable.dispose()
         }
@@ -433,7 +433,7 @@ public final class StateMachine<S: StateType, E: EventType>: Machine<S, E>
         }
         handlerDisposables += [handlerDisposable]
         
-        return ActionDisposable.init {
+        return ActionDisposable {
             handlerDisposables.forEach { $0.dispose() }
         }
     }
@@ -452,7 +452,7 @@ public final class StateMachine<S: StateType, E: EventType>: Machine<S, E>
         
         let routeMappingID = _RouteMappingID(key: key)
         
-        return ActionDisposable.init { [weak self] in
+        return ActionDisposable { [weak self] in
             self?._removeStateRouteMapping(routeMappingID)
         }
     }
@@ -476,7 +476,7 @@ public final class StateMachine<S: StateType, E: EventType>: Machine<S, E>
             handler(context)
         }
         
-        return ActionDisposable.init {
+        return ActionDisposable {
             routeDisposable.dispose()
             handlerDisposable.dispose()
         }

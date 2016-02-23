@@ -16,7 +16,7 @@ class _TestCase: XCTestCase
         super.setUp()
         print("\n\n\n")
     }
-    
+
     override func tearDown()
     {
         print("\n\n\n")

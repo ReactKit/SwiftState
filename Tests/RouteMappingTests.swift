@@ -20,7 +20,7 @@ private enum _State: StateType, Hashable
 {
     case Pending
     case Loading(Int)
-    
+
     var hashValue: Int
     {
         switch self {
@@ -32,7 +32,7 @@ private enum _State: StateType, Hashable
     }
 }
 
-private func ==(lhs: _State, rhs: _State) -> Bool
+private func == (lhs: _State, rhs: _State) -> Bool
 {
     switch (lhs, rhs) {
         case (.Pending, .Pending):
@@ -48,7 +48,7 @@ private enum _Event: EventType, Hashable
 {
     case CancelAction
     case LoadAction(Int)
-    
+
     var hashValue: Int
     {
         switch self {
@@ -60,7 +60,7 @@ private enum _Event: EventType, Hashable
     }
 }
 
-private func ==(lhs: _Event, rhs: _Event) -> Bool
+private func == (lhs: _Event, rhs: _Event) -> Bool
 {
     switch (lhs, rhs) {
         case (.CancelAction, .CancelAction):
@@ -78,15 +78,15 @@ class RouteMappingTests: _TestCase
     func testAddRouteMapping()
     {
         var count = 0
-        
+
         let machine = StateMachine<_State, _Event>(state: .Pending) { machine in
-            
+
             machine.addRouteMapping { event, fromState, userInfo in
                 // no routes for no event
                 guard let event = event else {
                     return nil
                 }
-                
+
                 switch event {
                     case .CancelAction:
                         // can transit to `.Pending` if current state is not the same
@@ -96,49 +96,49 @@ class RouteMappingTests: _TestCase
                         return fromState == .Loading(actionId) ? nil : .Loading(actionId)
                 }
             }
-            
+
             // increment `count` when any events i.e. `.CancelAction` and `.LoadAction(x)` succeed.
             machine.addHandler(event: .Any) { event, transition, order, userInfo in
                 count++
             }
-            
+
         }
-        
+
         // initial
         XCTAssertEqual(machine.state, _State.Pending)
         XCTAssertEqual(count, 0)
-        
+
         // CancelAction (to .Pending state, same as before)
         machine <-! .CancelAction
         XCTAssertEqual(machine.state, _State.Pending)
         XCTAssertEqual(count, 0, "`tryEvent()` failed, and `count` should not be incremented.")
-        
+
         // LoadAction(1) (to .Loading(1) state)
         machine <-! .LoadAction(1)
         XCTAssertEqual(machine.state, _State.Loading(1))
         XCTAssertEqual(count, 1)
-        
+
         // LoadAction(1) (same as before)
         machine <-! .LoadAction(1)
         XCTAssertEqual(machine.state, _State.Loading(1))
         XCTAssertEqual(count, 1, "`tryEvent()` failed, and `count` should not be incremented.")
-        
+
         machine <-! .LoadAction(2)
         XCTAssertEqual(machine.state, _State.Loading(2))
         XCTAssertEqual(count, 2)
-        
+
         machine <-! .CancelAction
         XCTAssertEqual(machine.state, _State.Pending)
         XCTAssertEqual(count, 3)
     }
-    
+
     /// Test for state with associated values
     func testAddStateRouteMapping()
     {
         var count = 0
-        
+
         let machine = StateMachine<_State, _Event>(state: .Pending) { machine in
-            
+
             // Add following routes:
             // - `.Pending => .Loading(1)`
             // - `.Loading(x) => .Loading(x+10)`
@@ -151,37 +151,37 @@ class RouteMappingTests: _TestCase
                         return [.Loading(actionId+10), .Loading(actionId+100)]
                 }
             }
-            
+
             // increment `count` when any events i.e. `.CancelAction` and `.LoadAction(x)` succeed.
             machine.addHandler(.Any => .Any) { event, transition, order, userInfo in
                 count++
             }
-            
+
         }
-        
+
         // initial
         XCTAssertEqual(machine.state, _State.Pending)
         XCTAssertEqual(count, 0)
-        
+
         // .Loading(999) (fails)
         machine <- .Loading(999)
         XCTAssertEqual(machine.state, _State.Pending)
         XCTAssertEqual(count, 0, "`tryState()` failed, and `count` should not be incremented.")
-        
+
         // .Loading(1)
         machine <- .Loading(1)
         XCTAssertEqual(machine.state, _State.Loading(1))
         XCTAssertEqual(count, 1)
-        
+
         // .Loading(999) (fails)
         machine <- .Loading(999)
         XCTAssertEqual(machine.state, _State.Loading(1))
         XCTAssertEqual(count, 1, "`tryState()` failed, and `count` should not be incremented.")
-        
+
         machine <- .Loading(11)
         XCTAssertEqual(machine.state, _State.Loading(11))
         XCTAssertEqual(count, 2)
-        
+
         machine <- .Loading(111)
         XCTAssertEqual(machine.state, _State.Loading(111))
         XCTAssertEqual(count, 3)

@@ -10,25 +10,25 @@
 public struct TransitionChain<S: StateType>
 {
     public private(set) var states: [State<S>]
-    
+
     public init(states: [State<S>])
     {
         self.states = states
     }
-    
+
     public init(transition: Transition<S>)
     {
         self.init(states: [transition.fromState, transition.toState])
     }
-    
+
     public var transitions: [Transition<S>]
     {
         var transitions: [Transition<S>] = []
-        
+
         for i in 0..<states.count-1 {
             transitions += [states[i] => states[i+1]]
         }
-        
+
         return transitions
     }
 }
@@ -59,12 +59,12 @@ public func => <S: StateType>(left: TransitionChain<S>, right: S) -> TransitionC
 }
 
 // e.g. .State0 => (.State1 => .State)
-public func => <S: StateType>(left: State<S>, right:Transition<S>) -> TransitionChain<S>
+public func => <S: StateType>(left: State<S>, right: Transition<S>) -> TransitionChain<S>
 {
     return left => TransitionChain(states: [right.fromState, right.toState])
 }
 
-public func => <S: StateType>(left: S, right:Transition<S>) -> TransitionChain<S>
+public func => <S: StateType>(left: S, right: Transition<S>) -> TransitionChain<S>
 {
     return .Some(left) => right
 }

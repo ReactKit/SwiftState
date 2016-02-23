@@ -39,7 +39,7 @@ extension State: RawRepresentable
             self = .Any
         }
     }
-    
+
     public var rawValue: S?
     {
         switch self {

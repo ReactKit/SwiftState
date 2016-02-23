@@ -24,19 +24,19 @@ class QiitaTests: _TestCase
     func testQiita()
     {
         var success = false
-        
+
         let machine = StateMachine<InputKey, NoEvent>(state: .None) { machine in
-            
+
             // connect all states
             machine.addRoute(.Any => .Any)
-            
+
             // success = true only when transitionChain 2 => 3 => 5 => 7 is fulfilled
             machine.addRouteChain(.Key2 => .Key3 => .Key5 => .Key7) { context in
                 success = true
                 return
             }
         }
-        
+
         // tryState
         machine <- .Key2
         machine <- .Key3
@@ -44,14 +44,14 @@ class QiitaTests: _TestCase
         machine <- .Key5
         machine <- .Key6
         machine <- .Key7
-        
+
         XCTAssertFalse(success)
-        
+
         machine <- .Key2
         machine <- .Key3
         machine <- .Key5
         machine <- .Key7
-        
+
         XCTAssertTrue(success)
     }
 }

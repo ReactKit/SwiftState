@@ -1,7 +1,12 @@
 machine:
   xcode:
-    version: "7.0"
-     
+    version: "7.2"
+
+dependencies:
+  pre:
+    - brew update
+    - brew install swiftlint
+
 checkout:
   post:
     - git submodule sync
@@ -9,20 +14,25 @@ checkout:
 
 test:
   override:
+    # workaround
+    # https://github.com/realm/SwiftLint/issues/13
+    # http://qiita.com/noboru_i/items/431aa190d131795aeddc
+    - ln -s /Applications/Xcode-7.2.app /Applications/Xcode.app
+
     - set -o pipefail &&
       xcodebuild
         -scheme "SwiftState"
         clean build test |
       tee $CIRCLE_ARTIFACTS/xcode_raw-OSX.log |
       xcpretty --color --report junit --output $CIRCLE_TEST_REPORTS/xcode/results-OSX.xml
-      
+
     - set -o pipefail &&
       xcodebuild
         CODE_SIGNING_REQUIRED=NO
         CODE_SIGN_IDENTITY=
         PROVISIONING_PROFILE=
         -sdk iphonesimulator
-        -destination 'platform=iOS Simulator,OS=9.0,name=iPhone 6'
+        -destination 'platform=iOS Simulator,OS=9.2,name=iPhone 6s'
         -scheme "SwiftState"
         clean build test |
       tee $CIRCLE_ARTIFACTS/xcode_raw-iOS.log |

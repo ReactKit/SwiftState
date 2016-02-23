@@ -14,28 +14,28 @@ public struct Transition<S: StateType>: Hashable
 {
     public let fromState: State<S>
     public let toState: State<S>
-    
+
     public init(fromState: State<S>, toState: State<S>)
     {
         self.fromState = fromState
         self.toState = toState
     }
-    
+
     public init(fromState: S, toState: State<S>)
     {
         self.init(fromState: .Some(fromState), toState: toState)
     }
-    
+
     public init(fromState: State<S>, toState: S)
     {
         self.init(fromState: fromState, toState: .Some(toState))
     }
-    
+
     public init(fromState: S, toState: S)
     {
         self.init(fromState: .Some(fromState), toState: .Some(toState))
     }
-    
+
     public var hashValue: Int
     {
         return self.fromState.hashValue &+ self.toState.hashValue.byteSwapped

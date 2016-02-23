@@ -9,7 +9,7 @@
 internal final class _RouteMappingID
 {
     internal let key: String
-    
+
     internal init(key: String)
     {
         self.key = key

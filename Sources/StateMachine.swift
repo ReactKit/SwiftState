@@ -268,7 +268,9 @@ public final class StateMachine<S: StateType, E: EventType>: Machine<S, E>
     //--------------------------------------------------
 
     // MARK: addHandler (no-event)
-    
+
+    /// Add `handler` that is called when `tryState()` succeeds for target `transition`.
+    /// - Note: `handler` will not be invoked for `tryEvent()`.
     public func addHandler(transition: Transition<S>, order: HandlerOrder = _defaultOrder, handler: Handler) -> Disposable
     {
         if self._handlers[transition] == nil {
@@ -310,10 +312,17 @@ public final class StateMachine<S: StateType, E: EventType>: Machine<S, E>
 
     // MARK: addAnyHandler (event-based & state-based)
 
-    public func addAnyHandler(order order: HandlerOrder = _defaultOrder, handler: Handler) -> Disposable
+    /// Add `handler` that is called when either `tryEvent()` or `tryState()` succeeds for target `transition`.
+    public func addAnyHandler(transition: Transition<S>, order: HandlerOrder = _defaultOrder, handler: Handler) -> Disposable
     {
-        let disposable1 = self.addHandler(.Any => .Any, order: order, handler: handler)
-        let disposable2 = self.addHandler(event: .Any, order: order, handler: handler)
+        let disposable1 = self.addHandler(transition, order: order, handler: handler)
+        let disposable2 = self.addHandler(event: .Any, order: order) { context in
+            if (transition.fromState == .Any || transition.fromState == context.fromState) &&
+                (transition.toState == .Any || transition.toState == context.toState)
+            {
+                handler(context)
+            }
+        }
 
         return ActionDisposable {
             disposable1.dispose()

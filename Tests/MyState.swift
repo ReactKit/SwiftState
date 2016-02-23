@@ -16,7 +16,7 @@ enum MyState: StateType
 enum StrState: StateType
 {
     case Str(String)
-    
+
     var hashValue: Int
     {
         switch self {

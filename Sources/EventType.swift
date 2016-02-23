@@ -39,7 +39,7 @@ extension Event: RawRepresentable
             self = .Any
         }
     }
-    
+
     public var rawValue: E?
     {
         switch self {

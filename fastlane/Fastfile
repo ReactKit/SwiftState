@@ -25,7 +25,7 @@ end
 desc "Release new version"
 lane :bump do |options|
   bump_local(options)
-  #bump_remote # TODO
+  bump_remote(options)
 end
 
 desc "Prepare release for new version (no remote push)"
@@ -36,7 +36,7 @@ lane :bump_local do |options|
   ensure_git_branch(branch: RELEASE_BRANCH)
   ensure_git_status_clean
 
-  test_all
+  #test_all
   pod_lint
 
   increment_version_number(version_number: target_version)
@@ -46,8 +46,20 @@ lane :bump_local do |options|
   git_commit(
     path: ["SwiftState.podspec", "Sources/Info.plist", "Tests/Info.plist"],
     message: "Bump version to #{target_version}"
-    )
+  )
   add_git_tag tag: target_version
+end
+
+desc "Push new version to remote"
+lane :bump_remote do |options|
+  target_version = options[:version]
+  raise "Parameter `version` is missing. Use `fastlane release version:{version_number}`.`" if target_version.nil?
+
+  ensure_git_branch(branch: RELEASE_BRANCH)
+  ensure_git_status_clean
+
+  push_to_git_remote
+  pod_push
 end
 
 platform :mac do

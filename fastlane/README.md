@@ -10,11 +10,6 @@ sudo gem install fastlane
 fastlane pod_lint
 ```
 Lints Podspec
-### carthage_build
-```
-fastlane carthage_build
-```
-Builds dependencies using Carthage
 ### test_all
 ```
 fastlane test_all
@@ -29,7 +24,12 @@ Release new version
 ```
 fastlane bump_local
 ```
-
+Prepare release for new version (no remote push)
+### bump_remote
+```
+fastlane bump_remote
+```
+Push new version to remote
 
 ----
 

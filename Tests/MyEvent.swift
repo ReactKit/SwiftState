@@ -16,7 +16,7 @@ enum MyEvent: EventType
 enum StrEvent: EventType
 {
     case Str(String)
-    
+
     var hashValue: Int
     {
         switch self {

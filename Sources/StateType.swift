@@ -39,7 +39,7 @@ extension State: RawRepresentable
             self = .Any
         }
     }
-    
+
     public var rawValue: S?
     {
         switch self {
@@ -51,17 +51,34 @@ extension State: RawRepresentable
 
 public func == <S: StateType>(lhs: State<S>, rhs: State<S>) -> Bool
 {
-    return lhs.hashValue == rhs.hashValue
+    switch (lhs, rhs) {
+    case let (.Some(x1), .Some(x2)) where x1 == x2:
+        return true
+    case (.Any, .Any):
+        return true
+    default:
+        return false
+    }
 }
 
 public func == <S: StateType>(lhs: State<S>, rhs: S) -> Bool
 {
-    return lhs.hashValue == rhs.hashValue
+    switch lhs {
+    case .Some(let x):
+        return x == rhs
+    case .Any:
+        return false
+    }
 }
 
 public func == <S: StateType>(lhs: S, rhs: State<S>) -> Bool
 {
-    return lhs.hashValue == rhs.hashValue
+    switch rhs {
+    case .Some(let x):
+        return x == lhs
+    case .Any:
+        return false
+    }
 }
 
 // MARK: Private

@@ -11,7 +11,7 @@ public struct Route<S: StateType, E: EventType>
 {
     public let transition: Transition<S>
     public let condition: Machine<S, E>.Condition?
-    
+
     public init(transition: Transition<S>, condition: Machine<S, E>.Condition?)
     {
         self.transition = transition

@@ -10,12 +10,12 @@
 public struct RouteChain<S: StateType, E: EventType>
 {
     public private(set) var routes: [Route<S, E>]
-    
+
     public init(routes: [Route<S, E>])
     {
         self.routes = routes
     }
-    
+
     public init(transitionChain: TransitionChain<S>, condition: Machine<S, E>.Condition? = nil)
     {
         var routes: [Route<S, E>] = []

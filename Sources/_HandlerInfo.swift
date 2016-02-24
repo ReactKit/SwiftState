@@ -11,7 +11,7 @@ internal final class _HandlerInfo<S: StateType, E: EventType>
     internal let order: HandlerOrder
     internal let key: String
     internal let handler: Machine<S, E>.Handler
-    
+
     internal init(order: HandlerOrder, key: String, handler: Machine<S, E>.Handler)
     {
         self.order = order

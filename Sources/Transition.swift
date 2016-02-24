@@ -45,7 +45,7 @@ public struct Transition<S: StateType>: Hashable
 // for Transition Equatable
 public func == <S: StateType>(left: Transition<S>, right: Transition<S>) -> Bool
 {
-    return left.hashValue == right.hashValue
+    return left.fromState == right.fromState && left.toState == right.toState
 }
 
 //--------------------------------------------------

@@ -63,12 +63,22 @@ public func == <E: EventType>(lhs: Event<E>, rhs: Event<E>) -> Bool
 
 public func == <E: EventType>(lhs: Event<E>, rhs: E) -> Bool
 {
-    return lhs.hashValue == rhs.hashValue
+    switch lhs {
+    case .Some(let x):
+        return x == rhs
+    case .Any:
+        return false
+    }
 }
 
 public func == <E: EventType>(lhs: E, rhs: Event<E>) -> Bool
 {
-    return lhs.hashValue == rhs.hashValue
+    switch rhs {
+    case .Some(let x):
+        return x == lhs
+    case .Any:
+        return false
+    }
 }
 
 // MARK: NoEvent

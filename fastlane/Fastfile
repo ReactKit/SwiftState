@@ -1,0 +1,69 @@
+fastlane_version "1.59.0"
+default_platform :mac
+
+UNIVERSAL_SCHEME = "SwiftState"
+RELEASE_BRANCH = "swift/2.0"
+
+before_all do
+  #carthage(use_submodules: true, no_build: true) # checkout only
+  sh("git submodule sync && git submodule update --init --recursive") # for non-Carthage users
+end
+
+desc "Lints Podspec"
+lane :pod_lint do
+  sh("cd .. && pod lib lint")
+end
+
+desc "Runs tests in all platforms"
+lane :test_all do |options|
+  test_universal_framework(platform: :OSX, scheme: UNIVERSAL_SCHEME)
+  test_universal_framework(platform: :iOS, scheme: UNIVERSAL_SCHEME)
+  test_universal_framework(platform: :tvOS, scheme: UNIVERSAL_SCHEME)
+  # test_universal_framework(platform: :watchOS, scheme: UNIVERSAL_SCHEME)  # no XCTest in watchOS
+end
+
+desc "Release new version"
+lane :bump do |options|
+  bump_local(options)
+  #bump_remote # TODO
+end
+
+desc "Prepare release for new version (no remote push)"
+lane :bump_local do |options|
+  target_version = options[:version]
+  raise "Parameter `version` is missing. Use `fastlane release version:{version_number}`.`" if target_version.nil?
+
+  ensure_git_branch(branch: RELEASE_BRANCH)
+  ensure_git_status_clean
+
+  test_all
+  pod_lint
+
+  increment_version_number(version_number: target_version)
+
+  version_bump_podspec(path: "SwiftState.podspec", version_number: target_version)
+
+  git_commit(
+    path: ["SwiftState.podspec", "Sources/Info.plist", "Tests/Info.plist"],
+    message: "Bump version to #{target_version}"
+    )
+  add_git_tag tag: target_version
+end
+
+platform :mac do
+  lane :test do
+    test_universal_framework(platform: :OSX, scheme: UNIVERSAL_SCHEME)
+  end
+end
+
+platform :ios do
+  lane :test do
+    test_universal_framework(platform: :iOS, scheme: UNIVERSAL_SCHEME)
+  end
+end
+
+after_all do |lane|
+end
+
+error do |lane, exception|
+end

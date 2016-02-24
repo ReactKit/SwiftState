@@ -374,4 +374,75 @@ class StateMachineEventTests: _TestCase
 
         XCTAssertEqual(invokeCount, 0, "Handler should NOT be performed")
     }
+
+    //--------------------------------------------------
+    // MARK: - addAnyHandler
+    //--------------------------------------------------
+
+    func testAddAnyHandler()
+    {
+        var invokeCounts = [0, 0, 0, 0, 0, 0]
+
+        let machine = StateMachine<MyState, MyEvent>(state: .State0) { machine in
+
+            // add 0 => 1 => 2 (event-based)
+            machine.addRoutes(event: .Event0, transitions: [
+                .State0 => .State1,
+                .State1 => .State2,
+            ])
+
+            // add 2 => 3 (state-based)
+            machine.addRoute(.State2 => .State3)
+
+            //
+            // addAnyHandler (for both event-based & state-based)
+            //
+
+            machine.addAnyHandler(.State0 => .State1) { context in
+                invokeCounts[0]++
+            }
+
+            machine.addAnyHandler(.State1 => .State2) { context in
+                invokeCounts[1]++
+            }
+
+            machine.addAnyHandler(.State2 => .State3) { context in
+                invokeCounts[2]++
+            }
+
+            machine.addAnyHandler(.Any => .State3) { context in
+                invokeCounts[3]++
+            }
+
+            machine.addAnyHandler(.State0 => .Any) { context in
+                invokeCounts[4]++
+            }
+
+            machine.addAnyHandler(.Any => .Any) { context in
+                invokeCounts[5]++
+            }
+
+        }
+
+        // initial
+        XCTAssertEqual(machine.state, MyState.State0)
+        XCTAssertEqual(invokeCounts, [0, 0, 0, 0, 0, 0])
+
+        // tryEvent
+        machine <-! .Event0
+        XCTAssertEqual(machine.state, MyState.State1)
+        XCTAssertEqual(invokeCounts, [1, 0, 0, 0, 1, 1])
+
+        // tryEvent
+        machine <-! .Event0
+        XCTAssertEqual(machine.state, MyState.State2)
+        XCTAssertEqual(invokeCounts, [1, 1, 0, 0, 1, 2])
+
+        // tryState
+        machine <- .State3
+        XCTAssertEqual(machine.state, MyState.State3)
+        XCTAssertEqual(invokeCounts, [1, 1, 1, 1, 1, 3])
+
+    }
+
 }

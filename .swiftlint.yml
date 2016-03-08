@@ -5,7 +5,6 @@
 #
 
 disabled_rules:
-  - variable_name_min_length
   - line_length
   - function_body_length
   - type_body_length
@@ -22,13 +21,12 @@ disabled_rules:
 opt_in_rules:
   - empty_count
 
-#included:
-#  - Sources
-#  - Tests
+included:
+  - Sources
+  - Tests
 
 excluded:
   - Carthage
   - Packages
-  - Benchmark/Packages
 
 reporter: "xcode" # reporter type (xcode, json, csv, checkstyle)

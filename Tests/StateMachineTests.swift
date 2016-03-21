@@ -176,7 +176,7 @@ class StateMachineTests: _TestCase
                 XCTAssertEqual(context.fromState, MyState.State0)
                 XCTAssertEqual(context.toState, MyState.State1)
 
-                invokedCount++
+                invokedCount += 1
             }
 
         }
@@ -205,7 +205,7 @@ class StateMachineTests: _TestCase
                 XCTAssertEqual(context.fromState, MyState.State0)
                 XCTAssertEqual(context.toState, MyState.State1)
 
-                invokedCount++
+                invokedCount += 1
             }
 
             // add 1 => 0 for resetting state
@@ -340,7 +340,7 @@ class StateMachineTests: _TestCase
                 XCTAssertEqual(context.fromState, MyState.State0)
                 XCTAssertEqual(context.toState, MyState.State1)
 
-                invokedCount++
+                invokedCount += 1
             }
 
         }
@@ -370,7 +370,7 @@ class StateMachineTests: _TestCase
                 XCTAssertEqual(context.fromState, MyState.State0)
                 XCTAssertEqual(context.toState, MyState.State1)
 
-                invokedCount++
+                invokedCount += 1
             }
 
             // order = 99
@@ -380,7 +380,7 @@ class StateMachineTests: _TestCase
                 XCTAssertEqual(context.fromState, MyState.State0)
                 XCTAssertEqual(context.toState, MyState.State1)
 
-                invokedCount++
+                invokedCount += 1
             }
 
         }
@@ -700,7 +700,7 @@ class StateMachineTests: _TestCase
                 }
 
             }, handler: { context in
-                invokedCount++
+                invokedCount += 1
             })
 
         }

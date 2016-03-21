@@ -95,7 +95,7 @@ class StateMachineEventTests: _TestCase
         let machine = StateMachine<MyState, MyEvent>(state: .State0) { machine in
             machine.addRoute(.State0 => .State1)
             machine.addRoutes(event: .Event0, transitions: [.Any => .Any]) { _ in
-                eventCount++
+                eventCount += 1
             }
         }
 
@@ -260,7 +260,7 @@ class StateMachineEventTests: _TestCase
                 .State0 => .State1,
                 .State1 => .State2,
             ], handler: { context in
-                invokeCount++
+                invokeCount += 1
                 return
             })
         }
@@ -289,7 +289,7 @@ class StateMachineEventTests: _TestCase
             ])
 
             machine.addHandler(event: .Event0) { context in
-                invokeCount++
+                invokeCount += 1
                 return
             }
 
@@ -325,7 +325,7 @@ class StateMachineEventTests: _TestCase
             ])
 
             machine.addHandler(event: .Event0) { context in
-                invokeCount++
+                invokeCount += 1
                 return
             }
 
@@ -355,7 +355,7 @@ class StateMachineEventTests: _TestCase
             ])
 
             let handlerDisposable = machine.addHandler(event: .Event0) { context in
-                invokeCount++
+                invokeCount += 1
                 return
             }
 
@@ -399,27 +399,27 @@ class StateMachineEventTests: _TestCase
             //
 
             machine.addAnyHandler(.State0 => .State1) { context in
-                invokeCounts[0]++
+                invokeCounts[0] += 1
             }
 
             machine.addAnyHandler(.State1 => .State2) { context in
-                invokeCounts[1]++
+                invokeCounts[1] += 1
             }
 
             machine.addAnyHandler(.State2 => .State3) { context in
-                invokeCounts[2]++
+                invokeCounts[2] += 1
             }
 
             machine.addAnyHandler(.Any => .State3) { context in
-                invokeCounts[3]++
+                invokeCounts[3] += 1
             }
 
             machine.addAnyHandler(.State0 => .Any) { context in
-                invokeCounts[4]++
+                invokeCounts[4] += 1
             }
 
             machine.addAnyHandler(.Any => .Any) { context in
-                invokeCounts[5]++
+                invokeCounts[5] += 1
             }
 
         }

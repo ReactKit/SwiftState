@@ -229,7 +229,7 @@ class MachineTests: _TestCase
                 .State0 => .State1,
                 .State1 => .State2,
             ], handler: { context in
-                invokeCount++
+                invokeCount += 1
                 return
             })
         }
@@ -258,7 +258,7 @@ class MachineTests: _TestCase
             ])
 
             machine.addHandler(event: .Event0) { context in
-                invokeCount++
+                invokeCount += 1
                 return
             }
 
@@ -285,7 +285,7 @@ class MachineTests: _TestCase
                 .State0 => .State1,
                 .State1 => .State2,
             ], handler: { context in
-                invokeCount++
+                invokeCount += 1
                 return
             })
 
@@ -318,7 +318,7 @@ class MachineTests: _TestCase
             ])
 
             machine.addHandler(event: .Event0) { context in
-                invokeCount++
+                invokeCount += 1
                 return
             }
 
@@ -342,7 +342,7 @@ class MachineTests: _TestCase
         let machine = Machine<MyState, MyEvent>(state: .State0) { machine in
             machine.addRoutes(event: .Event0, transitions: [ .State0 => .State1 ])
             machine.addErrorHandler { event, fromState, toState, userInfo in
-                invokeCount++
+                invokeCount += 1
             }
         }
 
@@ -368,7 +368,7 @@ class MachineTests: _TestCase
             ])
 
             let handlerDisposable = machine.addHandler(event: .Event0) { context in
-                invokeCount++
+                invokeCount += 1
                 return
             }
 
@@ -415,7 +415,7 @@ class MachineTests: _TestCase
             }
 
             machine.addHandler(event: .Str("gogogo")) { context in
-                invokeCount++
+                invokeCount += 1
                 return
             }
 
@@ -475,7 +475,7 @@ class MachineTests: _TestCase
                         return nil
                 }
             }, handler: { context in
-                invokeCount1++
+                invokeCount1 += 1
             })
 
             disposables += [d]
@@ -491,7 +491,7 @@ class MachineTests: _TestCase
                         return nil
                 }
             }, handler: { context in
-                invokeCount2++
+                invokeCount2 += 1
             })
 
             disposables += [d2]

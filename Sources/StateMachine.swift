@@ -413,7 +413,7 @@ public final class StateMachine<S: StateType, E: EventType>: Machine<S, E>
 
                 if _canPassCondition(route.condition, forEvent: nil, fromState: context.fromState, toState: context.toState, userInfo: context.userInfo) {
                     if !shouldStop {
-                        chainingCount++
+                        chainingCount += 1
 
                         shouldIncrementChainingCount = false
                     }
@@ -428,7 +428,7 @@ public final class StateMachine<S: StateType, E: EventType>: Machine<S, E>
             shouldIncrementChainingCount = true
 
             if !shouldStop {
-                allCount++
+                allCount += 1
             }
 
             if chainingCount < allCount {

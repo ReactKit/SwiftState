@@ -19,7 +19,7 @@ class MachineChainTests: _TestCase
 
             // add 0 => 1 => 2
             machine.addRouteChain(.State0 => .State1 => .State2) { context in
-                invokeCount++
+                invokeCount += 1
                 return
             }
 
@@ -53,7 +53,7 @@ class MachineChainTests: _TestCase
 
             // add 0 => 1 => 2
             machine.addRouteChain(.State0 => .State1 => .State2, condition: { _ in flag }) { context in
-                invokeCount++
+                invokeCount += 1
                 return
             }
 
@@ -121,7 +121,7 @@ class MachineChainTests: _TestCase
 
             // add 0 => 1 => 2
             machine.addRouteChain(.State0 => .State1 => .State2) { context in
-                invokeCount++
+                invokeCount += 1
                 return
             }
             // machine.addRoute(.State1 => .State3)    // comment-out: 1 => 3 is not possible
@@ -144,7 +144,7 @@ class MachineChainTests: _TestCase
 
             // add 0 => 1 => 2 => 0 (back home) => 2
             machine.addRouteChain(.State0 => .State1 => .State2 => .State0 => .State2) { context in
-                invokeCount++
+                invokeCount += 1
                 return
             }
 
@@ -170,7 +170,7 @@ class MachineChainTests: _TestCase
 
             // add 0 => 1 => 2 => 0 (back home) => 1 => 2
             machine.addRouteChain(.State0 => .State1 => .State2 => .State0 => .State1 => .State2) { context in
-                invokeCount++
+                invokeCount += 1
                 return
             }
 
@@ -207,7 +207,7 @@ class MachineChainTests: _TestCase
 
             // add 0 => 1 => 2
             let chainDisposable = machine.addRouteChain(.State0 => .State1 => .State2) { context in
-                invokeCount++
+                invokeCount += 1
                 return
             }
 
@@ -243,7 +243,7 @@ class MachineChainTests: _TestCase
 
             // add 0 => 1 => 2 chainErrorHandler
             machine.addChainErrorHandler(transitionChain) { context in
-                errorCount++
+                errorCount += 1
                 return
             }
 
@@ -272,7 +272,7 @@ class MachineChainTests: _TestCase
 
             // add 0 => 1 => 2 chainErrorHandler
             let chainErrorHandlerDisposable = machine.addChainErrorHandler(transitionChain) { context in
-                errorCount++
+                errorCount += 1
                 return
             }
 

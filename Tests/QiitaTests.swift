@@ -15,8 +15,8 @@ import XCTest
 
 enum InputKey: StateType
 {
-    case None
-    case Key0, Key1, Key2, Key3, Key4, Key5, Key6, Key7, Key8, Key9
+    case none
+    case key0, key1, key2, key3, key4, key5, key6, key7, key8, key9
 }
 
 class QiitaTests: _TestCase
@@ -25,32 +25,32 @@ class QiitaTests: _TestCase
     {
         var success = false
 
-        let machine = StateMachine<InputKey, NoEvent>(state: .None) { machine in
+        let machine = StateMachine<InputKey, NoEvent>(state: .none) { machine in
 
             // connect all states
-            machine.addRoute(.Any => .Any)
+            machine.addRoute(.any => .any)
 
             // success = true only when transitionChain 2 => 3 => 5 => 7 is fulfilled
-            machine.addRouteChain(.Key2 => .Key3 => .Key5 => .Key7) { context in
+            machine.addRouteChain(.key2 => .key3 => .key5 => .key7) { context in
                 success = true
                 return
             }
         }
 
         // tryState
-        machine <- .Key2
-        machine <- .Key3
-        machine <- .Key4
-        machine <- .Key5
-        machine <- .Key6
-        machine <- .Key7
+        machine <- .key2
+        machine <- .key3
+        machine <- .key4
+        machine <- .key5
+        machine <- .key6
+        machine <- .key7
 
         XCTAssertFalse(success)
 
-        machine <- .Key2
-        machine <- .Key3
-        machine <- .Key5
-        machine <- .Key7
+        machine <- .key2
+        machine <- .key3
+        machine <- .key5
+        machine <- .key7
 
         XCTAssertTrue(success)
     }

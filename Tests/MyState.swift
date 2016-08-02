@@ -10,17 +10,17 @@ import SwiftState
 
 enum MyState: StateType
 {
-    case State0, State1, State2, State3
+    case state0, state1, state2, state3
 }
 
 enum StrState: StateType
 {
-    case Str(String)
+    case str(String)
 
     var hashValue: Int
     {
         switch self {
-            case .Str(let str):  return str.hashValue
+            case .str(let str):  return str.hashValue
         }
     }
 }
@@ -28,7 +28,7 @@ enum StrState: StateType
 func == (lhs: StrState, rhs: StrState) -> Bool
 {
     switch (lhs, rhs) {
-        case let (.Str(str1), .Str(str2)):
+        case let (.str(str1), .str(str2)):
             return str1 == str2
     }
 }

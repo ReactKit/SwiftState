@@ -45,7 +45,7 @@ public func => <S: StateType>(left: Transition<S>, right: State<S>) -> Transitio
 
 public func => <S: StateType>(left: Transition<S>, right: S) -> TransitionChain<S>
 {
-    return left => .Some(right)
+    return left => .some(right)
 }
 
 public func => <S: StateType>(left: TransitionChain<S>, right: State<S>) -> TransitionChain<S>
@@ -55,7 +55,7 @@ public func => <S: StateType>(left: TransitionChain<S>, right: State<S>) -> Tran
 
 public func => <S: StateType>(left: TransitionChain<S>, right: S) -> TransitionChain<S>
 {
-    return left => .Some(right)
+    return left => .some(right)
 }
 
 // e.g. .State0 => (.State1 => .State)
@@ -66,7 +66,7 @@ public func => <S: StateType>(left: State<S>, right: Transition<S>) -> Transitio
 
 public func => <S: StateType>(left: S, right: Transition<S>) -> TransitionChain<S>
 {
-    return .Some(left) => right
+    return .some(left) => right
 }
 
 public func => <S: StateType>(left: State<S>, right: TransitionChain<S>) -> TransitionChain<S>
@@ -76,5 +76,5 @@ public func => <S: StateType>(left: State<S>, right: TransitionChain<S>) -> Tran
 
 public func => <S: StateType>(left: S, right: TransitionChain<S>) -> TransitionChain<S>
 {
-    return .Some(left) => right
+    return .some(left) => right
 }

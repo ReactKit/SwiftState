@@ -13,16 +13,16 @@ class StateMachineEventTests: _TestCase
 {
     func testCanTryEvent()
     {
-        let machine = StateMachine<MyState, MyEvent>(state: .State0)
+        let machine = StateMachine<MyState, MyEvent>(state: .state0)
 
         // add 0 => 1 & 1 => 2
         // (NOTE: this is not chaining e.g. 0 => 1 => 2)
-        machine.addRoutes(event: .Event0, transitions: [
-            .State0 => .State1,
-            .State1 => .State2,
+        machine.addRoutes(event: .event0, transitions: [
+            .state0 => .state1,
+            .state1 => .state2,
         ])
 
-        XCTAssertTrue(machine.canTryEvent(.Event0) != nil)
+        XCTAssertTrue(machine.canTryEvent(.event0) != nil)
     }
 
     //--------------------------------------------------
@@ -31,60 +31,60 @@ class StateMachineEventTests: _TestCase
 
     func testTryEvent()
     {
-        let machine = StateMachine<MyState, MyEvent>(state: .State0)
+        let machine = StateMachine<MyState, MyEvent>(state: .state0)
 
         // add 0 => 1 => 2
-        machine.addRoutes(event: .Event0, transitions: [
-            .State0 => .State1,
-            .State1 => .State2,
+        machine.addRoutes(event: .event0, transitions: [
+            .state0 => .state1,
+            .state1 => .state2,
         ])
 
         // tryEvent
-        machine <-! .Event0
-        XCTAssertEqual(machine.state, MyState.State1)
+        machine <-! .event0
+        XCTAssertEqual(machine.state, MyState.state1)
 
         // tryEvent
-        machine <-! .Event0
-        XCTAssertEqual(machine.state, MyState.State2)
+        machine <-! .event0
+        XCTAssertEqual(machine.state, MyState.state2)
 
         // tryEvent
-        machine <-! .Event0
-        XCTAssertEqual(machine.state, MyState.State2, "Event0 doesn't have 2 => Any")
+        machine <-! .event0
+        XCTAssertEqual(machine.state, MyState.state2, "Event0 doesn't have 2 => Any")
     }
 
     func testTryEvent_string()
     {
-        let machine = StateMachine<MyState, String>(state: .State0)
+        let machine = StateMachine<MyState, String>(state: .state0)
 
         // add 0 => 1 => 2
         machine.addRoutes(event: "Run", transitions: [
-            .State0 => .State1,
-            .State1 => .State2,
+            .state0 => .state1,
+            .state1 => .state2,
         ])
 
         // tryEvent
         machine <-! "Run"
-        XCTAssertEqual(machine.state, MyState.State1)
+        XCTAssertEqual(machine.state, MyState.state1)
 
         // tryEvent
         machine <-! "Run"
-        XCTAssertEqual(machine.state, MyState.State2)
+        XCTAssertEqual(machine.state, MyState.state2)
 
         // tryEvent
         machine <-! "Run"
-        XCTAssertEqual(machine.state, MyState.State2, "Event=Run doesn't have 2 => Any")
+        XCTAssertEqual(machine.state, MyState.state2, "Event=Run doesn't have 2 => Any")
     }
 
     // https://github.com/ReactKit/SwiftState/issues/20
     func testTryEvent_issue20()
     {
-        let machine = StateMachine<MyState, MyEvent>(state: MyState.State2) { machine in
-            machine.addRoutes(event: .Event0, transitions: [.Any => .State0])
+        let machine = StateMachine<MyState, MyEvent>(state: MyState.state2) { machine in
+            machine.addRoutes(event: .event0, transitions: [.any => .state0])
         }
 
         // tryEvent
-        machine <-! .Event0
-        XCTAssertEqual(machine.state, MyState.State0)
+        machine <-! .event0
+        XCTAssertEqual(machine.state, MyState.state0)
     }
 
     // https://github.com/ReactKit/SwiftState/issues/28
@@ -92,9 +92,9 @@ class StateMachineEventTests: _TestCase
     {
         var eventCount = 0
 
-        let machine = StateMachine<MyState, MyEvent>(state: .State0) { machine in
-            machine.addRoute(.State0 => .State1)
-            machine.addRoutes(event: .Event0, transitions: [.Any => .Any]) { _ in
+        let machine = StateMachine<MyState, MyEvent>(state: .state0) { machine in
+            machine.addRoute(.state0 => .state1)
+            machine.addRoutes(event: .event0, transitions: [.any => .any]) { _ in
                 eventCount += 1
             }
         }
@@ -102,38 +102,38 @@ class StateMachineEventTests: _TestCase
         XCTAssertEqual(eventCount, 0)
 
         // tryEvent
-        machine <-! .Event0
+        machine <-! .event0
         XCTAssertEqual(eventCount, 1)
-        XCTAssertEqual(machine.state, MyState.State0, "State should NOT be changed")
+        XCTAssertEqual(machine.state, MyState.state0, "State should NOT be changed")
 
         // tryEvent
-        machine <- .State1
-        XCTAssertEqual(machine.state, MyState.State1, "State should be changed")
+        machine <- .state1
+        XCTAssertEqual(machine.state, MyState.state1, "State should be changed")
 
         // tryEvent
-        machine <-! .Event0
+        machine <-! .event0
         XCTAssertEqual(eventCount, 2)
-        XCTAssertEqual(machine.state, MyState.State1, "State should NOT be changed")
+        XCTAssertEqual(machine.state, MyState.state1, "State should NOT be changed")
     }
 
     // Fix for transitioning of routes w/ multiple from-states
     // https://github.com/ReactKit/SwiftState/pull/32
     func testTryEvent_issue32()
     {
-        let machine = StateMachine<MyState, MyEvent>(state: .State0) { machine in
-            machine.addRoutes(event: .Event0, transitions: [ .State0 => .State1 ])
-            machine.addRoutes(event: .Event1, routes: [ [ .State1, .State2 ] => .State3 ])
+        let machine = StateMachine<MyState, MyEvent>(state: .state0) { machine in
+            machine.addRoutes(event: .event0, transitions: [ .state0 => .state1 ])
+            machine.addRoutes(event: .event1, routes: [ [ .state1, .state2 ] => .state3 ])
         }
 
-        XCTAssertEqual(machine.state, MyState.State0)
+        XCTAssertEqual(machine.state, MyState.state0)
 
         // tryEvent
-        machine <-! .Event0
-        XCTAssertEqual(machine.state, MyState.State1)
+        machine <-! .event0
+        XCTAssertEqual(machine.state, MyState.state1)
 
         // tryEvent
-        machine <-! .Event1
-        XCTAssertEqual(machine.state, MyState.State3)
+        machine <-! .event1
+        XCTAssertEqual(machine.state, MyState.state3)
     }
 
     // MARK: hasRoute + event
@@ -141,22 +141,22 @@ class StateMachineEventTests: _TestCase
     func testHasRoute_anyEvent()
     {
         ({
-            let machine = StateMachine<MyState, MyEvent>(state: .State0) { machine in
-                machine.addRoute(.State0 => .State1)
-                machine.addRoutes(event: .Any, transitions: [.State0 => .State1])
+            let machine = StateMachine<MyState, MyEvent>(state: .state0) { machine in
+                machine.addRoute(.state0 => .state1)
+                machine.addRoutes(event: .any, transitions: [.state0 => .state1])
             }
 
-            let hasRoute = machine.hasRoute(event: .Event0, transition: .State0 => .State1)
+            let hasRoute = machine.hasRoute(event: .event0, transition: .state0 => .state1)
             XCTAssertTrue(hasRoute)
         })()
 
         ({
-            let machine = StateMachine<MyState, MyEvent>(state: .State0) { machine in
-                machine.addRoute(.State0 => .State1)
-                machine.addRoutes(event: .Any, transitions: [.State2 => .State3])
+            let machine = StateMachine<MyState, MyEvent>(state: .state0) { machine in
+                machine.addRoute(.state0 => .state1)
+                machine.addRoutes(event: .any, transitions: [.state2 => .state3])
             }
 
-            let hasRoute = machine.hasRoute(event: .Event0, transition: .State0 => .State1)
+            let hasRoute = machine.hasRoute(event: .event0, transition: .state0 => .state1)
             XCTAssertFalse(hasRoute)
         })()
     }
@@ -165,12 +165,12 @@ class StateMachineEventTests: _TestCase
     // https://github.com/ReactKit/SwiftState/pull/19
     func testHasRoute_issue19()
     {
-        let machine = StateMachine<MyState, MyEvent>(state: .State0) { machine in
-            machine.addRoute(.State0 => .State1)    // no-event
-            machine.addRoutes(event: .Event0, transitions: [.State1 => .State2])   // with-event
+        let machine = StateMachine<MyState, MyEvent>(state: .state0) { machine in
+            machine.addRoute(.state0 => .state1)    // no-event
+            machine.addRoutes(event: .event0, transitions: [.state1 => .state2])   // with-event
         }
 
-        let hasRoute = machine.hasRoute(event: .Event0, transition: .State1 => .State2)
+        let hasRoute = machine.hasRoute(event: .event0, transition: .state1 => .state2)
         XCTAssertTrue(hasRoute)
     }
 
@@ -180,85 +180,85 @@ class StateMachineEventTests: _TestCase
 
     func testAddRoute_tryState()
     {
-        let machine = StateMachine<MyState, MyEvent>(state: .State0) { machine in
+        let machine = StateMachine<MyState, MyEvent>(state: .state0) { machine in
 
             // add 0 => 1 & 1 => 2
             // (NOTE: this is not chaining e.g. 0 => 1 => 2)
-            machine.addRoutes(event: .Event0, transitions: [
-                .State0 => .State1,
-                .State1 => .State2,
+            machine.addRoutes(event: .event0, transitions: [
+                .state0 => .state1,
+                .state1 => .state2,
             ])
 
         }
 
         // tryState 0 => 1
-        machine <- .State1
-        XCTAssertEqual(machine.state, MyState.State1)
+        machine <- .state1
+        XCTAssertEqual(machine.state, MyState.state1)
 
         // tryState 1 => 2
-        machine <- .State2
-        XCTAssertEqual(machine.state, MyState.State2)
+        machine <- .state2
+        XCTAssertEqual(machine.state, MyState.state2)
 
         // tryState 2 => 3
-        machine <- .State3
-        XCTAssertEqual(machine.state, MyState.State2, "2 => 3 is not registered.")
+        machine <- .state3
+        XCTAssertEqual(machine.state, MyState.state2, "2 => 3 is not registered.")
     }
 
     func testAddRoute_multiple()
     {
-        let machine = StateMachine<MyState, MyEvent>(state: .State0) { machine in
+        let machine = StateMachine<MyState, MyEvent>(state: .state0) { machine in
 
             // add 0 => 1 => 2
-            machine.addRoutes(event: .Event0, transitions: [
-                .State0 => .State1,
-                .State1 => .State2,
+            machine.addRoutes(event: .event0, transitions: [
+                .state0 => .state1,
+                .state1 => .state2,
             ])
 
             // add 2 => 1 => 0
-            machine.addRoutes(event: .Event1, transitions: [
-                .State2 => .State1,
-                .State1 => .State0,
+            machine.addRoutes(event: .event1, transitions: [
+                .state2 => .state1,
+                .state1 => .state0,
             ])
         }
 
         // initial
-        XCTAssertEqual(machine.state, MyState.State0)
+        XCTAssertEqual(machine.state, MyState.state0)
 
         // tryEvent
-        machine <-! .Event1
-        XCTAssertEqual(machine.state, MyState.State0, "Event1 doesn't have 0 => Any.")
+        machine <-! .event1
+        XCTAssertEqual(machine.state, MyState.state0, "Event1 doesn't have 0 => Any.")
 
         // tryEvent
-        machine <-! .Event0
-        XCTAssertEqual(machine.state, MyState.State1)
+        machine <-! .event0
+        XCTAssertEqual(machine.state, MyState.state1)
 
         // tryEvent
-        machine <-! .Event0
-        XCTAssertEqual(machine.state, MyState.State2)
+        machine <-! .event0
+        XCTAssertEqual(machine.state, MyState.state2)
 
         // tryEvent
-        machine <-! .Event0
-        XCTAssertEqual(machine.state, MyState.State2, "Event0 doesn't have 2 => Any.")
+        machine <-! .event0
+        XCTAssertEqual(machine.state, MyState.state2, "Event0 doesn't have 2 => Any.")
 
         // tryEvent
-        machine <-! .Event1
-        XCTAssertEqual(machine.state, MyState.State1)
+        machine <-! .event1
+        XCTAssertEqual(machine.state, MyState.state1)
 
         // tryEvent
-        machine <-! .Event1
-        XCTAssertEqual(machine.state, MyState.State0)
+        machine <-! .event1
+        XCTAssertEqual(machine.state, MyState.state0)
     }
 
     func testAddRoute_handler()
     {
         var invokeCount = 0
 
-        let machine = StateMachine<MyState, MyEvent>(state: .State0) { machine in
+        let machine = StateMachine<MyState, MyEvent>(state: .state0) { machine in
 
             // add 0 => 1 => 2
-            machine.addRoutes(event: .Event0, transitions: [
-                .State0 => .State1,
-                .State1 => .State2,
+            machine.addRoutes(event: .event0, transitions: [
+                .state0 => .state1,
+                .state1 => .state2,
             ], handler: { context in
                 invokeCount += 1
                 return
@@ -266,12 +266,12 @@ class StateMachineEventTests: _TestCase
         }
 
         // tryEvent
-        machine <-! .Event0
-        XCTAssertEqual(machine.state, MyState.State1)
+        machine <-! .event0
+        XCTAssertEqual(machine.state, MyState.state1)
 
         // tryEvent
-        machine <-! .Event0
-        XCTAssertEqual(machine.state, MyState.State2)
+        machine <-! .event0
+        XCTAssertEqual(machine.state, MyState.state2)
 
         XCTAssertEqual(invokeCount, 2)
     }
@@ -280,15 +280,15 @@ class StateMachineEventTests: _TestCase
     {
         var invokeCount = 0
 
-        let machine = StateMachine<MyState, MyEvent>(state: .State0) { machine in
+        let machine = StateMachine<MyState, MyEvent>(state: .state0) { machine in
 
             // add 0 => 1 => 2
-            let routeDisposable = machine.addRoutes(event: .Event0, transitions: [
-                .State0 => .State1,
-                .State1 => .State2,
+            let routeDisposable = machine.addRoutes(event: .event0, transitions: [
+                .state0 => .state1,
+                .state1 => .state2,
             ])
 
-            machine.addHandler(event: .Event0) { context in
+            machine.addHandler(event: .event0) { context in
                 invokeCount += 1
                 return
             }
@@ -299,11 +299,11 @@ class StateMachineEventTests: _TestCase
         }
 
         // initial
-        XCTAssertEqual(machine.state, MyState.State0)
+        XCTAssertEqual(machine.state, MyState.state0)
 
         // tryEvent
-        machine <-! .Event0
-        XCTAssertEqual(machine.state, MyState.State0, "Route should be removed.")
+        machine <-! .event0
+        XCTAssertEqual(machine.state, MyState.state0, "Route should be removed.")
 
         XCTAssertEqual(invokeCount, 0, "Handler should NOT be performed")
     }
@@ -316,15 +316,15 @@ class StateMachineEventTests: _TestCase
     {
         var invokeCount = 0
 
-        let machine = StateMachine<MyState, MyEvent>(state: .State0) { machine in
+        let machine = StateMachine<MyState, MyEvent>(state: .state0) { machine in
 
             // add 0 => 1 => 2
-            machine.addRoutes(event: .Event0, transitions: [
-                .State0 => .State1,
-                .State1 => .State2,
+            machine.addRoutes(event: .event0, transitions: [
+                .state0 => .state1,
+                .state1 => .state2,
             ])
 
-            machine.addHandler(event: .Event0) { context in
+            machine.addHandler(event: .event0) { context in
                 invokeCount += 1
                 return
             }
@@ -332,12 +332,12 @@ class StateMachineEventTests: _TestCase
         }
 
         // tryEvent
-        machine <-! .Event0
-        XCTAssertEqual(machine.state, MyState.State1)
+        machine <-! .event0
+        XCTAssertEqual(machine.state, MyState.state1)
 
         // tryEvent
-        machine <-! .Event0
-        XCTAssertEqual(machine.state, MyState.State2)
+        machine <-! .event0
+        XCTAssertEqual(machine.state, MyState.state2)
 
         XCTAssertEqual(invokeCount, 2)
     }
@@ -346,15 +346,15 @@ class StateMachineEventTests: _TestCase
     {
         var invokeCount = 0
 
-        let machine = StateMachine<MyState, MyEvent>(state: .State0) { machine in
+        let machine = StateMachine<MyState, MyEvent>(state: .state0) { machine in
 
             // add 0 => 1 => 2
-            machine.addRoutes(event: .Event0, transitions: [
-                .State0 => .State1,
-                .State1 => .State2,
+            machine.addRoutes(event: .event0, transitions: [
+                .state0 => .state1,
+                .state1 => .state2,
             ])
 
-            let handlerDisposable = machine.addHandler(event: .Event0) { context in
+            let handlerDisposable = machine.addHandler(event: .event0) { context in
                 invokeCount += 1
                 return
             }
@@ -365,12 +365,12 @@ class StateMachineEventTests: _TestCase
         }
 
         // tryEvent
-        machine <-! .Event0
-        XCTAssertEqual(machine.state, MyState.State1, "0 => 1 should be succesful")
+        machine <-! .event0
+        XCTAssertEqual(machine.state, MyState.state1, "0 => 1 should be succesful")
 
         // tryEvent
-        machine <-! .Event0
-        XCTAssertEqual(machine.state, MyState.State2, "1 => 2 should be succesful")
+        machine <-! .event0
+        XCTAssertEqual(machine.state, MyState.state2, "1 => 2 should be succesful")
 
         XCTAssertEqual(invokeCount, 0, "Handler should NOT be performed")
     }
@@ -383,64 +383,64 @@ class StateMachineEventTests: _TestCase
     {
         var invokeCounts = [0, 0, 0, 0, 0, 0]
 
-        let machine = StateMachine<MyState, MyEvent>(state: .State0) { machine in
+        let machine = StateMachine<MyState, MyEvent>(state: .state0) { machine in
 
             // add 0 => 1 => 2 (event-based)
-            machine.addRoutes(event: .Event0, transitions: [
-                .State0 => .State1,
-                .State1 => .State2,
+            machine.addRoutes(event: .event0, transitions: [
+                .state0 => .state1,
+                .state1 => .state2,
             ])
 
             // add 2 => 3 (state-based)
-            machine.addRoute(.State2 => .State3)
+            machine.addRoute(.state2 => .state3)
 
             //
             // addAnyHandler (for both event-based & state-based)
             //
 
-            machine.addAnyHandler(.State0 => .State1) { context in
+            machine.addAnyHandler(.state0 => .state1) { context in
                 invokeCounts[0] += 1
             }
 
-            machine.addAnyHandler(.State1 => .State2) { context in
+            machine.addAnyHandler(.state1 => .state2) { context in
                 invokeCounts[1] += 1
             }
 
-            machine.addAnyHandler(.State2 => .State3) { context in
+            machine.addAnyHandler(.state2 => .state3) { context in
                 invokeCounts[2] += 1
             }
 
-            machine.addAnyHandler(.Any => .State3) { context in
+            machine.addAnyHandler(.any => .state3) { context in
                 invokeCounts[3] += 1
             }
 
-            machine.addAnyHandler(.State0 => .Any) { context in
+            machine.addAnyHandler(.state0 => .any) { context in
                 invokeCounts[4] += 1
             }
 
-            machine.addAnyHandler(.Any => .Any) { context in
+            machine.addAnyHandler(.any => .any) { context in
                 invokeCounts[5] += 1
             }
 
         }
 
         // initial
-        XCTAssertEqual(machine.state, MyState.State0)
+        XCTAssertEqual(machine.state, MyState.state0)
         XCTAssertEqual(invokeCounts, [0, 0, 0, 0, 0, 0])
 
         // tryEvent
-        machine <-! .Event0
-        XCTAssertEqual(machine.state, MyState.State1)
+        machine <-! .event0
+        XCTAssertEqual(machine.state, MyState.state1)
         XCTAssertEqual(invokeCounts, [1, 0, 0, 0, 1, 1])
 
         // tryEvent
-        machine <-! .Event0
-        XCTAssertEqual(machine.state, MyState.State2)
+        machine <-! .event0
+        XCTAssertEqual(machine.state, MyState.state2)
         XCTAssertEqual(invokeCounts, [1, 1, 0, 0, 1, 2])
 
         // tryState
-        machine <- .State3
-        XCTAssertEqual(machine.state, MyState.State3)
+        machine <- .state3
+        XCTAssertEqual(machine.state, MyState.state3)
         XCTAssertEqual(invokeCounts, [1, 1, 1, 1, 1, 3])
 
     }

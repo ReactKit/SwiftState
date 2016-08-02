@@ -23,17 +23,17 @@ public struct Transition<S: StateType>: Hashable
 
     public init(fromState: S, toState: State<S>)
     {
-        self.init(fromState: .Some(fromState), toState: toState)
+        self.init(fromState: .some(fromState), toState: toState)
     }
 
     public init(fromState: State<S>, toState: S)
     {
-        self.init(fromState: fromState, toState: .Some(toState))
+        self.init(fromState: fromState, toState: .some(toState))
     }
 
     public init(fromState: S, toState: S)
     {
-        self.init(fromState: .Some(fromState), toState: .Some(toState))
+        self.init(fromState: .some(fromState), toState: .some(toState))
     }
 
     public var hashValue: Int
@@ -62,17 +62,17 @@ public func => <S: StateType>(left: State<S>, right: State<S>) -> Transition<S>
 
 public func => <S: StateType>(left: State<S>, right: S) -> Transition<S>
 {
-    return left => .Some(right)
+    return left => .some(right)
 }
 
 public func => <S: StateType>(left: S, right: State<S>) -> Transition<S>
 {
-    return .Some(left) => right
+    return .some(left) => right
 }
 
 public func => <S: StateType>(left: S, right: S) -> Transition<S>
 {
-    return .Some(left) => .Some(right)
+    return .some(left) => .some(right)
 }
 
 //--------------------------------------------------

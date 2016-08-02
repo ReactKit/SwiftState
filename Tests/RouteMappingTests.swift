@@ -18,15 +18,15 @@ import XCTest
 
 private enum _State: StateType, Hashable
 {
-    case Pending
-    case Loading(Int)
+    case pending
+    case loading(Int)
 
     var hashValue: Int
     {
         switch self {
-            case .Pending:
+            case .pending:
                 return "Pending".hashValue
-            case let .Loading(x):
+            case let .loading(x):
                 return "Loading\(x)".hashValue
         }
     }
@@ -35,26 +35,26 @@ private enum _State: StateType, Hashable
 private func == (lhs: _State, rhs: _State) -> Bool
 {
     switch (lhs, rhs) {
-        case (.Pending, .Pending):
+        case (.pending, .pending):
             return true
-        case let (.Loading(x1), .Loading(x2)):
+        case let (.loading(x1), .loading(x2)):
             return x1 == x2
         default:
             return false
     }
 }
 
-private enum _Event: EventType, Hashable
+private enum _Event: SwiftState.EventType, Hashable
 {
-    case CancelAction
-    case LoadAction(Int)
+    case cancelAction
+    case loadAction(Int)
 
     var hashValue: Int
     {
         switch self {
-            case .CancelAction:
+            case .cancelAction:
                 return "CancelAction".hashValue
-            case let .LoadAction(x):
+            case let .loadAction(x):
                 return "LoadAction\(x)".hashValue
         }
     }
@@ -63,9 +63,9 @@ private enum _Event: EventType, Hashable
 private func == (lhs: _Event, rhs: _Event) -> Bool
 {
     switch (lhs, rhs) {
-        case (.CancelAction, .CancelAction):
+        case (.cancelAction, .cancelAction):
             return true
-        case let (.LoadAction(x1), .LoadAction(x2)):
+        case let (.loadAction(x1), .loadAction(x2)):
             return x1 == x2
         default:
             return false
@@ -79,7 +79,7 @@ class RouteMappingTests: _TestCase
     {
         var count = 0
 
-        let machine = StateMachine<_State, _Event>(state: .Pending) { machine in
+        let machine = StateMachine<_State, _Event>(state: .pending) { machine in
 
             machine.addRouteMapping { event, fromState, userInfo in
                 // no routes for no event
@@ -88,47 +88,47 @@ class RouteMappingTests: _TestCase
                 }
 
                 switch event {
-                    case .CancelAction:
+                    case .cancelAction:
                         // can transit to `.Pending` if current state is not the same
-                        return fromState == .Pending ? nil : .Pending
-                    case .LoadAction(let actionId):
+                        return fromState == .pending ? nil : .pending
+                    case .loadAction(let actionId):
                         // can transit to `.Loading(actionId)` if current state is not the same
-                        return fromState == .Loading(actionId) ? nil : .Loading(actionId)
+                        return fromState == .loading(actionId) ? nil : .loading(actionId)
                 }
             }
 
             // increment `count` when any events i.e. `.CancelAction` and `.LoadAction(x)` succeed.
-            machine.addHandler(event: .Any) { event, transition, order, userInfo in
+            machine.addHandler(event: .any) { event, transition, order, userInfo in
                 count += 1
             }
 
         }
 
         // initial
-        XCTAssertEqual(machine.state, _State.Pending)
+        XCTAssertEqual(machine.state, _State.pending)
         XCTAssertEqual(count, 0)
 
         // CancelAction (to .Pending state, same as before)
-        machine <-! .CancelAction
-        XCTAssertEqual(machine.state, _State.Pending)
+        machine <-! .cancelAction
+        XCTAssertEqual(machine.state, _State.pending)
         XCTAssertEqual(count, 0, "`tryEvent()` failed, and `count` should not be incremented.")
 
         // LoadAction(1) (to .Loading(1) state)
-        machine <-! .LoadAction(1)
-        XCTAssertEqual(machine.state, _State.Loading(1))
+        machine <-! .loadAction(1)
+        XCTAssertEqual(machine.state, _State.loading(1))
         XCTAssertEqual(count, 1)
 
         // LoadAction(1) (same as before)
-        machine <-! .LoadAction(1)
-        XCTAssertEqual(machine.state, _State.Loading(1))
+        machine <-! .loadAction(1)
+        XCTAssertEqual(machine.state, _State.loading(1))
         XCTAssertEqual(count, 1, "`tryEvent()` failed, and `count` should not be incremented.")
 
-        machine <-! .LoadAction(2)
-        XCTAssertEqual(machine.state, _State.Loading(2))
+        machine <-! .loadAction(2)
+        XCTAssertEqual(machine.state, _State.loading(2))
         XCTAssertEqual(count, 2)
 
-        machine <-! .CancelAction
-        XCTAssertEqual(machine.state, _State.Pending)
+        machine <-! .cancelAction
+        XCTAssertEqual(machine.state, _State.pending)
         XCTAssertEqual(count, 3)
     }
 
@@ -137,7 +137,7 @@ class RouteMappingTests: _TestCase
     {
         var count = 0
 
-        let machine = StateMachine<_State, _Event>(state: .Pending) { machine in
+        let machine = StateMachine<_State, _Event>(state: .pending) { machine in
 
             // Add following routes:
             // - `.Pending => .Loading(1)`
@@ -145,45 +145,45 @@ class RouteMappingTests: _TestCase
             // - `.Loading(x) => .Loading(x+100)`
             machine.addStateRouteMapping { fromState, userInfo in
                 switch fromState {
-                    case .Pending:
-                        return [.Loading(1)]
-                    case .Loading(let actionId):
-                        return [.Loading(actionId+10), .Loading(actionId+100)]
+                    case .pending:
+                        return [.loading(1)]
+                    case .loading(let actionId):
+                        return [.loading(actionId+10), .loading(actionId+100)]
                 }
             }
 
             // increment `count` when any events i.e. `.CancelAction` and `.LoadAction(x)` succeed.
-            machine.addHandler(.Any => .Any) { event, transition, order, userInfo in
+            machine.addHandler(.any => .any) { event, transition, order, userInfo in
                 count += 1
             }
 
         }
 
         // initial
-        XCTAssertEqual(machine.state, _State.Pending)
+        XCTAssertEqual(machine.state, _State.pending)
         XCTAssertEqual(count, 0)
 
         // .Loading(999) (fails)
-        machine <- .Loading(999)
-        XCTAssertEqual(machine.state, _State.Pending)
+        machine <- .loading(999)
+        XCTAssertEqual(machine.state, _State.pending)
         XCTAssertEqual(count, 0, "`tryState()` failed, and `count` should not be incremented.")
 
         // .Loading(1)
-        machine <- .Loading(1)
-        XCTAssertEqual(machine.state, _State.Loading(1))
+        machine <- .loading(1)
+        XCTAssertEqual(machine.state, _State.loading(1))
         XCTAssertEqual(count, 1)
 
         // .Loading(999) (fails)
-        machine <- .Loading(999)
-        XCTAssertEqual(machine.state, _State.Loading(1))
+        machine <- .loading(999)
+        XCTAssertEqual(machine.state, _State.loading(1))
         XCTAssertEqual(count, 1, "`tryState()` failed, and `count` should not be incremented.")
 
-        machine <- .Loading(11)
-        XCTAssertEqual(machine.state, _State.Loading(11))
+        machine <- .loading(11)
+        XCTAssertEqual(machine.state, _State.loading(11))
         XCTAssertEqual(count, 2)
 
-        machine <- .Loading(111)
-        XCTAssertEqual(machine.state, _State.Loading(111))
+        machine <- .loading(111)
+        XCTAssertEqual(machine.state, _State.loading(111))
         XCTAssertEqual(count, 3)
     }
 }

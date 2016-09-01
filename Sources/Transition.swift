@@ -52,7 +52,7 @@ public func == <S: StateType>(left: Transition<S>, right: Transition<S>) -> Bool
 // MARK: - Custom Operators
 //--------------------------------------------------
 
-infix operator => { associativity left }
+infix operator => : AdditionPrecedence
 
 /// e.g. .State0 => .State1
 public func => <S: StateType>(left: State<S>, right: State<S>) -> Transition<S>

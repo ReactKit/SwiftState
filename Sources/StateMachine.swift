@@ -16,7 +16,7 @@ public final class StateMachine<S: StateType, E: EventType>: Machine<S, E>
 {
     /// Closure-based routes for `tryState()`.
     /// - Returns: Multiple `toState`s from single `fromState`, similar to `.State0 => [.State1, .State2]`
-    public typealias StateRouteMapping = (fromState: S, userInfo: Any?) -> [S]?
+    public typealias StateRouteMapping = (_ fromState: S, _ userInfo: Any?) -> [S]?
 
     private lazy var _routes: _RouteDict = [:]
     private lazy var _routeMappings: [String : StateRouteMapping] = [:] // NOTE: `StateRouteMapping`, not `RouteMapping`
@@ -99,7 +99,7 @@ public final class StateMachine<S: StateType, E: EventType>: Machine<S, E>
     private func _hasRouteMappingInDict(fromState: S, toState: S, userInfo: Any? = nil) -> S?
     {
         for mapping in self._routeMappings.values {
-            if let preferredToStates = mapping(fromState: fromState, userInfo: userInfo) {
+            if let preferredToStates = mapping(fromState, userInfo) {
                 return preferredToStates.contains(toState) ? toState : nil
             }
         }
@@ -507,7 +507,7 @@ public final class StateMachine<S: StateType, E: EventType>: Machine<S, E>
 
             guard context.event == nil else { return }
 
-            guard let preferredToStates = routeMapping(fromState: context.fromState, userInfo: context.userInfo), preferredToStates.contains(context.toState) else
+            guard let preferredToStates = routeMapping(context.fromState, context.userInfo), preferredToStates.contains(context.toState) else
             {
                 return
             }
@@ -543,7 +543,7 @@ public final class StateMachine<S: StateType, E: EventType>: Machine<S, E>
 
 // MARK: `<-` (tryState)
 
-infix operator <- { associativity left }
+infix operator <- : AdditionPrecedence
 
 @discardableResult
 public func <- <S: StateType, E: EventType>(machine: StateMachine<S, E>, state: S) -> StateMachine<S, E>

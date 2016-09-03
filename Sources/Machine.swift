@@ -28,7 +28,7 @@ public class Machine<S: StateType, E: EventType>
 
     /// Closure-based route, mainly for `tryEvent()` (and also works for subclass's `tryState()`).
     /// - Returns: Preferred `toState`.
-    public typealias RouteMapping = (event: E?, fromState: S, userInfo: Any?) -> S?
+    public typealias RouteMapping = (_ event: E?, _ fromState: S, _ userInfo: Any?) -> S?
 
     internal typealias _RouteDict = [Transition<S> : [String : Condition?]]
 
@@ -142,7 +142,7 @@ public class Machine<S: StateType, E: EventType>
     private func _hasRouteMappingInDict(event: E?, fromState: S, toState: S?, userInfo: Any? = nil) -> S?
     {
         for mapping in self._routeMappings.values {
-            if let preferredToState = mapping(event: event, fromState: fromState, userInfo: userInfo),
+            if let preferredToState = mapping(event, fromState, userInfo),
                 preferredToState == toState || toState == nil
             {
                 return preferredToState
@@ -218,7 +218,7 @@ public class Machine<S: StateType, E: EventType>
         let validHandlerInfos = [ self._handlers[.some(event)], self._handlers[.any] ]
             .filter { $0 != nil }
             .map { $0! }
-            .flatten()
+            .joined()
 
         return validHandlerInfos.sorted { info1, info2 in
             return info1.order < info2.order
@@ -389,7 +389,7 @@ public class Machine<S: StateType, E: EventType>
 
         let handlerDisposable = self._addHandler(event: .any, order: order) { context in
 
-            guard let preferredToState = routeMapping(event: context.event, fromState: context.fromState, userInfo: context.userInfo),
+            guard let preferredToState = routeMapping(context.event, context.fromState, context.userInfo),
                 preferredToState == context.toState else
             {
                 return
@@ -518,7 +518,7 @@ public class Machine<S: StateType, E: EventType>
 
 // MARK: `<-!` (tryEvent)
 
-infix operator <-! { associativity left }
+infix operator <-! : AdditionPrecedence
 
 @discardableResult
 public func <-! <S: StateType, E: EventType>(machine: Machine<S, E>, event: E) -> Machine<S, E>
@@ -552,7 +552,7 @@ internal func _createUniqueString() -> String
 {
     var uniqueString: String = ""
     for _ in 1...8 {
-        uniqueString += String(UnicodeScalar(_random(0xD800))) // 0xD800 = 55296 = 15.755bit
+        uniqueString += String(describing: UnicodeScalar(_random(0xD800))) // 0xD800 = 55296 = 15.755bit
     }
     return uniqueString
 }

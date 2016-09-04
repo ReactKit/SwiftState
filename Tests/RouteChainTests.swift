@@ -124,7 +124,7 @@ class MachineChainTests: _TestCase
                 invokeCount += 1
                 return
             }
-            // machine.addRoute(.State1 => .State3)    // comment-out: 1 => 3 is not possible
+            // machine.addRoute(.state1 => .state3)    // comment-out: 1 => 3 is not possible
 
         }
 

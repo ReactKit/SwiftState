@@ -49,17 +49,17 @@ class TransitionTests: _TestCase
 
     func testNil()
     {
-        // .Any => state
+        // .any => state
         let transition = .any => MyState.state0
         XCTAssertTrue(transition.fromState == .any)
         XCTAssertTrue(transition.toState == .state0)
 
-        // state => .Any
+        // state => .any
         let transition2 = MyState.state0 => .any
         XCTAssertTrue(transition2.fromState == .state0)
         XCTAssertTrue(transition2.toState == .any)
 
-        // .Any => .Any
+        // .any => .any
         let transition3: Transition<MyState> = .any => .any
         XCTAssertTrue(transition3.fromState == .any)
         XCTAssertTrue(transition3.toState == .any)

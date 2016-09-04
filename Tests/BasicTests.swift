@@ -61,7 +61,7 @@ class BasicTests: _TestCase
 
             // add event handler
             machine.addHandler(event: .event0) { context in
-                print(".Event0 triggered!")
+                print(".event0 triggered!")
             }
         }
 

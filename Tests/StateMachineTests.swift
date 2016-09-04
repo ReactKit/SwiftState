@@ -76,7 +76,7 @@ class StateMachineTests: _TestCase
         XCTAssertFalse(machine.hasRoute(.state1 => .state2))
     }
 
-    // add .Any => state
+    // add .any => state
     func testAddRoute_fromAnyState()
     {
         let machine = StateMachine<MyState, NoEvent>(state: .state0) { machine in
@@ -91,7 +91,7 @@ class StateMachineTests: _TestCase
         XCTAssertFalse(machine.hasRoute(.state1 => .state2))
     }
 
-    // add state => .Any
+    // add state => .any
     func testAddRoute_toAnyState()
     {
         let machine = StateMachine<MyState, NoEvent>(state: .state0) { machine in
@@ -106,7 +106,7 @@ class StateMachineTests: _TestCase
         XCTAssertTrue(machine.hasRoute(.state1 => .state2))     // true
     }
 
-    // add .Any => .Any
+    // add .any => .any
     func testAddRoute_bothAnyState()
     {
         let machine = StateMachine<MyState, NoEvent>(state: .state0) { machine in

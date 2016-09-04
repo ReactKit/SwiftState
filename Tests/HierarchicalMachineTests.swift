@@ -55,14 +55,14 @@ class HierarchicalMachineTests: _TestCase
     /// - mainMachine
     ///   - MainState0 (initial)
     ///   - subMachine1
-    ///     - SubState0
-    ///     - SubState1
+    ///     - subState0
+    ///     - subState1
     ///   - subMachine2
-    ///     - SubState0
-    ///     - SubState1
+    ///     - subState0
+    ///     - subState1
     ///
     /// - Warning:
-    /// This is a naive implementation and easily lose consistency when `subMachine.state` is changed directly, e.g. `subMachine1 <- .SubState1`.
+    /// This is a naive implementation and easily lose consistency when `subMachine.state` is changed directly, e.g. `subMachine1 <- .subState1`.
     ///
     private var mainMachine: StateMachine<_MainState, NoEvent>?
 

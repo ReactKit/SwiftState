@@ -15,7 +15,7 @@
 public final class StateMachine<S: StateType, E: EventType>: Machine<S, E>
 {
     /// Closure-based routes for `tryState()`.
-    /// - Returns: Multiple `toState`s from single `fromState`, similar to `.State0 => [.State1, .State2]`
+    /// - Returns: Multiple `toState`s from single `fromState`, similar to `.state0 => [.state1, .state2]`
     public typealias StateRouteMapping = (_ fromState: S, _ userInfo: Any?) -> [S]?
 
     private lazy var _routes: _RouteDict = [:]
@@ -52,7 +52,7 @@ public final class StateMachine<S: StateType, E: EventType>: Machine<S, E>
         guard let fromState = transition.fromState.rawValue,
             let toState = transition.toState.rawValue else
         {
-            assertionFailure("State = `.Any` is not supported for `hasRoute()` (always returns `false`)")
+            assertionFailure("State = `.any` is not supported for `hasRoute()` (always returns `false`)")
             return false
         }
 

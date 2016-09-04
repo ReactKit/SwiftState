@@ -108,9 +108,9 @@ If there is no `Event`-based transition, use built-in `NoEvent` instead.
 Above examples use _arrow-style routing_ which are easy to understand, but it lacks in ability to handle **state & event enums with associated values**. In such cases, use either of the following functions to apply _closure-style routing_:
 
 - `machine.addRouteMapping(routeMapping)`
-    - `RouteMapping`: `(event: E?, fromState: S, userInfo: Any?) -> S?`
+    - `RouteMapping`: `(_ event: E?, _ fromState: S, _ userInfo: Any?) -> S?`
 - `machine.addStateRouteMapping(stateRouteMapping)`
-    - `StateRouteMapping`: `(fromState: S, userInfo: Any?) -> [S]?`
+    - `StateRouteMapping`: `(_ fromState: S, _ userInfo: Any?) -> [S]?`
 
 For example:
 

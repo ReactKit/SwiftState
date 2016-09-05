@@ -7,8 +7,8 @@
 //
 
 ///
-/// "From-" and "to-" states represented as `.State1 => .State2`.
-/// Also, `.Any` can be used to represent _any state_.
+/// "From-" and "to-" states represented as `.state1 => .state2`.
+/// Also, `.any` can be used to represent _any state_.
 ///
 public struct Transition<S: StateType>: Hashable
 {
@@ -54,7 +54,7 @@ public func == <S: StateType>(left: Transition<S>, right: Transition<S>) -> Bool
 
 infix operator => : AdditionPrecedence
 
-/// e.g. .State0 => .State1
+/// e.g. .state0 => .state1
 public func => <S: StateType>(left: State<S>, right: State<S>) -> Transition<S>
 {
     return Transition(fromState: left, toState: right)

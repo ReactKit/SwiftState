@@ -10,7 +10,7 @@ public protocol EventType: Hashable {}
 
 // MARK: Event
 
-/// `EventType` wrapper for handling `.Any` event.
+/// `EventType` wrapper for handling `.any` event.
 public enum Event<E: EventType>
 {
     case some(E)

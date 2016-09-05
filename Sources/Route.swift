@@ -23,10 +23,10 @@ public struct Route<S: StateType, E: EventType>
 // MARK: - Custom Operators
 //--------------------------------------------------
 
-/// e.g. [.State0, .State1] => .State, allowing [0 => 2, 1 => 2]
+/// e.g. [.state0, .state1] => .state, allowing [0 => 2, 1 => 2]
 public func => <S: StateType, E: EventType>(leftStates: [S], right: State<S>) -> Route<S, E>
 {
-    // NOTE: don't reuse ".Any => .Any + condition" for efficiency
+    // NOTE: don't reuse ".any => .any + condition" for efficiency
     return Route(transition: .any => right, condition: { context -> Bool in
         return leftStates.contains(context.fromState)
     })
@@ -37,7 +37,7 @@ public func => <S: StateType, E: EventType>(leftStates: [S], right: S) -> Route<
     return leftStates => .some(right)
 }
 
-/// e.g. .State0 => [.State1, .State], allowing [0 => 1, 0 => 2]
+/// e.g. .state0 => [.state1, .state], allowing [0 => 1, 0 => 2]
 public func => <S: StateType, E: EventType>(left: State<S>, rightStates: [S]) -> Route<S, E>
 {
     return Route(transition: left => .any, condition: { context -> Bool in
@@ -50,7 +50,7 @@ public func => <S: StateType, E: EventType>(left: S, rightStates: [S]) -> Route<
     return .some(left) => rightStates
 }
 
-/// e.g. [.State0, .State1] => [.State, .State3], allowing [0 => 2, 0 => 3, 1 => 2, 1 => 3]
+/// e.g. [.state0, .state1] => [.state, .state3], allowing [0 => 2, 0 => 3, 1 => 2, 1 => 3]
 public func => <S: StateType, E: EventType>(leftStates: [S], rightStates: [S]) -> Route<S, E>
 {
     return Route(transition: .any => .any, condition: { context -> Bool in

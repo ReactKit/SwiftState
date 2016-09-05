@@ -73,7 +73,7 @@ public class Machine<S: StateType, E: EventType>
         guard let fromState = transition.fromState.rawValue,
             let toState = transition.toState.rawValue else
         {
-            assertionFailure("State = `.Any` is not supported for `hasRoute()` (always returns `false`)")
+            assertionFailure("State = `.any` is not supported for `hasRoute()` (always returns `false`)")
             return false
         }
 
@@ -164,7 +164,7 @@ public class Machine<S: StateType, E: EventType>
             for (transition, keyConditionDict) in routeDict {
                 if transition.fromState == .some(self.state) || transition.fromState == .any {
                     for (_, condition) in keyConditionDict {
-                        // if toState is `.Any`, always treat as identity transition
+                        // if toState is `.any`, always treat as identity transition
                         let toState = transition.toState.rawValue ?? self.state
 
                         if _canPassCondition(condition, forEvent: event, fromState: self.state, toState: toState, userInfo: userInfo) {

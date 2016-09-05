@@ -10,7 +10,7 @@ public protocol StateType: Hashable {}
 
 // MARK: State
 
-/// `StateType` wrapper for handling `.Any` state.
+/// `StateType` wrapper for handling `.any` state.
 public enum State<S: StateType>
 {
     case some(S)

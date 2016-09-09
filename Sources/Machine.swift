@@ -293,26 +293,26 @@ public class Machine<S: StateType, E: EventType>
     // MARK: addRoutes(event:) + conditional handler
 
     @discardableResult
-    public func addRoutes(event: E, transitions: [Transition<S>], condition: Condition? = nil, handler: Handler) -> Disposable
+    public func addRoutes(event: E, transitions: [Transition<S>], condition: Condition? = nil, handler: @escaping Handler) -> Disposable
     {
         return self.addRoutes(event: .some(event), transitions: transitions, condition: condition, handler: handler)
     }
 
     @discardableResult
-    public func addRoutes(event: Event<E>, transitions: [Transition<S>], condition: Condition? = nil, handler: Handler) -> Disposable
+    public func addRoutes(event: Event<E>, transitions: [Transition<S>], condition: Condition? = nil, handler: @escaping Handler) -> Disposable
     {
         let routes = transitions.map { Route(transition: $0, condition: condition) }
         return self.addRoutes(event: event, routes: routes, handler: handler)
     }
 
     @discardableResult
-    public func addRoutes(event: E, routes: [Route<S, E>], handler: Handler) -> Disposable
+    public func addRoutes(event: E, routes: [Route<S, E>], handler: @escaping Handler) -> Disposable
     {
         return self.addRoutes(event: .some(event), routes: routes, handler: handler)
     }
 
     @discardableResult
-    public func addRoutes(event: Event<E>, routes: [Route<S, E>], handler: Handler) -> Disposable
+    public func addRoutes(event: Event<E>, routes: [Route<S, E>], handler: @escaping Handler) -> Disposable
     {
         let routeDisposable = self.addRoutes(event: event, routes: routes)
         let handlerDisposable = self.addHandler(event: event, handler: handler)
@@ -367,7 +367,7 @@ public class Machine<S: StateType, E: EventType>
     // MARK: addRouteMapping
 
     @discardableResult
-    public func addRouteMapping(_ routeMapping: RouteMapping) -> Disposable
+    public func addRouteMapping(_ routeMapping: @escaping RouteMapping) -> Disposable
     {
         let key = _createUniqueString()
 
@@ -383,7 +383,7 @@ public class Machine<S: StateType, E: EventType>
     // MARK: addRouteMapping + conditional handler
 
     @discardableResult
-    public func addRouteMapping(_ routeMapping: RouteMapping, order: HandlerOrder = _defaultOrder, handler: Machine.Handler) -> Disposable
+    public func addRouteMapping(_ routeMapping: @escaping RouteMapping, order: HandlerOrder = _defaultOrder, handler: @escaping Machine.Handler) -> Disposable
     {
         let routeDisposable = self.addRouteMapping(routeMapping)
 
@@ -425,13 +425,13 @@ public class Machine<S: StateType, E: EventType>
     // MARK: addHandler(event:)
 
     @discardableResult
-    public func addHandler(event: E, order: HandlerOrder = _defaultOrder, handler: Machine.Handler) -> Disposable
+    public func addHandler(event: E, order: HandlerOrder = _defaultOrder, handler: @escaping Machine.Handler) -> Disposable
     {
         return self.addHandler(event: .some(event), order: order, handler: handler)
     }
 
     @discardableResult
-    public func addHandler(event: Event<E>, order: HandlerOrder = _defaultOrder, handler: Machine.Handler) -> Disposable
+    public func addHandler(event: Event<E>, order: HandlerOrder = _defaultOrder, handler: @escaping Machine.Handler) -> Disposable
     {
         return self._addHandler(event: event, order: order) { context in
             // skip if not event-based transition
@@ -446,7 +446,7 @@ public class Machine<S: StateType, E: EventType>
     }
 
     @discardableResult
-    private func _addHandler(event: Event<E>, order: HandlerOrder = _defaultOrder, handler: Handler) -> Disposable
+    private func _addHandler(event: Event<E>, order: HandlerOrder = _defaultOrder, handler: @escaping Handler) -> Disposable
     {
         if self._handlers[event] == nil {
             self._handlers[event] = []
@@ -470,7 +470,7 @@ public class Machine<S: StateType, E: EventType>
     // MARK: addErrorHandler
 
     @discardableResult
-    public func addErrorHandler(order: HandlerOrder = _defaultOrder, handler: Handler) -> Disposable
+    public func addErrorHandler(order: HandlerOrder = _defaultOrder, handler: @escaping Handler) -> Disposable
     {
         let key = _createUniqueString()
 

@@ -34,7 +34,7 @@ public final class ActionDisposable: Disposable {
     }
 
     /// Initializes the disposable to run the given action upon disposal.
-    public init(action: (() -> ())) {
+    public init(action: @escaping (() -> ())) {
         self.action = action
     }
 

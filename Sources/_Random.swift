@@ -14,7 +14,7 @@ import Glibc
 
 internal func _random(_ upperBound: Int) -> Int
 {
-    #if os(OSX) || os(iOS)
+    #if os(OSX) || os(iOS) || os(watchOS) || os(tvOS)
     return Int(arc4random_uniform(UInt32(upperBound)))
     #else
     return Int(random() % upperBound)

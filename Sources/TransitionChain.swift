@@ -38,43 +38,43 @@ public struct TransitionChain<S: StateType>
 //--------------------------------------------------
 
 // e.g. (.state0 => .state1) => .state
-public func => <S: StateType>(left: Transition<S>, right: State<S>) -> TransitionChain<S>
+public func => <S>(left: Transition<S>, right: State<S>) -> TransitionChain<S>
 {
     return TransitionChain(states: [left.fromState, left.toState]) => right
 }
 
-public func => <S: StateType>(left: Transition<S>, right: S) -> TransitionChain<S>
+public func => <S>(left: Transition<S>, right: S) -> TransitionChain<S>
 {
     return left => .some(right)
 }
 
-public func => <S: StateType>(left: TransitionChain<S>, right: State<S>) -> TransitionChain<S>
+public func => <S>(left: TransitionChain<S>, right: State<S>) -> TransitionChain<S>
 {
     return TransitionChain(states: left.states + [right])
 }
 
-public func => <S: StateType>(left: TransitionChain<S>, right: S) -> TransitionChain<S>
+public func => <S>(left: TransitionChain<S>, right: S) -> TransitionChain<S>
 {
     return left => .some(right)
 }
 
 // e.g. .state0 => (.state1 => .state)
-public func => <S: StateType>(left: State<S>, right: Transition<S>) -> TransitionChain<S>
+public func => <S>(left: State<S>, right: Transition<S>) -> TransitionChain<S>
 {
     return left => TransitionChain(states: [right.fromState, right.toState])
 }
 
-public func => <S: StateType>(left: S, right: Transition<S>) -> TransitionChain<S>
+public func => <S>(left: S, right: Transition<S>) -> TransitionChain<S>
 {
     return .some(left) => right
 }
 
-public func => <S: StateType>(left: State<S>, right: TransitionChain<S>) -> TransitionChain<S>
+public func => <S>(left: State<S>, right: TransitionChain<S>) -> TransitionChain<S>
 {
     return TransitionChain(states: [left] + right.states)
 }
 
-public func => <S: StateType>(left: S, right: TransitionChain<S>) -> TransitionChain<S>
+public func => <S>(left: S, right: TransitionChain<S>) -> TransitionChain<S>
 {
     return .some(left) => right
 }

@@ -49,7 +49,7 @@ extension State: RawRepresentable
     }
 }
 
-public func == <S: StateType>(lhs: State<S>, rhs: State<S>) -> Bool
+public func == <S>(lhs: State<S>, rhs: State<S>) -> Bool
 {
     switch (lhs, rhs) {
     case let (.some(x1), .some(x2)) where x1 == x2:
@@ -61,7 +61,7 @@ public func == <S: StateType>(lhs: State<S>, rhs: State<S>) -> Bool
     }
 }
 
-public func == <S: StateType>(lhs: State<S>, rhs: S) -> Bool
+public func == <S>(lhs: State<S>, rhs: S) -> Bool
 {
     switch lhs {
     case .some(let x):
@@ -71,7 +71,7 @@ public func == <S: StateType>(lhs: State<S>, rhs: S) -> Bool
     }
 }
 
-public func == <S: StateType>(lhs: S, rhs: State<S>) -> Bool
+public func == <S>(lhs: S, rhs: State<S>) -> Bool
 {
     switch rhs {
     case .some(let x):

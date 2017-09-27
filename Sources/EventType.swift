@@ -49,7 +49,7 @@ extension Event: RawRepresentable
     }
 }
 
-public func == <E: EventType>(lhs: Event<E>, rhs: Event<E>) -> Bool
+public func == <E>(lhs: Event<E>, rhs: Event<E>) -> Bool
 {
     switch (lhs, rhs) {
         case let (.some(x1), .some(x2)) where x1 == x2:
@@ -61,7 +61,7 @@ public func == <E: EventType>(lhs: Event<E>, rhs: Event<E>) -> Bool
     }
 }
 
-public func == <E: EventType>(lhs: Event<E>, rhs: E) -> Bool
+public func == <E>(lhs: Event<E>, rhs: E) -> Bool
 {
     switch lhs {
     case .some(let x):
@@ -71,7 +71,7 @@ public func == <E: EventType>(lhs: Event<E>, rhs: E) -> Bool
     }
 }
 
-public func == <E: EventType>(lhs: E, rhs: Event<E>) -> Bool
+public func == <E>(lhs: E, rhs: Event<E>) -> Bool
 {
     switch rhs {
     case .some(let x):

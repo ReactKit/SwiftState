@@ -43,7 +43,7 @@ public struct Transition<S: StateType>: Hashable
 }
 
 // for Transition Equatable
-public func == <S: StateType>(left: Transition<S>, right: Transition<S>) -> Bool
+public func == <S>(left: Transition<S>, right: Transition<S>) -> Bool
 {
     return left.fromState == right.fromState && left.toState == right.toState
 }
@@ -55,22 +55,22 @@ public func == <S: StateType>(left: Transition<S>, right: Transition<S>) -> Bool
 infix operator => : AdditionPrecedence
 
 /// e.g. .state0 => .state1
-public func => <S: StateType>(left: State<S>, right: State<S>) -> Transition<S>
+public func => <S>(left: State<S>, right: State<S>) -> Transition<S>
 {
     return Transition(fromState: left, toState: right)
 }
 
-public func => <S: StateType>(left: State<S>, right: S) -> Transition<S>
+public func => <S>(left: State<S>, right: S) -> Transition<S>
 {
     return left => .some(right)
 }
 
-public func => <S: StateType>(left: S, right: State<S>) -> Transition<S>
+public func => <S>(left: S, right: State<S>) -> Transition<S>
 {
     return .some(left) => right
 }
 
-public func => <S: StateType>(left: S, right: S) -> Transition<S>
+public func => <S>(left: S, right: S) -> Transition<S>
 {
     return .some(left) => .some(right)
 }

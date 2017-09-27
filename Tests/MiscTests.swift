@@ -17,8 +17,8 @@ class MiscTests: _TestCase
         let machine = StateMachine<String, NoEvent>(state: ".State0") { machine in
 
             machine.addRoute(".State0" => ".State1")
-            machine.addRoute(.any => ".State2") { context in print("Any => 2, msg=\(context.userInfo)") }
-            machine.addRoute(".State2" => .any) { context in print("2 => Any, msg=\(context.userInfo)") }
+            machine.addRoute(.any => ".State2") { context in print("Any => 2, msg=\(String(describing: context.userInfo))") }
+            machine.addRoute(".State2" => .any) { context in print("2 => Any, msg=\(String(describing: context.userInfo))") }
 
             // add handler (handlerContext = (event, transition, order, userInfo))
             machine.addHandler(".State0" => ".State1") { context in
@@ -54,8 +54,8 @@ class MiscTests: _TestCase
         let machine = StateMachine<StrState, StrEvent>(state: .str("0")) { machine in
 
             machine.addRoute(.str("0") => .str("1"))
-            machine.addRoute(.any => .str("2")) { context in print("Any => 2, msg=\(context.userInfo)") }
-            machine.addRoute(.str("2") => .any) { context in print("2 => Any, msg=\(context.userInfo)") }
+            machine.addRoute(.any => .str("2")) { context in print("Any => 2, msg=\(String(describing: context.userInfo))") }
+            machine.addRoute(.str("2") => .any) { context in print("2 => Any, msg=\(String(describing: context.userInfo))") }
 
             // add handler (handlerContext = (event, transition, order, userInfo))
             machine.addHandler(.str("0") => .str("1")) { context in
@@ -151,10 +151,10 @@ class MiscTests: _TestCase
                 print("[Entry 1] \(context.fromState) => \(context.toState)")
             }
             $0.addHandler(.any => .state2) { context in
-                print("[Entry 2] \(context.fromState) => \(context.toState), userInfo = \(context.userInfo)")
+                print("[Entry 2] \(context.fromState) => \(context.toState), userInfo = \(String(describing: context.userInfo))")
             }
             $0.addHandler(.any => .state2) { context in
-                print("[Entry 2b] \(context.fromState) => \(context.toState), userInfo = \(context.userInfo)")
+                print("[Entry 2b] \(context.fromState) => \(context.toState), userInfo = \(String(describing: context.userInfo))")
             }
 
             // add exit handlers
@@ -165,10 +165,10 @@ class MiscTests: _TestCase
                 print("[Exit 1] \(context.fromState) => \(context.toState)")
             }
             $0.addHandler(.state2 => .any) { context in
-                print("[Exit 2] \(context.fromState) => \(context.toState), userInfo = \(context.userInfo)")
+                print("[Exit 2] \(context.fromState) => \(context.toState), userInfo = \(String(describing: context.userInfo))")
             }
             $0.addHandler(.state2 => .any) { context in
-                print("[Exit 2b] \(context.fromState) => \(context.toState), userInfo = \(context.userInfo)")
+                print("[Exit 2b] \(context.fromState) => \(context.toState), userInfo = \(String(describing: context.userInfo))")
             }
         }
 

@@ -1,4 +1,4 @@
-SwiftState [![Circle CI](https://circleci.com/gh/ReactKit/SwiftState/tree/swift%2F2.0.svg?style=svg)](https://circleci.com/gh/ReactKit/SwiftState/tree/swift%2F2.0)
+SwiftState [![Circle CI](https://circleci.com/gh/ReactKit/SwiftState/tree/swift%2F4.0.svg?style=svg)](https://circleci.com/gh/ReactKit/SwiftState/tree/swift%2F4.0)
 ==========
 
 Elegant state machine for Swift.

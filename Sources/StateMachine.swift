@@ -278,7 +278,7 @@ public final class StateMachine<S: StateType, E: EventType>: Machine<S, E>
     /// Add `handler` that is called when `tryState()` succeeds for target `transition`.
     /// - Note: `handler` will not be invoked for `tryEvent()`.
     @discardableResult
-    public func addHandler(_ transition: Transition<S>, order: HandlerOrder = DefaultOrder, handler: @escaping Handler) -> Disposable
+    public func addHandler(_ transition: Transition<S>, order: HandlerOrder = _defaultOrder, handler: @escaping Handler) -> Disposable
     {
         if self._handlers[transition] == nil {
             self._handlers[transition] = []
@@ -322,7 +322,7 @@ public final class StateMachine<S: StateType, E: EventType>: Machine<S, E>
 
     /// Add `handler` that is called when either `tryEvent()` or `tryState()` succeeds for target `transition`.
     @discardableResult
-    public func addAnyHandler(_ transition: Transition<S>, order: HandlerOrder = DefaultOrder, handler: @escaping Handler) -> Disposable
+    public func addAnyHandler(_ transition: Transition<S>, order: HandlerOrder = _defaultOrder, handler: @escaping Handler) -> Disposable
     {
         let disposable1 = self.addHandler(transition, order: order, handler: handler)
         let disposable2 = self.addHandler(event: .any, order: order) { context in
@@ -372,13 +372,13 @@ public final class StateMachine<S: StateType, E: EventType>: Machine<S, E>
     // MARK: addChainHandler
 
     @discardableResult
-    public func addChainHandler(_ chain: TransitionChain<S>, order: HandlerOrder = DefaultOrder, handler: @escaping Handler) -> Disposable
+    public func addChainHandler(_ chain: TransitionChain<S>, order: HandlerOrder = _defaultOrder, handler: @escaping Handler) -> Disposable
     {
         return self.addChainHandler(RouteChain(transitionChain: chain), order: order, handler: handler)
     }
 
     @discardableResult
-    public func addChainHandler(_ chain: RouteChain<S, E>, order: HandlerOrder = DefaultOrder, handler: @escaping Handler) -> Disposable
+    public func addChainHandler(_ chain: RouteChain<S, E>, order: HandlerOrder = _defaultOrder, handler: @escaping Handler) -> Disposable
     {
         return self._addChainHandler(chain, order: order, handler: handler, isError: false)
     }
@@ -386,19 +386,19 @@ public final class StateMachine<S: StateType, E: EventType>: Machine<S, E>
     // MARK: addChainErrorHandler
 
     @discardableResult
-    public func addChainErrorHandler(_ chain: TransitionChain<S>, order: HandlerOrder = DefaultOrder, handler: @escaping Handler) -> Disposable
+    public func addChainErrorHandler(_ chain: TransitionChain<S>, order: HandlerOrder = _defaultOrder, handler: @escaping Handler) -> Disposable
     {
         return self.addChainErrorHandler(RouteChain(transitionChain: chain), order: order, handler: handler)
     }
 
     @discardableResult
-    public func addChainErrorHandler(_ chain: RouteChain<S, E>, order: HandlerOrder = DefaultOrder, handler: @escaping Handler) -> Disposable
+    public func addChainErrorHandler(_ chain: RouteChain<S, E>, order: HandlerOrder = _defaultOrder, handler: @escaping Handler) -> Disposable
     {
         return self._addChainHandler(chain, order: order, handler: handler, isError: true)
     }
 
     @discardableResult
-    private func _addChainHandler(_ chain: RouteChain<S, E>, order: HandlerOrder = DefaultOrder, handler: @escaping Handler, isError: Bool) -> Disposable
+    private func _addChainHandler(_ chain: RouteChain<S, E>, order: HandlerOrder = _defaultOrder, handler: @escaping Handler, isError: Bool) -> Disposable
     {
         var handlerDisposables: [Disposable] = []
 

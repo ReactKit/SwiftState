@@ -521,14 +521,14 @@ public class Machine<S: StateType, E: EventType>
 infix operator <-! : AdditionPrecedence
 
 @discardableResult
-public func <-! <S: StateType, E: EventType>(machine: Machine<S, E>, event: E) -> Machine<S, E>
+public func <-! <S, E>(machine: Machine<S, E>, event: E) -> Machine<S, E>
 {
     machine.tryEvent(event)
     return machine
 }
 
 @discardableResult
-public func <-! <S: StateType, E: EventType>(machine: Machine<S, E>, tuple: (E, Any?)) -> Machine<S, E>
+public func <-! <S, E>(machine: Machine<S, E>, tuple: (E, Any?)) -> Machine<S, E>
 {
     machine.tryEvent(tuple.0, userInfo: tuple.1)
     return machine
@@ -541,7 +541,7 @@ public func <-! <S: StateType, E: EventType>(machine: Machine<S, E>, tuple: (E, 
 /// Precedence for registered handlers (higher number is called later).
 public typealias HandlerOrder = UInt8
 
-internal let _defaultOrder: HandlerOrder = 100
+public let _defaultOrder: HandlerOrder = 100
 
 //--------------------------------------------------
 // MARK: - Internal
@@ -557,7 +557,7 @@ internal func _createUniqueString() -> String
     return uniqueString
 }
 
-internal func _validTransitions<S: StateType>(fromState: S, toState: S) -> [Transition<S>]
+internal func _validTransitions<S>(fromState: S, toState: S) -> [Transition<S>]
 {
     return [
         fromState => toState,
@@ -567,12 +567,12 @@ internal func _validTransitions<S: StateType>(fromState: S, toState: S) -> [Tran
     ]
 }
 
-internal func _canPassCondition<S: StateType, E: EventType>(_ condition: Machine<S, E>.Condition?, forEvent event: E?, fromState: S, toState: S, userInfo: Any?) -> Bool
+internal func _canPassCondition<S:StateType, E:EventType>(_ condition: Machine<S, E>.Condition?, forEvent event: E?, fromState: S, toState: S, userInfo: Any?) -> Bool
 {
     return condition?((event, fromState, toState, userInfo)) ?? true
 }
 
-internal func _insertHandlerIntoArray<S: StateType, E: EventType>(_ handlerInfos: inout [_HandlerInfo<S, E>], newHandlerInfo: _HandlerInfo<S, E>)
+internal func _insertHandlerIntoArray<S, E>(_ handlerInfos: inout [_HandlerInfo<S, E>], newHandlerInfo: _HandlerInfo<S, E>)
 {
     var index = handlerInfos.count
 
@@ -586,7 +586,7 @@ internal func _insertHandlerIntoArray<S: StateType, E: EventType>(_ handlerInfos
     handlerInfos.insert(newHandlerInfo, at: index)
 }
 
-internal func _removeHandlerFromArray<S: StateType, E: EventType>(_ handlerInfos: inout [_HandlerInfo<S, E>], removingHandlerID: _HandlerID<S, E>) -> Bool
+internal func _removeHandlerFromArray<S, E>(_ handlerInfos: inout [_HandlerInfo<S, E>], removingHandlerID: _HandlerID<S, E>) -> Bool
 {
     for i in 0..<handlerInfos.count {
         if handlerInfos[i].key == removingHandlerID.key {

@@ -546,14 +546,14 @@ public final class StateMachine<S: StateType, E: EventType>: Machine<S, E>
 infix operator <- : AdditionPrecedence
 
 @discardableResult
-public func <- <S: StateType, E: EventType>(machine: StateMachine<S, E>, state: S) -> StateMachine<S, E>
+public func <- <S, E>(machine: StateMachine<S, E>, state: S) -> StateMachine<S, E>
 {
     machine.tryState(state)
     return machine
 }
 
 @discardableResult
-public func <- <S: StateType, E: EventType>(machine: StateMachine<S, E>, tuple: (S, Any?)) -> StateMachine<S, E>
+public func <- <S, E>(machine: StateMachine<S, E>, tuple: (S, Any?)) -> StateMachine<S, E>
 {
     machine.tryState(tuple.0, userInfo: tuple.1)
     return machine

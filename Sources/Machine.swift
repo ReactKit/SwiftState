@@ -17,7 +17,13 @@
 public class Machine<S: StateType, E: EventType>
 {
     /// Closure argument for `Condition` & `Handler`.
-    public typealias Context = (event: E?, fromState: S, toState: S, userInfo: Any?)
+    public struct Context
+    {
+        public let event: E?
+        public let fromState: S
+        public let toState: S
+        public let userInfo: Any?
+    }
 
     /// Closure for validating transition.
     /// If condition returns `false`, transition will fail and associated handlers will not be invoked.
@@ -569,7 +575,7 @@ internal func _validTransitions<S>(fromState: S, toState: S) -> [Transition<S>]
 
 internal func _canPassCondition<S:StateType, E:EventType>(_ condition: Machine<S, E>.Condition?, forEvent event: E?, fromState: S, toState: S, userInfo: Any?) -> Bool
 {
-    return condition?((event, fromState, toState, userInfo)) ?? true
+    return condition?(Machine<S, E>.Context(event: event, fromState: fromState, toState: toState, userInfo: userInfo)) ?? true
 }
 
 internal func _insertHandlerIntoArray<S, E>(_ handlerInfos: inout [_HandlerInfo<S, E>], newHandlerInfo: _HandlerInfo<S, E>)

@@ -10,11 +10,11 @@ public protocol StateType: Hashable {}
 
 // MARK: State
 
-/// `StateType` wrapper for handling `.Any` state.
+/// `StateType` wrapper for handling `.any` state.
 public enum State<S: StateType>
 {
-    case Some(S)
-    case Any
+    case some(S)
+    case any
 }
 
 extension State: Hashable
@@ -22,8 +22,8 @@ extension State: Hashable
     public var hashValue: Int
     {
         switch self {
-            case .Some(let x):  return x.hashValue
-            case .Any:          return _hashValueForAny
+            case .some(let x):  return x.hashValue
+            case .any:          return _hashValueForAny
         }
     }
 }
@@ -33,50 +33,50 @@ extension State: RawRepresentable
     public init(rawValue: S?)
     {
         if let rawValue = rawValue {
-            self = .Some(rawValue)
+            self = .some(rawValue)
         }
         else {
-            self = .Any
+            self = .any
         }
     }
 
     public var rawValue: S?
     {
         switch self {
-            case .Some(let x):  return x
+            case .some(let x):  return x
             default:            return nil
         }
     }
 }
 
-public func == <S: StateType>(lhs: State<S>, rhs: State<S>) -> Bool
+public func == <S>(lhs: State<S>, rhs: State<S>) -> Bool
 {
     switch (lhs, rhs) {
-    case let (.Some(x1), .Some(x2)) where x1 == x2:
+    case let (.some(x1), .some(x2)) where x1 == x2:
         return true
-    case (.Any, .Any):
+    case (.any, .any):
         return true
     default:
         return false
     }
 }
 
-public func == <S: StateType>(lhs: State<S>, rhs: S) -> Bool
+public func == <S>(lhs: State<S>, rhs: S) -> Bool
 {
     switch lhs {
-    case .Some(let x):
+    case .some(let x):
         return x == rhs
-    case .Any:
+    case .any:
         return false
     }
 }
 
-public func == <S: StateType>(lhs: S, rhs: State<S>) -> Bool
+public func == <S>(lhs: S, rhs: State<S>) -> Bool
 {
     switch rhs {
-    case .Some(let x):
+    case .some(let x):
         return x == lhs
-    case .Any:
+    case .any:
         return false
     }
 }

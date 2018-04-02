@@ -23,37 +23,37 @@ public struct Route<S: StateType, E: EventType>
 // MARK: - Custom Operators
 //--------------------------------------------------
 
-/// e.g. [.State0, .State1] => .State, allowing [0 => 2, 1 => 2]
-public func => <S: StateType, E: EventType>(leftStates: [S], right: State<S>) -> Route<S, E>
+/// e.g. [.state0, .state1] => .state, allowing [0 => 2, 1 => 2]
+public func => <S, E>(leftStates: [S], right: State<S>) -> Route<S, E>
 {
-    // NOTE: don't reuse ".Any => .Any + condition" for efficiency
-    return Route(transition: .Any => right, condition: { context -> Bool in
+    // NOTE: don't reuse ".any => .any + condition" for efficiency
+    return Route(transition: .any => right, condition: { context -> Bool in
         return leftStates.contains(context.fromState)
     })
 }
 
-public func => <S: StateType, E: EventType>(leftStates: [S], right: S) -> Route<S, E>
+public func => <S, E>(leftStates: [S], right: S) -> Route<S, E>
 {
-    return leftStates => .Some(right)
+    return leftStates => .some(right)
 }
 
-/// e.g. .State0 => [.State1, .State], allowing [0 => 1, 0 => 2]
-public func => <S: StateType, E: EventType>(left: State<S>, rightStates: [S]) -> Route<S, E>
+/// e.g. .state0 => [.state1, .state], allowing [0 => 1, 0 => 2]
+public func => <S, E>(left: State<S>, rightStates: [S]) -> Route<S, E>
 {
-    return Route(transition: left => .Any, condition: { context -> Bool in
+    return Route(transition: left => .any, condition: { context -> Bool in
         return rightStates.contains(context.toState)
     })
 }
 
-public func => <S: StateType, E: EventType>(left: S, rightStates: [S]) -> Route<S, E>
+public func => <S, E>(left: S, rightStates: [S]) -> Route<S, E>
 {
-    return .Some(left) => rightStates
+    return .some(left) => rightStates
 }
 
-/// e.g. [.State0, .State1] => [.State, .State3], allowing [0 => 2, 0 => 3, 1 => 2, 1 => 3]
-public func => <S: StateType, E: EventType>(leftStates: [S], rightStates: [S]) -> Route<S, E>
+/// e.g. [.state0, .state1] => [.state, .state3], allowing [0 => 2, 0 => 3, 1 => 2, 1 => 3]
+public func => <S, E>(leftStates: [S], rightStates: [S]) -> Route<S, E>
 {
-    return Route(transition: .Any => .Any, condition: { context -> Bool in
+    return Route(transition: .any => .any, condition: { context -> Bool in
         return leftStates.contains(context.fromState) && rightStates.contains(context.toState)
     })
 }

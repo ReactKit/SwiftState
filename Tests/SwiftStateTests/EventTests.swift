@@ -13,27 +13,27 @@ class EventTests: _TestCase
 {
     func testInit_event()
     {
-        let event = Event<MyEvent>(rawValue: .Event0)
-        XCTAssertTrue(event == .Event0)
-        XCTAssertTrue(.Event0 == event)
+        let event = Event<MyEvent>(rawValue: .event0)
+        XCTAssertTrue(event == .event0)
+        XCTAssertTrue(.event0 == event)
     }
 
     func testInit_nil()
     {
         let event = Event<MyEvent>(rawValue: nil)
-        XCTAssertTrue(event == .Any)
-        XCTAssertTrue(.Any == event)
+        XCTAssertTrue(event == .any)
+        XCTAssertTrue(.any == event)
     }
 
     func testRawValue_event()
     {
-        let event = Event<MyEvent>.Some(.Event0)
-        XCTAssertTrue(event.rawValue == .Event0)
+        let event = Event<MyEvent>.some(.event0)
+        XCTAssertTrue(event.rawValue == .event0)
     }
 
     func testRawValue_any()
     {
-        let event = Event<MyEvent>.Any
+        let event = Event<MyEvent>.any
         XCTAssertTrue(event.rawValue == nil)
     }
 }

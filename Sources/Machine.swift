@@ -17,18 +17,24 @@
 public class Machine<S: StateType, E: EventType>
 {
     /// Closure argument for `Condition` & `Handler`.
-    public typealias Context = (event: E?, fromState: S, toState: S, userInfo: Any?)
+    public struct Context
+    {
+        public let event: E?
+        public let fromState: S
+        public let toState: S
+        public let userInfo: Any?
+    }
 
     /// Closure for validating transition.
     /// If condition returns `false`, transition will fail and associated handlers will not be invoked.
-    public typealias Condition = Context -> Bool
+    public typealias Condition = (Context) -> Bool
 
     /// Transition callback invoked when state has been changed successfully.
-    public typealias Handler = Context -> ()
+    public typealias Handler = (Context) -> ()
 
     /// Closure-based route, mainly for `tryEvent()` (and also works for subclass's `tryState()`).
     /// - Returns: Preferred `toState`.
-    public typealias RouteMapping = (event: E?, fromState: S, userInfo: Any?) -> S?
+    public typealias RouteMapping = (_ event: E?, _ fromState: S, _ userInfo: Any?) -> S?
 
     internal typealias _RouteDict = [Transition<S> : [String : Condition?]]
 
@@ -46,14 +52,14 @@ public class Machine<S: StateType, E: EventType>
     // MARK: - Init
     //--------------------------------------------------
 
-    public init(state: S, initClosure: (Machine -> ())? = nil)
+    public init(state: S, initClosure: ((Machine) -> ())? = nil)
     {
         self._state = state
 
         initClosure?(self)
     }
 
-    public func configure(closure: Machine -> ())
+    public func configure(_ closure: (Machine) -> ())
     {
         closure(self)
     }
@@ -68,12 +74,12 @@ public class Machine<S: StateType, E: EventType>
     //--------------------------------------------------
 
     /// Check for added routes & routeMappings.
-    public func hasRoute(event event: E, transition: Transition<S>, userInfo: Any? = nil) -> Bool
+    public func hasRoute(event: E, transition: Transition<S>, userInfo: Any? = nil) -> Bool
     {
         guard let fromState = transition.fromState.rawValue,
-            toState = transition.toState.rawValue else
+            let toState = transition.toState.rawValue else
         {
-            assertionFailure("State = `.Any` is not supported for `hasRoute()` (always returns `false`)")
+            assertionFailure("State = `.any` is not supported for `hasRoute()` (always returns `false`)")
             return false
         }
 
@@ -81,18 +87,18 @@ public class Machine<S: StateType, E: EventType>
     }
 
     /// Check for added routes & routeMappings.
-    public func hasRoute(event event: E, fromState: S, toState: S, userInfo: Any? = nil) -> Bool
+    public func hasRoute(event: E, fromState: S, toState: S, userInfo: Any? = nil) -> Bool
     {
         return self._hasRoute(event: event, fromState: fromState, toState: toState, userInfo: userInfo)
     }
 
-    internal func _hasRoute(event event: E?, fromState: S, toState: S, userInfo: Any? = nil) -> Bool
+    internal func _hasRoute(event: E?, fromState: S, toState: S, userInfo: Any? = nil) -> Bool
     {
         if self._hasRouteInDict(event: event, fromState: fromState, toState: toState, userInfo: userInfo) {
             return true
         }
 
-        if self._hasRouteMappingInDict(event: event, fromState: fromState, toState: .Some(toState), userInfo: userInfo) != nil {
+        if self._hasRouteMappingInDict(event: event, fromState: fromState, toState: .some(toState), userInfo: userInfo) != nil {
             return true
         }
 
@@ -100,7 +106,7 @@ public class Machine<S: StateType, E: EventType>
     }
 
     /// Check for `_routes`.
-    private func _hasRouteInDict(event event: E?, fromState: S, toState: S, userInfo: Any? = nil) -> Bool
+    private func _hasRouteInDict(event: E?, fromState: S, toState: S, userInfo: Any? = nil) -> Bool
     {
         let validTransitions = _validTransitions(fromState: fromState, toState: toState)
 
@@ -110,7 +116,7 @@ public class Machine<S: StateType, E: EventType>
 
             if let event = event {
                 for (ev, routeDict) in self._routes {
-                    if ev.rawValue == event || ev == .Any {
+                    if ev.rawValue == event || ev == .any {
                         routeDicts += [routeDict]
                     }
                 }
@@ -139,11 +145,11 @@ public class Machine<S: StateType, E: EventType>
     }
 
     /// Check for `_routeMappings`.
-    private func _hasRouteMappingInDict(event event: E?, fromState: S, toState: S?, userInfo: Any? = nil) -> S?
+    private func _hasRouteMappingInDict(event: E?, fromState: S, toState: S?, userInfo: Any? = nil) -> S?
     {
         for mapping in self._routeMappings.values {
-            if let preferredToState = mapping(event: event, fromState: fromState, userInfo: userInfo)
-                where preferredToState == toState || toState == nil
+            if let preferredToState = mapping(event, fromState, userInfo),
+                preferredToState == toState || toState == nil
             {
                 return preferredToState
             }
@@ -157,14 +163,14 @@ public class Machine<S: StateType, E: EventType>
     //--------------------------------------------------
 
     /// - Returns: Preferred-`toState`.
-    public func canTryEvent(event: E, userInfo: Any? = nil) -> S?
+    public func canTryEvent(_ event: E, userInfo: Any? = nil) -> S?
     {
         // check for `_routes`
-        for case let routeDict? in [self._routes[.Some(event)], self._routes[.Any]] {
+        for case let routeDict? in [self._routes[.some(event)], self._routes[.any]] {
             for (transition, keyConditionDict) in routeDict {
-                if transition.fromState == .Some(self.state) || transition.fromState == .Any {
+                if transition.fromState == .some(self.state) || transition.fromState == .any {
                     for (_, condition) in keyConditionDict {
-                        // if toState is `.Any`, always treat as identity transition
+                        // if toState is `.any`, always treat as identity transition
                         let toState = transition.toState.rawValue ?? self.state
 
                         if _canPassCondition(condition, forEvent: event, fromState: self.state, toState: toState, userInfo: userInfo) {
@@ -183,7 +189,8 @@ public class Machine<S: StateType, E: EventType>
         return nil
     }
 
-    public func tryEvent(event: E, userInfo: Any? = nil) -> Bool
+    @discardableResult
+    public func tryEvent(_ event: E, userInfo: Any? = nil) -> Bool
     {
         let fromState = self.state
 
@@ -212,14 +219,14 @@ public class Machine<S: StateType, E: EventType>
         }
     }
 
-    private func _validHandlerInfos(event event: E, fromState: S, toState: S) -> [_HandlerInfo<S, E>]
+    private func _validHandlerInfos(event: E, fromState: S, toState: S) -> [_HandlerInfo<S, E>]
     {
-        let validHandlerInfos = [ self._handlers[.Some(event)], self._handlers[.Any] ]
+        let validHandlerInfos = [ self._handlers[.some(event)], self._handlers[.any] ]
             .filter { $0 != nil }
             .map { $0! }
-            .flatten()
+            .joined()
 
-        return validHandlerInfos.sort { info1, info2 in
+        return validHandlerInfos.sorted { info1, info2 in
             return info1.order < info2.order
         }
     }
@@ -230,23 +237,27 @@ public class Machine<S: StateType, E: EventType>
 
     // MARK: addRoutes(event:)
 
-    public func addRoutes(event event: E, transitions: [Transition<S>], condition: Machine.Condition? = nil) -> Disposable
+    @discardableResult
+    public func addRoutes(event: E, transitions: [Transition<S>], condition: Machine.Condition? = nil) -> Disposable
     {
-        return self.addRoutes(event: .Some(event), transitions: transitions, condition: condition)
+        return self.addRoutes(event: .some(event), transitions: transitions, condition: condition)
     }
 
-    public func addRoutes(event event: Event<E>, transitions: [Transition<S>], condition: Machine.Condition? = nil) -> Disposable
+    @discardableResult
+    public func addRoutes(event: Event<E>, transitions: [Transition<S>], condition: Machine.Condition? = nil) -> Disposable
     {
         let routes = transitions.map { Route(transition: $0, condition: condition) }
         return self.addRoutes(event: event, routes: routes)
     }
 
-    public func addRoutes(event event: E, routes: [Route<S, E>]) -> Disposable
+    @discardableResult
+    public func addRoutes(event: E, routes: [Route<S, E>]) -> Disposable
     {
-        return self.addRoutes(event: .Some(event), routes: routes)
+        return self.addRoutes(event: .some(event), routes: routes)
     }
 
-    public func addRoutes(event event: Event<E>, routes: [Route<S, E>]) -> Disposable
+    @discardableResult
+    public func addRoutes(event: Event<E>, routes: [Route<S, E>]) -> Disposable
     {
         // NOTE: uses `map` with side-effects
         let disposables = routes.map { self._addRoute(event: event, route: $0) }
@@ -256,7 +267,7 @@ public class Machine<S: StateType, E: EventType>
         }
     }
 
-    internal func _addRoute(event event: Event<E> = .Any, route: Route<S, E>) -> Disposable
+    internal func _addRoute(event: Event<E> = .any, route: Route<S, E>) -> Disposable
     {
         let transition = route.transition
         let condition = route.condition
@@ -287,23 +298,27 @@ public class Machine<S: StateType, E: EventType>
 
     // MARK: addRoutes(event:) + conditional handler
 
-    public func addRoutes(event event: E, transitions: [Transition<S>], condition: Condition? = nil, handler: Handler) -> Disposable
+    @discardableResult
+    public func addRoutes(event: E, transitions: [Transition<S>], condition: Condition? = nil, handler: @escaping Handler) -> Disposable
     {
-        return self.addRoutes(event: .Some(event), transitions: transitions, condition: condition, handler: handler)
+        return self.addRoutes(event: .some(event), transitions: transitions, condition: condition, handler: handler)
     }
 
-    public func addRoutes(event event: Event<E>, transitions: [Transition<S>], condition: Condition? = nil, handler: Handler) -> Disposable
+    @discardableResult
+    public func addRoutes(event: Event<E>, transitions: [Transition<S>], condition: Condition? = nil, handler: @escaping Handler) -> Disposable
     {
         let routes = transitions.map { Route(transition: $0, condition: condition) }
         return self.addRoutes(event: event, routes: routes, handler: handler)
     }
 
-    public func addRoutes(event event: E, routes: [Route<S, E>], handler: Handler) -> Disposable
+    @discardableResult
+    public func addRoutes(event: E, routes: [Route<S, E>], handler: @escaping Handler) -> Disposable
     {
-        return self.addRoutes(event: .Some(event), routes: routes, handler: handler)
+        return self.addRoutes(event: .some(event), routes: routes, handler: handler)
     }
 
-    public func addRoutes(event event: Event<E>, routes: [Route<S, E>], handler: Handler) -> Disposable
+    @discardableResult
+    public func addRoutes(event: Event<E>, routes: [Route<S, E>], handler: @escaping Handler) -> Disposable
     {
         let routeDisposable = self.addRoutes(event: event, routes: routes)
         let handlerDisposable = self.addHandler(event: event, handler: handler)
@@ -316,7 +331,8 @@ public class Machine<S: StateType, E: EventType>
 
     // MARK: removeRoute
 
-    private func _removeRoute(_routeID: _RouteID<S, E>) -> Bool
+    @discardableResult
+    private func _removeRoute(_ _routeID: _RouteID<S, E>) -> Bool
     {
         guard let event = _routeID.event else { return false }
 
@@ -356,7 +372,8 @@ public class Machine<S: StateType, E: EventType>
 
     // MARK: addRouteMapping
 
-    public func addRouteMapping(routeMapping: RouteMapping) -> Disposable
+    @discardableResult
+    public func addRouteMapping(_ routeMapping: @escaping RouteMapping) -> Disposable
     {
         let key = _createUniqueString()
 
@@ -371,14 +388,15 @@ public class Machine<S: StateType, E: EventType>
 
     // MARK: addRouteMapping + conditional handler
 
-    public func addRouteMapping(routeMapping: RouteMapping, order: HandlerOrder = _defaultOrder, handler: Machine.Handler) -> Disposable
+    @discardableResult
+    public func addRouteMapping(_ routeMapping: @escaping RouteMapping, order: HandlerOrder = _defaultOrder, handler: @escaping Machine.Handler) -> Disposable
     {
         let routeDisposable = self.addRouteMapping(routeMapping)
 
-        let handlerDisposable = self._addHandler(event: .Any, order: order) { context in
+        let handlerDisposable = self._addHandler(event: .any, order: order) { context in
 
-            guard let preferredToState = routeMapping(event: context.event, fromState: context.fromState, userInfo: context.userInfo)
-                where preferredToState == context.toState else
+            guard let preferredToState = routeMapping(context.event, context.fromState, context.userInfo),
+                preferredToState == context.toState else
             {
                 return
             }
@@ -394,7 +412,8 @@ public class Machine<S: StateType, E: EventType>
 
     // MARK: removeRouteMapping
 
-    private func _removeRouteMapping(routeMappingID: _RouteMappingID) -> Bool
+    @discardableResult
+    private func _removeRouteMapping(_ routeMappingID: _RouteMappingID) -> Bool
     {
         if self._routeMappings[routeMappingID.key] != nil {
             self._routeMappings[routeMappingID.key] = nil
@@ -411,12 +430,14 @@ public class Machine<S: StateType, E: EventType>
 
     // MARK: addHandler(event:)
 
-    public func addHandler(event event: E, order: HandlerOrder = _defaultOrder, handler: Machine.Handler) -> Disposable
+    @discardableResult
+    public func addHandler(event: E, order: HandlerOrder = _defaultOrder, handler: @escaping Machine.Handler) -> Disposable
     {
-        return self.addHandler(event: .Some(event), order: order, handler: handler)
+        return self.addHandler(event: .some(event), order: order, handler: handler)
     }
 
-    public func addHandler(event event: Event<E>, order: HandlerOrder = _defaultOrder, handler: Machine.Handler) -> Disposable
+    @discardableResult
+    public func addHandler(event: Event<E>, order: HandlerOrder = _defaultOrder, handler: @escaping Machine.Handler) -> Disposable
     {
         return self._addHandler(event: event, order: order) { context in
             // skip if not event-based transition
@@ -424,13 +445,14 @@ public class Machine<S: StateType, E: EventType>
                 return
             }
 
-            if triggeredEvent == event.rawValue || event == .Any {
+            if triggeredEvent == event.rawValue || event == .any {
                 handler(context)
             }
         }
     }
 
-    private func _addHandler(event event: Event<E>, order: HandlerOrder = _defaultOrder, handler: Handler) -> Disposable
+    @discardableResult
+    private func _addHandler(event: Event<E>, order: HandlerOrder = _defaultOrder, handler: @escaping Handler) -> Disposable
     {
         if self._handlers[event] == nil {
             self._handlers[event] = []
@@ -444,7 +466,7 @@ public class Machine<S: StateType, E: EventType>
 
         self._handlers[event] = handlerInfos
 
-        let handlerID = _HandlerID<S, E>(event: event, transition: .Any => .Any, key: key) // NOTE: use non-`nil` transition
+        let handlerID = _HandlerID<S, E>(event: event, transition: .any => .any, key: key) // NOTE: use non-`nil` transition
 
         return ActionDisposable { [weak self] in
             self?._removeHandler(handlerID)
@@ -453,7 +475,8 @@ public class Machine<S: StateType, E: EventType>
 
     // MARK: addErrorHandler
 
-    public func addErrorHandler(order order: HandlerOrder = _defaultOrder, handler: Handler) -> Disposable
+    @discardableResult
+    public func addErrorHandler(order: HandlerOrder = _defaultOrder, handler: @escaping Handler) -> Disposable
     {
         let key = _createUniqueString()
 
@@ -469,7 +492,8 @@ public class Machine<S: StateType, E: EventType>
 
     // MARK: removeHandler
 
-    private func _removeHandler(handlerID: _HandlerID<S, E>) -> Bool
+    @discardableResult
+    private func _removeHandler(_ handlerID: _HandlerID<S, E>) -> Bool
     {
         if let event = handlerID.event {
             if let handlerInfos_ = self._handlers[event] {
@@ -500,15 +524,17 @@ public class Machine<S: StateType, E: EventType>
 
 // MARK: `<-!` (tryEvent)
 
-infix operator <-! { associativity left }
+infix operator <-! : AdditionPrecedence
 
-public func <-! <S: StateType, E: EventType>(machine: Machine<S, E>, event: E) -> Machine<S, E>
+@discardableResult
+public func <-! <S, E>(machine: Machine<S, E>, event: E) -> Machine<S, E>
 {
     machine.tryEvent(event)
     return machine
 }
 
-public func <-! <S: StateType, E: EventType>(machine: Machine<S, E>, tuple: (E, Any?)) -> Machine<S, E>
+@discardableResult
+public func <-! <S, E>(machine: Machine<S, E>, tuple: (E, Any?)) -> Machine<S, E>
 {
     machine.tryEvent(tuple.0, userInfo: tuple.1)
     return machine
@@ -521,7 +547,7 @@ public func <-! <S: StateType, E: EventType>(machine: Machine<S, E>, tuple: (E, 
 /// Precedence for registered handlers (higher number is called later).
 public typealias HandlerOrder = UInt8
 
-internal let _defaultOrder: HandlerOrder = 100
+public let _defaultOrder: HandlerOrder = 100
 
 //--------------------------------------------------
 // MARK: - Internal
@@ -532,45 +558,45 @@ internal func _createUniqueString() -> String
 {
     var uniqueString: String = ""
     for _ in 1...8 {
-        uniqueString += String(UnicodeScalar(_random(0xD800))) // 0xD800 = 55296 = 15.755bit
+        uniqueString += String(describing: UnicodeScalar(_random(0xD800))) // 0xD800 = 55296 = 15.755bit
     }
     return uniqueString
 }
 
-internal func _validTransitions<S: StateType>(fromState fromState: S, toState: S) -> [Transition<S>]
+internal func _validTransitions<S>(fromState: S, toState: S) -> [Transition<S>]
 {
     return [
         fromState => toState,
-        fromState => .Any,
-        .Any => toState,
-        .Any => .Any
+        fromState => .any,
+        .any => toState,
+        .any => .any
     ]
 }
 
-internal func _canPassCondition<S: StateType, E: EventType>(condition: Machine<S, E>.Condition?, forEvent event: E?, fromState: S, toState: S, userInfo: Any?) -> Bool
+internal func _canPassCondition<S:StateType, E:EventType>(_ condition: Machine<S, E>.Condition?, forEvent event: E?, fromState: S, toState: S, userInfo: Any?) -> Bool
 {
-    return condition?((event, fromState, toState, userInfo)) ?? true
+    return condition?(Machine<S, E>.Context(event: event, fromState: fromState, toState: toState, userInfo: userInfo)) ?? true
 }
 
-internal func _insertHandlerIntoArray<S: StateType, E: EventType>(inout handlerInfos: [_HandlerInfo<S, E>], newHandlerInfo: _HandlerInfo<S, E>)
+internal func _insertHandlerIntoArray<S, E>(_ handlerInfos: inout [_HandlerInfo<S, E>], newHandlerInfo: _HandlerInfo<S, E>)
 {
     var index = handlerInfos.count
 
-    for i in Array(0..<handlerInfos.count).reverse() {
+    for i in Array(0..<handlerInfos.count).reversed() {
         if handlerInfos[i].order <= newHandlerInfo.order {
             break
         }
         index = i
     }
 
-    handlerInfos.insert(newHandlerInfo, atIndex: index)
+    handlerInfos.insert(newHandlerInfo, at: index)
 }
 
-internal func _removeHandlerFromArray<S: StateType, E: EventType>(inout handlerInfos: [_HandlerInfo<S, E>], removingHandlerID: _HandlerID<S, E>) -> Bool
+internal func _removeHandlerFromArray<S, E>(_ handlerInfos: inout [_HandlerInfo<S, E>], removingHandlerID: _HandlerID<S, E>) -> Bool
 {
     for i in 0..<handlerInfos.count {
         if handlerInfos[i].key == removingHandlerID.key {
-            handlerInfos.removeAtIndex(i)
+            handlerInfos.remove(at: i)
             return true
         }
     }

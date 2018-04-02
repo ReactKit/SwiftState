@@ -13,27 +13,27 @@ class StateTests: _TestCase
 {
     func testInit_state()
     {
-        let state = State<MyState>(rawValue: .State0)
-        XCTAssertTrue(state == .State0)
-        XCTAssertTrue(.State0 == state)
+        let state = State<MyState>(rawValue: .state0)
+        XCTAssertTrue(state == .state0)
+        XCTAssertTrue(.state0 == state)
     }
 
     func testInit_nil()
     {
         let state = State<MyState>(rawValue: nil)
-        XCTAssertTrue(state == .Any)
-        XCTAssertTrue(.Any == state)
+        XCTAssertTrue(state == .any)
+        XCTAssertTrue(.any == state)
     }
 
     func testRawValue_state()
     {
-        let state = State<MyState>.Some(.State0)
-        XCTAssertTrue(state.rawValue == .State0)
+        let state = State<MyState>.some(.state0)
+        XCTAssertTrue(state.rawValue == .state0)
     }
 
     func testRawValue_any()
     {
-        let state = State<MyState>.Any
+        let state = State<MyState>.any
         XCTAssertTrue(state.rawValue == nil)
     }
 }

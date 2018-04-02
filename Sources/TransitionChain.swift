@@ -6,7 +6,7 @@
 //  Copyright (c) 2014年 Yasuhiro Inami. All rights reserved.
 //
 
-/// Group of continuous `Transition`s represented as `.State1 => .State2 => .State3`.
+/// Group of continuous `Transition`s represented as `.state1 => .state2 => .state3`.
 public struct TransitionChain<S: StateType>
 {
     public private(set) var states: [State<S>]
@@ -37,44 +37,44 @@ public struct TransitionChain<S: StateType>
 // MARK: - Custom Operators
 //--------------------------------------------------
 
-// e.g. (.State0 => .State1) => .State
-public func => <S: StateType>(left: Transition<S>, right: State<S>) -> TransitionChain<S>
+// e.g. (.state0 => .state1) => .state
+public func => <S>(left: Transition<S>, right: State<S>) -> TransitionChain<S>
 {
     return TransitionChain(states: [left.fromState, left.toState]) => right
 }
 
-public func => <S: StateType>(left: Transition<S>, right: S) -> TransitionChain<S>
+public func => <S>(left: Transition<S>, right: S) -> TransitionChain<S>
 {
-    return left => .Some(right)
+    return left => .some(right)
 }
 
-public func => <S: StateType>(left: TransitionChain<S>, right: State<S>) -> TransitionChain<S>
+public func => <S>(left: TransitionChain<S>, right: State<S>) -> TransitionChain<S>
 {
     return TransitionChain(states: left.states + [right])
 }
 
-public func => <S: StateType>(left: TransitionChain<S>, right: S) -> TransitionChain<S>
+public func => <S>(left: TransitionChain<S>, right: S) -> TransitionChain<S>
 {
-    return left => .Some(right)
+    return left => .some(right)
 }
 
-// e.g. .State0 => (.State1 => .State)
-public func => <S: StateType>(left: State<S>, right: Transition<S>) -> TransitionChain<S>
+// e.g. .state0 => (.state1 => .state)
+public func => <S>(left: State<S>, right: Transition<S>) -> TransitionChain<S>
 {
     return left => TransitionChain(states: [right.fromState, right.toState])
 }
 
-public func => <S: StateType>(left: S, right: Transition<S>) -> TransitionChain<S>
+public func => <S>(left: S, right: Transition<S>) -> TransitionChain<S>
 {
-    return .Some(left) => right
+    return .some(left) => right
 }
 
-public func => <S: StateType>(left: State<S>, right: TransitionChain<S>) -> TransitionChain<S>
+public func => <S>(left: State<S>, right: TransitionChain<S>) -> TransitionChain<S>
 {
     return TransitionChain(states: [left] + right.states)
 }
 
-public func => <S: StateType>(left: S, right: TransitionChain<S>) -> TransitionChain<S>
+public func => <S>(left: S, right: TransitionChain<S>) -> TransitionChain<S>
 {
-    return .Some(left) => right
+    return .some(left) => right
 }

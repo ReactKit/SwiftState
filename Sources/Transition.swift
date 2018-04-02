@@ -7,8 +7,8 @@
 //
 
 ///
-/// "From-" and "to-" states represented as `.State1 => .State2`.
-/// Also, `.Any` can be used to represent _any state_.
+/// "From-" and "to-" states represented as `.state1 => .state2`.
+/// Also, `.any` can be used to represent _any state_.
 ///
 public struct Transition<S: StateType>: Hashable
 {
@@ -23,17 +23,17 @@ public struct Transition<S: StateType>: Hashable
 
     public init(fromState: S, toState: State<S>)
     {
-        self.init(fromState: .Some(fromState), toState: toState)
+        self.init(fromState: .some(fromState), toState: toState)
     }
 
     public init(fromState: State<S>, toState: S)
     {
-        self.init(fromState: fromState, toState: .Some(toState))
+        self.init(fromState: fromState, toState: .some(toState))
     }
 
     public init(fromState: S, toState: S)
     {
-        self.init(fromState: .Some(fromState), toState: .Some(toState))
+        self.init(fromState: .some(fromState), toState: .some(toState))
     }
 
     public var hashValue: Int
@@ -43,7 +43,7 @@ public struct Transition<S: StateType>: Hashable
 }
 
 // for Transition Equatable
-public func == <S: StateType>(left: Transition<S>, right: Transition<S>) -> Bool
+public func == <S>(left: Transition<S>, right: Transition<S>) -> Bool
 {
     return left.fromState == right.fromState && left.toState == right.toState
 }
@@ -52,27 +52,27 @@ public func == <S: StateType>(left: Transition<S>, right: Transition<S>) -> Bool
 // MARK: - Custom Operators
 //--------------------------------------------------
 
-infix operator => { associativity left }
+infix operator => : AdditionPrecedence
 
-/// e.g. .State0 => .State1
-public func => <S: StateType>(left: State<S>, right: State<S>) -> Transition<S>
+/// e.g. .state0 => .state1
+public func => <S>(left: State<S>, right: State<S>) -> Transition<S>
 {
     return Transition(fromState: left, toState: right)
 }
 
-public func => <S: StateType>(left: State<S>, right: S) -> Transition<S>
+public func => <S>(left: State<S>, right: S) -> Transition<S>
 {
-    return left => .Some(right)
+    return left => .some(right)
 }
 
-public func => <S: StateType>(left: S, right: State<S>) -> Transition<S>
+public func => <S>(left: S, right: State<S>) -> Transition<S>
 {
-    return .Some(left) => right
+    return .some(left) => right
 }
 
-public func => <S: StateType>(left: S, right: S) -> Transition<S>
+public func => <S>(left: S, right: S) -> Transition<S>
 {
-    return .Some(left) => .Some(right)
+    return .some(left) => .some(right)
 }
 
 //--------------------------------------------------

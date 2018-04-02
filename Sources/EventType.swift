@@ -10,11 +10,11 @@ public protocol EventType: Hashable {}
 
 // MARK: Event
 
-/// `EventType` wrapper for handling `.Any` event.
+/// `EventType` wrapper for handling `.any` event.
 public enum Event<E: EventType>
 {
-    case Some(E)
-    case Any
+    case some(E)
+    case any
 }
 
 extension Event: Hashable
@@ -22,8 +22,8 @@ extension Event: Hashable
     public var hashValue: Int
     {
         switch self {
-            case .Some(let x):  return x.hashValue
-            case .Any:          return _hashValueForAny
+            case .some(let x):  return x.hashValue
+            case .any:          return _hashValueForAny
         }
     }
 }
@@ -33,50 +33,50 @@ extension Event: RawRepresentable
     public init(rawValue: E?)
     {
         if let rawValue = rawValue {
-            self = .Some(rawValue)
+            self = .some(rawValue)
         }
         else {
-            self = .Any
+            self = .any
         }
     }
 
     public var rawValue: E?
     {
         switch self {
-            case .Some(let x):  return x
+            case .some(let x):  return x
             default:            return nil
         }
     }
 }
 
-public func == <E: EventType>(lhs: Event<E>, rhs: Event<E>) -> Bool
+public func == <E>(lhs: Event<E>, rhs: Event<E>) -> Bool
 {
     switch (lhs, rhs) {
-        case let (.Some(x1), .Some(x2)) where x1 == x2:
+        case let (.some(x1), .some(x2)) where x1 == x2:
             return true
-        case (.Any, .Any):
+        case (.any, .any):
             return true
         default:
             return false
     }
 }
 
-public func == <E: EventType>(lhs: Event<E>, rhs: E) -> Bool
+public func == <E>(lhs: Event<E>, rhs: E) -> Bool
 {
     switch lhs {
-    case .Some(let x):
+    case .some(let x):
         return x == rhs
-    case .Any:
+    case .any:
         return false
     }
 }
 
-public func == <E: EventType>(lhs: E, rhs: Event<E>) -> Bool
+public func == <E>(lhs: E, rhs: Event<E>) -> Bool
 {
     switch rhs {
-    case .Some(let x):
+    case .some(let x):
         return x == lhs
-    case .Any:
+    case .any:
         return false
     }
 }

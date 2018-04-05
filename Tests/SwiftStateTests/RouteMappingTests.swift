@@ -98,7 +98,7 @@ class RouteMappingTests: _TestCase
             }
 
             // increment `count` when any events i.e. `.cancelAction` and `.loadAction(x)` succeed.
-            machine.addHandler(event: .any) { event, transition, order, userInfo in
+            machine.addHandler(event: .any) { _ in
                 count += 1
             }
 
@@ -153,7 +153,7 @@ class RouteMappingTests: _TestCase
             }
 
             // increment `count` when any events i.e. `.cancelAction` and `.loadAction(x)` succeed.
-            machine.addHandler(.any => .any) { event, transition, order, userInfo in
+            machine.addHandler(.any => .any) { _ in
                 count += 1
             }
 

@@ -236,7 +236,8 @@
 				5243E3C71E9821E200D031A9 /* TransitionChainTests.swift */,
 				5243E3C81E9821E200D031A9 /* TransitionTests.swift */,
 			);
-			path = SwiftStateTests;
+			name = SwiftStateTests;
+			path = Tests/SwiftStateTests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -555,7 +556,7 @@
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = SwiftStateTests/Info.plist;
+				INFOPLIST_FILE = Tests/SwiftStateTests/Info.plist;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.inamiy.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
@@ -571,7 +572,7 @@
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = SwiftStateTests/Info.plist;
+				INFOPLIST_FILE = Tests/SwiftStateTests/Info.plist;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.inamiy.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;

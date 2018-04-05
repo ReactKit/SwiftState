@@ -92,9 +92,9 @@ class HierarchicalMachineTests: _TestCase
         let mainMachine = StateMachine<_MainState, NoEvent>(state: .mainState0) { mainMachine in
 
             // add routes & handle for same-subMachine internal transitions
-            mainMachine.addRoute(.any => .any, condition: { _, fromState, toState, userInfo in
+            mainMachine.addRoute(.any => .any, condition: { context in
 
-                switch (fromState, toState) {
+                switch (context.fromState, context.toState) {
                     case let (.subMachine1(state1), .subMachine1(state2)):
                         return subMachine1.hasRoute(fromState: state1, toState: state2)
                     case let (.subMachine2(state1), .subMachine2(state2)):
@@ -103,8 +103,8 @@ class HierarchicalMachineTests: _TestCase
                         return false
                 }
 
-            }, handler: { _, fromState, toState, userInfo in
-                switch (fromState, toState) {
+            }, handler: { context in
+                switch (context.fromState, context.toState) {
                     case let (.subMachine1, .subMachine1(state2)):
                         subMachine1 <- state2
                     case let (.subMachine2, .subMachine2(state2)):

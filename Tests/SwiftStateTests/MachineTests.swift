@@ -341,7 +341,7 @@ class MachineTests: _TestCase
 
         let machine = Machine<MyState, MyEvent>(state: .state0) { machine in
             machine.addRoutes(event: .event0, transitions: [ .state0 => .state1 ])
-            machine.addErrorHandler { event, fromState, toState, userInfo in
+            machine.addErrorHandler { _ in
                 invokeCount += 1
             }
         }

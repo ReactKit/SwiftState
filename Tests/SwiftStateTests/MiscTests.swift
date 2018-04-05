@@ -26,8 +26,8 @@ class MiscTests: _TestCase
             }
 
             // add errorHandler
-            machine.addErrorHandler { event, fromState, toState, userInfo in
-                print("[ERROR] \(fromState) => \(toState)")
+            machine.addErrorHandler { context in
+                print("[ERROR] \(context.fromState) => \(context.toState)")
             }
         }
 
@@ -63,8 +63,8 @@ class MiscTests: _TestCase
             }
 
             // add errorHandler
-            machine.addErrorHandler { event, fromState, toState, userInfo in
-                print("[ERROR] \(fromState) => \(toState)")
+            machine.addErrorHandler { context in
+                print("[ERROR] \(context.fromState) => \(context.toState)")
             }
         }
 

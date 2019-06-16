@@ -17,10 +17,10 @@ enum StrEvent: EventType
 {
     case str(String)
 
-    var hashValue: Int
+    func hash(into hasher: inout Hasher)
     {
         switch self {
-            case .str(let str):  return str.hashValue
+            case .str(let str): hasher.combine(str.hashValue)
         }
     }
 }

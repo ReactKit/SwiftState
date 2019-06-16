@@ -21,13 +21,13 @@ private enum _State: StateType, Hashable
     case pending
     case loading(Int)
 
-    var hashValue: Int
+    func hash(into hasher: inout Hasher)
     {
         switch self {
             case .pending:
-                return "Pending".hashValue
+                hasher.combine("Pending".hashValue)
             case let .loading(x):
-                return "Loading\(x)".hashValue
+                hasher.combine("Loading\(x)".hashValue)
         }
     }
 }
@@ -49,13 +49,13 @@ private enum _Event: SwiftState.EventType, Hashable
     case cancelAction
     case loadAction(Int)
 
-    var hashValue: Int
+    func hash(into hasher: inout Hasher)
     {
         switch self {
             case .cancelAction:
-                return "CancelAction".hashValue
+                hasher.combine("CancelAction".hashValue)
             case let .loadAction(x):
-                return "LoadAction\(x)".hashValue
+                hasher.combine("LoadAction\(x)".hashValue)
         }
     }
 }

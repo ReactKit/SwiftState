@@ -36,9 +36,10 @@ public struct Transition<S: StateType>: Hashable
         self.init(fromState: .some(fromState), toState: .some(toState))
     }
 
-    public var hashValue: Int
+    public func hash(into hasher: inout Hasher)
     {
-        return self.fromState.hashValue &+ self.toState.hashValue.byteSwapped
+        hasher.combine(fromState.hashValue)
+        hasher.combine(toState.hashValue.byteSwapped)
     }
 }
 

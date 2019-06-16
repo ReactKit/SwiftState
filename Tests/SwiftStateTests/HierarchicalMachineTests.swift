@@ -15,15 +15,15 @@ private enum _MainState: StateType
     case subMachine1(_SubState)
     case subMachine2(_SubState)
 
-    var hashValue: Int
+    func hash(into hasher: inout Hasher)
     {
         switch self {
             case .mainState0:
-                return "MainState0".hashValue
+                hasher.combine("MainState0".hashValue)
             case let .subMachine1(state):
-                return "SubMachine1-\(state)".hashValue
+                hasher.combine("SubMachine1-\(state)".hashValue)
             case let .subMachine2(state):
-                return "SubMachine2-\(state)".hashValue
+                hasher.combine("SubMachine2-\(state)".hashValue)
         }
     }
 }
